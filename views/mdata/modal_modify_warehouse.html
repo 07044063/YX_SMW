@@ -1,0 +1,48 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_modify_warehouse">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 ng-if="warehouse.id > 0" class="modal-title">编辑仓储</h4>
+                <h4 ng-if="warehouse.id == null" class="modal-title">创建仓储</h4>
+            </div>
+            <input ng-model="warehouse.id" class="hidden"/>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>仓储代码</label>
+                            <input type="text" placeholder="请输入仓储代码" ng-model="warehouse.warehouse_code"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>仓储名称</label>
+                            <input type="text" placeholder="请输入仓储名称" ng-model="warehouse.warehouse_name"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>仓储地址</label>
+                            <input type="text" placeholder="请输入仓储地址" ng-model="warehouse.warehouse_address"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="modifyWarehouse($event)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

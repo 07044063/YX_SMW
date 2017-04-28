@@ -1,0 +1,57 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_modify_vendor">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 ng-if="vendor.id > 0" class="modal-title">编辑供货商</h4>
+                <h4 ng-if="vendor.id == null" class="modal-title">创建供货商</h4>
+            </div>
+            <input ng-model="vendor.id" class="hidden"/>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>供货商代码</label>
+                            <input type="text" placeholder="请输入供货商代码" ng-model="vendor.vendor_code"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>供货商名称</label>
+                            <input type="text" placeholder="请输入供货商名称" ng-model="vendor.vendor_name"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>供货商简称</label>
+                            <input type="text" placeholder="请输入供货商简称" ng-model="vendor.vendor_shortname"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>供货商地址</label>
+                            <input type="text" placeholder="请输入供货商地址" ng-model="vendor.vendor_address"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="modifyVendor($event)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

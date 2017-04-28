@@ -1,0 +1,48 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_modify_customer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 ng-if="customer.id > 0" class="modal-title">编辑需求方</h4>
+                <h4 ng-if="customer.id == null" class="modal-title">创建需求方</h4>
+            </div>
+            <input ng-model="customer.id" class="hidden"/>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>需求方代码</label>
+                            <input type="text" placeholder="请输入需求方代码" ng-model="customer.customer_code"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>需求方名称</label>
+                            <input type="text" placeholder="请输入需求方名称" ng-model="customer.customer_name"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>需求方简称</label>
+                            <input type="text" placeholder="请输入需求方简称" ng-model="customer.customer_shortname"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="modifyCustomer($event)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
