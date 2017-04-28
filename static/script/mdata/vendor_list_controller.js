@@ -76,7 +76,7 @@ app.controller('vendorListController', function ($scope, $http, Util) {
                 id: $(node).data('id')
             });
             if (confirm('你确定要删除这个供货商吗?')) {
-                $r = $http.post('?/Vendor/deleteById/', param, $scope.post_head).
+                $http.post('?/Vendor/deleteById/', param, $scope.post_head).
                     success(function (r) {
                         if (r.ret_code === 0) {
                             Util.alert('删除成功');

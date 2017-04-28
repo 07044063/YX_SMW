@@ -15,6 +15,7 @@
         <a class='cap-nav-item' href='javascript:;' data-page="vendor" data-nav="mdata">供货商管理</a>
         <a class='cap-nav-item' href='javascript:;' data-page="customer" data-nav="mdata">需求方管理</a>
         <a class='cap-nav-item' href='javascript:;' data-page="warehouse" data-nav="mdata">仓储管理</a>
+        <a class='cap-nav-item' href='javascript:;' data-page="person" data-nav="mdata">人员管理</a>
     </div>
 {/if}
 

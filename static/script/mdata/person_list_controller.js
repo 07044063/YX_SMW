@@ -2,7 +2,7 @@
 
 var app = angular.module('ngApp', ['Util.services']);
 
-app.controller('customerListController', function ($scope, $http, Util) {
+app.controller('personListController', function ($scope, $http, Util) {
 
         $scope.post_head = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
@@ -11,6 +11,12 @@ app.controller('customerListController', function ($scope, $http, Util) {
         $scope.params = {
             page: 0,
             pagesize: 20
+        };
+
+        $scope.ptypelist = {
+            1: "供货商员工",
+            2: "需求方员工",
+            3: "仓储员工"
         };
 
         //$.datetimepicker.setLocale('zh');
@@ -32,33 +38,36 @@ app.controller('customerListController', function ($scope, $http, Util) {
             }
         });
 
-        $('#modal_modify_customer').on('show.bs.modal', function (event) {
+        $('#modal_modify_person').on('show.bs.modal', function (event) {
             var btn = $(event.relatedTarget);
-            $scope.customer_id = parseInt(btn.data('id'));
-            if ($scope.customer_id > 0) {
-                $http.get('?/Customer/getById/', {
+            $scope.person_id = parseInt(btn.data('id'));
+            if ($scope.person_id > 0) {
+                $http.get('?/Person/getById/', {
                     params: {
-                        id: $scope.customer_id
+                        id: $scope.person_id
                     }
                 }).success(function (r) {
-                    $scope.customer = r.ret_msg;
+                    $scope.person = r.ret_msg;
+                    $scope.selected_person_type = $scope.ptypelist[$scope.person.person_type];
+                    $scope.typeChange();
                 });
             } else {
-                $scope.customer = null;
+                $scope.person = {};
+                $scope.orglist = {};
                 $scope.$apply();
             }
         });
 
-        $scope.modifyCustomer = function (e) {
+        $scope.modifyPerson = function (e) {
             var btn = $(e.currentTarget);
             btn.html('处理中');
-            var param = $.param($scope.customer);
-            $http.post('?/Customer/createOrUpdate/', param, $scope.post_head).
+            var param = $.param($scope.person);
+            $http.post('?/Person/createOrUpdate/', param, $scope.post_head).
                 success(function (r) {
                     if (r.ret_code === 0) {
-                        $('#modal_modify_customer').modal('hide');
+                        $('#modal_modify_person').modal('hide');
                         fnGetList();
-                        if ($scope.customer_id > 0) {
+                        if ($scope.person_id > 0) {
                             Util.alert('保存成功');
                         } else {
                             Util.alert('添加成功');
@@ -70,13 +79,13 @@ app.controller('customerListController', function ($scope, $http, Util) {
             btn.html('保存');
         };
 
-        $scope.deleteCustomer = function (e) {
+        $scope.deletePerson = function (e) {
             var node = e.currentTarget;
             var param = $.param({
                 id: $(node).data('id')
             });
-            if (confirm('你确定要删除这个需求方吗?')) {
-                $http.post('?/Customer/deleteById/', param, $scope.post_head).
+            if (confirm('你确定要删除这个人员吗?')) {
+                $http.post('?/Person/deleteById/', param, $scope.post_head).
                     success(function (r) {
                         if (r.ret_code === 0) {
                             Util.alert('删除成功');
@@ -90,14 +99,33 @@ app.controller('customerListController', function ($scope, $http, Util) {
         }
         ;
 
+        $scope.typeChange = function () {
+            //类型变化时 组织的下拉菜单联动
+            $scope.orglist = {};
+            if ($scope.person.person_type > 0) {
+                $http.get('?/Person/getOrgOption/', {
+                    params: {
+                        type: $scope.person.person_type
+                    }
+                }).success(function (r) {
+                    $scope.orglist = r.ret_msg;
+                });
+            } else {
+                $scope.orglist = {};
+            }
+        };
+
         function fnGetList() {
             Util.loading();
-            $http.get('?/Customer/getList/', {
+            $http.get('?/Person/getList/', {
                 params: $scope.params
             }).success(function (r) {
                 Util.loading(false);
                 var json = r.list;
-                $scope.customerlist = json;
+                $scope.personlist = json;
+                for (var i = 0; i < $scope.personlist.length; i++) {
+                    $scope.personlist[i].person_type_desc = $scope.ptypelist[$scope.personlist[i].person_type];
+                }
                 $scope.listcount = r.total;
                 if (!$scope.init) {
                     $scope.init = true;

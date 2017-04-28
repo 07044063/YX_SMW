@@ -16,5 +16,8 @@ define('TABLE_CUSTOMER', 'customer');
 
 define('TABLE_WAREHOUSE', 'warehouse');
 
+define('TABLE_PERSON', 'person');
+define('VIEW_PERSON', 'v_person');
+
 // 系统日志
 define('TABLE_LOGS', 'system_logs');
