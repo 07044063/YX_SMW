@@ -65,4 +65,18 @@ class Page extends ControllerAdmin
         $this->show(self::TPL . 'mdata/person_list.tpl');
     }
 
+    public function stock()
+    {
+        $this->show(self::TPL . 'mdata/stock_list.tpl');
+    }
+
+    public function goods()
+    {
+        $this->show(self::TPL . 'mdata/goods_list.tpl');
+    }
+
+    public function modelx()
+    {
+        $this->show(self::TPL . 'mdata/model_list.tpl');
+    }
 }

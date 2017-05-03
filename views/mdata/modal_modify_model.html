@@ -1,0 +1,70 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_modify_model">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 ng-if="model.id > 0" class="modal-title">编辑车型</h4>
+                <h4 ng-if="model.id == null" class="modal-title">创建车型</h4>
+            </div>
+            <input ng-model="model.id" class="hidden"/>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>主机厂</label>
+                            <select class="form-control"
+                                    ng-model="model.customer_id"
+                                    ng-options="customer.id as customer.text for customer in customerlist">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>车型代码</label>
+                            <input type="text" ng-model="model.model_code"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>车型名称</label>
+                            <input type="text" ng-model="model.model_name"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>车型别名</label>
+                            <input type="text" ng-model="model.model_alias"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>生产厂区</label>
+                            <input type="text" ng-model="model.model_plant"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="modifyModel($event)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

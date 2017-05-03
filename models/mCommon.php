@@ -21,6 +21,7 @@ class mCommon extends Model
     public function updateById($table, $data)
     {
         $data['update_by'] = $this->Session->get('uid');
+        unset($data['update_at']);
         $this->Dao->update($table)
             ->set($data)
             ->where("id = " . $data['id'])

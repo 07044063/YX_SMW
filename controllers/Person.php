@@ -123,7 +123,6 @@ class Person extends ControllerAdmin
                 ->where("isvalid = 1")
                 ->exec();
         }
-        slog($options);
         return $this->echoMsg(0, $options);
     }
 

@@ -20,6 +20,7 @@ if (!defined('APP_PATH')) {
  * @property Session $Session Session
  * @property mAdmin $mAdmin
  * @property mCommon $mCommon
+ * @property mStock $mStock
  */
 class Controller
 {

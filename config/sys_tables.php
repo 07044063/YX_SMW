@@ -19,5 +19,16 @@ define('TABLE_WAREHOUSE', 'warehouse');
 define('TABLE_PERSON', 'person');
 define('VIEW_PERSON', 'v_person');
 
+define('TABLE_STOCK', 'stock');
+define('TABLE_STOCK_ADMIN', 'stock_admin');
+define('TABLE_STOCK_LOAN', 'stock_loan');
+
+define('TABLE_GOODS', 'goods');
+define('VIEW_GOODS', 'v_goods');
+
+define('TABLE_MODEL', 'model');
+define('TABLE_MODEL_GOODS', 'model_goods');
+
+
 // 系统日志
 define('TABLE_LOGS', 'system_logs');
