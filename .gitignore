@@ -47,3 +47,7 @@ tmp
 /cache/
 
 /config/config.php
+backup
+/tests
+uploads
+/web.config

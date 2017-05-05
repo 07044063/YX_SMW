@@ -116,6 +116,7 @@ class SocketLog
 
     public static function pdolog($sql,$pdo)
     {
+
         if(!self::check())
         {
             return ;
@@ -128,11 +129,10 @@ class SocketLog
                 $obj=$pdo->query( "EXPLAIN ".$sql);
                 if(is_object($obj) && method_exists($obj,'fetch'))
                 {
-                    $arr=$obj->fetch(PDO::FETCH_ASSOC);
+                    $arr=$obj->fetch(\PDO::FETCH_ASSOC);
                     self::sqlexplain($arr,$sql,$css);
                 }
             } catch (Exception $e) {
-
             }
         }
         self::sqlwhere($sql,$css);

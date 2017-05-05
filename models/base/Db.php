@@ -37,7 +37,8 @@ class Db extends Model
     /**
      * @return bool|Db
      */
-    public static function get_instance() {
+    public static function get_instance()
+    {
         if (!self::$instance) {
             self::$instance = new Db();
         }
@@ -49,7 +50,8 @@ class Db extends Model
      * @global object $config
      * @param bool $dbname
      */
-    public function __construct($dbname = false) {
+    public function __construct($dbname = false)
+    {
         global $config;
         parent::__construct();
         $this->initRedis($config);
@@ -68,7 +70,8 @@ class Db extends Model
      * 使用事务
      * @return bool
      */
-    public function transtart() {
+    public function transtart()
+    {
         $this->transactions++;
         // 初次启动事务
         if ($this->transactions == 1) {
@@ -87,7 +90,8 @@ class Db extends Model
      * 提交事务
      * @return bool
      */
-    public function transcommit() {
+    public function transcommit()
+    {
         // 事务层--
         $this->transactions--;
         if ($this->transactions <= 0) {
@@ -103,7 +107,8 @@ class Db extends Model
      * 事务回滚不考虑嵌套情况
      * @return bool
      */
-    public function transrollback() {
+    public function transrollback()
+    {
         // 回滚最外层
         $this->transactions = 0;
         return $this->db->rollBack();
@@ -115,9 +120,10 @@ class Db extends Model
      * @param int $fetchStyle
      * @return array
      */
-    public function query($statement, $mcache = true, $fetchStyle = PDO::FETCH_ASSOC) {
+    public function query($statement, $mcache = true, $fetchStyle = PDO::FETCH_ASSOC)
+    {
         global $config;
-        slog($statement);
+        slog($statement, $this->db);
         try {
             if (preg_match("/INSERT/is", $statement)) {
                 // INSERT
@@ -135,7 +141,7 @@ class Db extends Model
                      * allow memcached <default>
                      */
                     $sHash = $this->getSHash($statement) . '.sqlcache';
-                    $mca   = self::$_redis->get($sHash);
+                    $mca = self::$_redis->get($sHash);
                     if ($mca) {
                         return unserialize($mca);
                     } else {
@@ -168,7 +174,8 @@ class Db extends Model
      * @param int $fetchStyle
      * @return array
      */
-    private function rawQuery($statement, $fetchStyle) {
+    private function rawQuery($statement, $fetchStyle)
+    {
         // buffer模式
         $query = $this->db->prepare($statement);
         $query->execute();
@@ -182,7 +189,8 @@ class Db extends Model
      * @param string $SQL
      * @return string
      */
-    public function getOne($SQL, $cache = true) {
+    public function getOne($SQL, $cache = true)
+    {
         $ret = $this->query($SQL, $cache);
         if (!$ret[0]) {
             return false;
@@ -195,7 +203,8 @@ class Db extends Model
      * @param string $SQL
      * @return array
      */
-    public function getOneRow($SQL, $cache = true) {
+    public function getOneRow($SQL, $cache = true)
+    {
         $ret = $this->query($SQL, $cache);
         if ($ret) {
             return $ret[0];
@@ -210,7 +219,8 @@ class Db extends Model
      * @param string $value
      * @return bool
      */
-    public function isExist($table, $field, $value) {
+    public function isExist($table, $field, $value)
+    {
         $rst = $this->query("SELECT * FROM `$table` WHERE `$field` = '$value' LIMIT 1");
         return count($rst) > 0;
     }
@@ -220,7 +230,8 @@ class Db extends Model
      * @param type $statement
      * @return type
      */
-    public function exec($statement) {
+    public function exec($statement)
+    {
         $this->db->exec($statement);
         if ($this->db->errorCode() != '00000') {
             $errInfo = $this->db->errorInfo();
@@ -236,7 +247,8 @@ class Db extends Model
      * @param type $config
      * @return boolean
      */
-    private function initRedis($config) {
+    private function initRedis($config)
+    {
         if ($config->redis_on && extension_loaded('redis')) {
             if (!(self::$_redis instanceof self)) {
                 try {
@@ -257,7 +269,8 @@ class Db extends Model
      * @param type $statement
      * @return type
      */
-    private final function getSHash($statement) {
+    private final function getSHash($statement)
+    {
         return md5($statement . APPID);
     }
 
@@ -265,7 +278,8 @@ class Db extends Model
      * 获取数据库错误信息
      * @return mixed
      */
-    public function getErrorInfo() {
+    public function getErrorInfo()
+    {
         $errInfo = $this->db->errorInfo();
         return $errInfo[2];
     }
@@ -274,7 +288,8 @@ class Db extends Model
      * 关闭缓存
      * @return bool
      */
-    public function disableCache() {
+    public function disableCache()
+    {
         $this->cache = false;
         return true;
     }
