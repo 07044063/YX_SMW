@@ -20,6 +20,7 @@
         <a class='cap-nav-item' href='javascript:;' data-page="person" data-nav="mdata">人员管理</a>
         <a class='cap-nav-item' href='javascript:;' data-page="goods" data-nav="mdata">物料管理</a>
         <a class='cap-nav-item' href='javascript:;' data-page="truck" data-nav="mdata">车辆管理</a>
+        <a class='cap-nav-item' href='javascript:;' data-page="stockloan" data-nav="mdata">库区租赁管理</a>
     </div>
 {/if}
 

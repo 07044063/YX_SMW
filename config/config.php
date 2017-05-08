@@ -19,7 +19,7 @@ $config->debug = true;
 $config->db['host'] = '127.0.0.1';
 $config->db['db'] = 'wms';
 $config->db['user'] = 'root';
-$config->db['pass'] = 'root';
+$config->db['pass'] = 'wanghu3344';
 
 // 系统根目录
 $config->webroot = '/WMS/';
