@@ -49,7 +49,7 @@
 
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/base/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/mdata/{$script_name}.js"></script>
 
 <div class="navbar-fixed-bottom bottombar">
     <div id="pager-bottom">

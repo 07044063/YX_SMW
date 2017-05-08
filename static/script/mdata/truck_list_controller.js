@@ -15,12 +15,12 @@ app.controller('truckListController', function ($scope, $http, Util) {
             pagesize: 20,
         };
 
-        //$.datetimepicker.setLocale('zh');
-        //
-        //// 日期选择器
-        //$('#stime').datetimepicker({
-        //    format: 'Y-m-d'
-        //});
+        $.datetimepicker.setLocale('zh');
+
+        // 日期选择器
+        $('#truck_date').datetimepicker({
+            format: 'Y-m-d'
+        });
         //$('#etime').datetimepicker({
         //    format: 'Y-m-d'
         //});
@@ -56,19 +56,19 @@ app.controller('truckListController', function ($scope, $http, Util) {
             btn.html('处理中');
             var param = $.param($scope.truck);
             $http.post('?/Truck/createOrUpdate/', param, $scope.post_head).
-            success(function (r) {
-                if (r.ret_code === 0) {
-                    $('#modal_modify_truck').modal('hide');
-                    fnGetList();
-                    if ($scope.truck_id > 0) {
-                        Util.alert('保存成功');
+                success(function (r) {
+                    if (r.ret_code === 0) {
+                        $('#modal_modify_truck').modal('hide');
+                        fnGetList();
+                        if ($scope.truck_id > 0) {
+                            Util.alert('保存成功');
+                        } else {
+                            Util.alert('添加成功');
+                        }
                     } else {
-                        Util.alert('添加成功');
+                        Util.alert('操作失败 ' + r.ret_msg, true);
                     }
-                } else {
-                    Util.alert('操作失败 ' + r.ret_msg, true);
-                }
-            });
+                });
             btn.html('保存');
         };
 
@@ -79,15 +79,15 @@ app.controller('truckListController', function ($scope, $http, Util) {
             });
             if (confirm('你确定要删除这个车辆的信息吗?')) {
                 $http.post('?/Truck/deleteById/', param, $scope.post_head).
-                success(function (r) {
-                    if (r.ret_code === 0) {
-                        Util.alert('删除成功');
-                        $(node).parents('tr').remove();
-                    } else {
-                        //alert(r.ret_msg);
-                        Util.alert('操作失败 ' + r.ret_msg, true);
-                    }
-                });
+                    success(function (r) {
+                        if (r.ret_code === 0) {
+                            Util.alert('删除成功');
+                            $(node).parents('tr').remove();
+                        } else {
+                            //alert(r.ret_msg);
+                            Util.alert('操作失败 ' + r.ret_msg, true);
+                        }
+                    });
             }
         }
         ;
