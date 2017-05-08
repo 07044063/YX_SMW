@@ -61,6 +61,7 @@ app.controller('modelGoodsListController', function ($scope, $http, Util) {
             } else {
                 $scope.mg = {};
                 $scope.mg.model_id = $('#model_id').val();
+                $("#goods_select").select2().val(0).trigger("change");
                 $scope.$apply();
             }
         });

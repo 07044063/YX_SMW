@@ -58,7 +58,7 @@ try {
     // Smarty
     require_once 'lib/Smarty/Smarty.class.php';
 
-    // niuben add functios
+    // niuben add functions
     require_once 'lib/functions.php';
 
     // 实例化入口

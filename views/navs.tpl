@@ -78,6 +78,7 @@
     </a>
     <div class='subnavs clearfix' id='subnav10'>
         <a class='cap-nav-item' href='javascript:;' data-page="logs" data-nav="system">系统日志</a>
+        <a class='cap-nav-item' href='javascript:;' data-page="wxtest" data-nav="system">微信接口测试</a>
     </div>
 {/if}
 

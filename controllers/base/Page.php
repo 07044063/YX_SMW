@@ -79,4 +79,9 @@ class Page extends ControllerAdmin
     {
         $this->show(self::TPL . 'mdata/model_list.tpl');
     }
+
+    public function wxtest()
+    {
+        $this->show(self::TPL . 'wxtest.tpl');
+    }
 }

@@ -41,29 +41,15 @@ $config->logdir = APP_PATH . 'logs' . DIRECTORY_SEPARATOR;
 // 是否已经通过微信认证
 $config->wechatVerifyed = true;
 
-// 微信公众号AppId
-define("APPID", "wxb8a1832b22d36fdb");
-
-// 微信公众号AppSecret
-define("APPSECRET", "387edcad5efabe7249c89b5c0f181912");
-
-// 微信公众号通讯AESKey
-define('EncodingAESKey', 'C5mKA9e061g9VsnWHoBqbv64RQ99wKRPyWJBAJKpM5v');
-
-// 微信公众号验证TOKEN
-define("TOKEN", "ABCDEF2016");
-
-// <微信支付> 商户ID(partnerId)
-define("PARTNER", "X");
-
-// <微信支付> 商户通加密串(partnerKey)
-define("PARTNERKEY", "X");
-
-// <微信支付> CA证书 .pem文件
-define('CERT_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . "apiclient_cert.pem");
-
-// <微信支付> CA证书 .pem文件
-define('CERT_KEY_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . "apiclient_key.pem");
-
-// <微信支付> CA证书 .pem文件
-define('CERT_ROOTCA', dirname(__FILE__) . DIRECTORY_SEPARATOR . "rootca.pem");
+$config->wxConfigs = array(
+    'token' => 'xYBvTYhVzs9uGGJzveSbBcgkE4',   //填写应用接口的Token
+    'encodingaeskey' => 'rP5x7EVqThC66l5yoS18FdU4nuFMH9Vt2TcpoC6Ma3w',//填写加密用的EncodingAESKey
+    'appid' => 'wx607bfbe0967add53',  //填写高级调用功能的appid
+    'appsecret' => 'ED1lL7zlCm-bxNAfFt1X3-J1iQoZw1OmsoUK3kUo8b9Lsm2JDn1IsPnFhKQrEp7J', //填写高级调用功能的密钥
+    'agentid' => '0', //应用的id
+    'mch_id' => '', // 微信支付，商户ID（可选）
+    'partnerkey' => '', // 微信支付，密钥（可选）
+    'ssl_cer' => '', // 微信支付，证书cert的路径（可选，操作退款或打款时必需）
+    'ssl_key' => '', // 微信支付，证书key的路径（可选，操作退款或打款时必需）
+    'cachepath' => '', // 设置SDK缓存目录（可选，默认位置在./src/Cache下，请保证写权限）
+);

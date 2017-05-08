@@ -23,5 +23,6 @@ $sys_include_paths = array(
     'lib/PHPExcel/Classes/PHPExcel/',
     'lib/wxAesHelper/',
     'lib/aliyun-oss/lib/',
+    'lib/wechat/',
     'plugins/wechat_message/'
 );

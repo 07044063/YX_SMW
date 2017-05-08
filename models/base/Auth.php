@@ -30,5 +30,4 @@ class Auth extends Model {
             ->from(TABLE_AUTH)
             ->exec();
     }
-
 }

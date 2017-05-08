@@ -143,4 +143,9 @@ class Index extends Controller
      */
     private $expire = 7200;
 
+
+    public function wxerror() {
+        $this->show('./views/wxerror.tpl');
+    }
+
 }

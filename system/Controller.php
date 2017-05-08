@@ -16,7 +16,6 @@ if (!defined('APP_PATH')) {
  * @property Load $Load Load
  * @property SqlCached $SqlCached SqlCached
  * @property Util $Util Util
- * @property JsSdk $JsSdk JsSdk
  * @property Session $Session Session
  * @property mAdmin $mAdmin
  * @property mCommon $mCommon
@@ -219,6 +218,42 @@ class Controller
                 $openid = false;
             }
             return $openid;
+        }
+    }
+
+    /**
+     * 获取WX企业号UserId
+     * @param type $both 是否同时获取accesstoken
+     * @return boolean | object
+     */
+    final public function getWxUserId()
+    {
+        $wxuid = $this->Session->get('wxuid');
+        if (!empty($wxuid)) {
+            return $wxuid;
+        } else {
+            if ($this->inWechat()) {
+                // 使用原始回调地址
+                $redirect_uri = "http://$_SERVER[HTTP_HOST]" . $_SERVER['PHP_SELF'];
+                $AccessCode = $this->pGet('code');
+                $weObj = new Wechat($this->config->wxConfigs);
+                if (!empty($AccessCode)) {
+                    // 获取Openid
+                    $Result = $weObj->getUserId($AccessCode);
+                    if (!empty($Result->UserId)) {
+                        $this->Session->set('wxuid', $Result->UserId);
+                        // 跳转原始回调地址
+                        header("location:" . $redirect_uri);
+                        exit(0);
+                    }
+                } else {
+                    $this->redirect($weObj->getOauthRedirect());
+                    exit(0);
+                }
+            } else {
+                $wxuid = false;
+            }
+            return $wxuid;
         }
     }
 
