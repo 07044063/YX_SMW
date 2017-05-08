@@ -1,0 +1,66 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_modify_truck">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 ng-if="truck.id > 0" class="modal-title">编辑车辆信息</h4>
+                <h4 ng-if="truck.id == null" class="modal-title">创建车辆信息</h4>
+            </div>
+            <input ng-model="truck.id" class="hidden"/>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>车牌号</label>
+                            <input type="text" placeholder="请输入车牌号" ng-model="truck.truck_code"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>车型</label>
+                            <input type="text" placeholder="请输入车型" ng-model="truck.truck_type"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>车辆长度（米）</label>
+                            <input type="text" placeholder="请输入车辆长度（米）" ng-model="truck.truck_length"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>车辆描述</label>
+                            <input type="text" placeholder="请输入车辆描述" ng-model="truck.truck_desc"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>购买日期</label>
+                            <input type="text" placeholder="请输入购买日期" ng-model="truck.truck_date"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="modifyModelTruck($event)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>

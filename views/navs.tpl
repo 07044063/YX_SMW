@@ -19,6 +19,7 @@
         <a class='cap-nav-item' href='javascript:;' data-page="stock" data-nav="mdata">库区管理</a>
         <a class='cap-nav-item' href='javascript:;' data-page="person" data-nav="mdata">人员管理</a>
         <a class='cap-nav-item' href='javascript:;' data-page="goods" data-nav="mdata">物料管理</a>
+        <a class='cap-nav-item' href='javascript:;' data-page="truck" data-nav="mdata">车辆管理</a>
     </div>
 {/if}
 
@@ -78,7 +79,6 @@
     </a>
     <div class='subnavs clearfix' id='subnav10'>
         <a class='cap-nav-item' href='javascript:;' data-page="logs" data-nav="system">系统日志</a>
-        <a class='cap-nav-item' href='javascript:;' data-page="wxtest" data-nav="system">微信接口测试</a>
     </div>
 {/if}
 

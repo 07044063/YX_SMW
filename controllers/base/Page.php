@@ -80,8 +80,8 @@ class Page extends ControllerAdmin
         $this->show(self::TPL . 'mdata/model_list.tpl');
     }
 
-    public function wxtest()
+    public function truck()
     {
-        $this->show(self::TPL . 'wxtest.tpl');
+        $this->show(self::TPL . 'mdata/truck_list.tpl');
     }
 }
