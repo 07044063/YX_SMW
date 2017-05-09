@@ -30,6 +30,7 @@ define('TABLE_MODEL', 'model');
 define('TABLE_MODEL_GOODS', 'model_goods');
 #Conghu add by 2017/5/4
 define('TABLE_TRUCK', 'truck');
+define('TABLE_STOCKLOAN', 'stock_loan');
 
 // 系统日志
 define('TABLE_LOGS', 'system_logs');

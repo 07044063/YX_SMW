@@ -1,0 +1,80 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_modify_stockloan">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 ng-if="stockloan.id > 0" class="modal-title">编辑仓储与供应商租赁信息</h4>
+                <h4 ng-if="stockloan.id == null" class="modal-title">创建仓储与供应商租赁信息</h4>
+            </div>
+            <input ng-model="stockloan.id" class="hidden"/>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>仓库信息</label>
+                            <!--<input type="text" placeholder="请输入仓库信息" ng-model="stockloan.stock_id"-->
+                                   <!--class="form-control"/>-->
+                            <select class="form-control"
+                            ng-model="stockloan.stock_id"
+                            ng-options="x as y for (x,y) in truck_type_list">
+                            </select>
+                            <!--<select class="form-control"-->
+                                    <!--ng-model="person.org_id"-->
+                                    <!--ng-options="org.id as org.name for org in orglist">-->
+                            <!--</select>-->
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>供应商信息</label>
+                            <input type="text" placeholder="请输入供应商信息" ng-model="stockloan.vendor_id"
+                            class="form-control"/>
+                            <!--<select class="form-control"-->
+                                    <!--ng-model="stockloan.vendor_id"-->
+                                    <!--ng-options="y for (x,y) in truck_type_list">-->
+                            <!--</select>-->
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row">-->
+
+                <!--</div>-->
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>租赁单价（单位：元）</label>
+                            <input type="text" placeholder="请输入单价" ng-model="stockloan.price"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>租赁面积（单位：平方米）</label>
+                            <input type="text" placeholder="请输入面积" ng-model="stockloan.area"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row">-->
+
+                <!--</div>-->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label>备注信息</label>
+                            <input type="text"  placeholder="请输入备注信息" ng-model="stockloan.remark"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="modifyStockloan($event)">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
