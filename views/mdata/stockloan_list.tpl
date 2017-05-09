@@ -26,26 +26,32 @@
         <thead>
         <tr>
             <th class="hidden">ID</th>
-            <th>仓库</th>
-            <th>供货商</th>
-            <th>单价</th>
+            <th>仓库代码</th>
+            <th>仓库名称</th>
+            <th>供货商代码</th>
+            <th>供货商名称</th>
+            <th>供货商简码</th>
+            <th>租赁单价</th>
             <th>租赁面积</th>
             <th>其他描述</th>
             <th width="100px" class="text-center">操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="rowStockloan in stockloanlist">
-            <td class="hidden">{{rowStockloan.id}}</td>
-            <td>{{rowStockloan.stock_id}}</td>
-            <td>{{rowStockloan.vendor_id}}</td>
-            <td>{{rowStockloan.price}}</td>
-            <td>{{rowStockloan.area}}</td>
-            <td>{{rowStockloan.remark}}</td>
+        <tr ng-repeat="rowStockLoan in stockloanlist">
+            <td class="hidden">{{rowStockLoan.id}}</td>
+            <td>{{rowStockLoan.stock_code}}</td>
+            <td>{{rowStockLoan.stock_name}}</td>
+            <td>{{rowStockLoan.vendor_code}}</td>
+            <td>{{rowStockLoan.vendor_name}}</td>
+            <td>{{rowStockLoan.vendor_shortname}}</td>
+            <td>{{rowStockLoan.price}}</td>
+            <td>{{rowStockLoan.area}}</td>
+            <td>{{rowStockLoan.remark}}</td>
             <td>
-                <a class="text-success" data-toggle="modal" data-target="#modal_modify_stockloan" data-id="{{rowStockloan.id}}"
+                <a class="text-success" data-toggle="modal" data-target="#modal_modify_stockloan" data-id="{{rowStockLoan.id}}"
                    href="#">编辑</a>
-                <a class="text-danger" data-id="{{rowStockloan.id}}" ng-click="deleteStockloan($event)" href="#">删除</a>
+                <a class="text-danger" data-id="{{rowStockLoan.id}}" ng-click="deleteStockloan($event)" href="#">删除</a>
             </td>
         </tr>
         </tbody>

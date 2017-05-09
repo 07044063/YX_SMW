@@ -45,6 +45,8 @@ app.controller('stockLoanListController', function ($scope, $http, Util) {
                     }
                 }).success(function (r) {
                     $scope.stockloan = r.ret_msg;
+                    $scope.getStockInfo();
+                    $scope.getVendorInfo();
                 });
             } else {
                 $scope.stockloan = null;
@@ -52,6 +54,23 @@ app.controller('stockLoanListController', function ($scope, $http, Util) {
             }
         });
 
+        $scope.getStockInfo=function () {
+            $scope.stockList={};
+            $http.get('?/Stockloan/getStockList/', {
+                params: $scope.params
+            }).success(function (r) {
+                $scope.stockList = r.ret_msg;
+            });
+        }
+        $scope.getVendorInfo=function () {
+            $scope.vendorList={};
+            $http.get('?/Stockloan/getVendorList/', {
+                params: $scope.params
+            }).success(function (r) {
+                $scope.vendorList = r.ret_msg;
+            });
+        }
+        
         $scope.modifyStockloan = function (e) {
             var btn = $(e.currentTarget);
             btn.html('处理中');
@@ -90,8 +109,7 @@ app.controller('stockLoanListController', function ($scope, $http, Util) {
                     }
                 });
             }
-        }
-        ;
+        };
 
         function fnGetList() {
             Util.loading();
