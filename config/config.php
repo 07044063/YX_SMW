@@ -14,12 +14,13 @@ include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sys_tables.php';
 
 // debug开关
 $config->debug = true;
+$config->WxUserId = '1';
 
 // 数据库
 $config->db['host'] = '127.0.0.1';
 $config->db['db'] = 'wms';
 $config->db['user'] = 'root';
-$config->db['pass'] = 'wanghu3344';
+$config->db['pass'] = 'root';
 
 // 系统根目录
 $config->webroot = '/WMS/';
@@ -41,11 +42,25 @@ $config->logdir = APP_PATH . 'logs' . DIRECTORY_SEPARATOR;
 // 是否已经通过微信认证
 $config->wechatVerifyed = true;
 
+$config->wechat_aes_open = true;
+
+// 微信公众号AppId
+define("APPID", "wxbe53733a558451bc");
+
+// 微信公众号AppSecret
+define("APPSECRET", "dGZ-A4IFi19YxUfGwSrLf3eTiIvgewVR9wakcQMDqDizs5kE8HR9-Y8vopbV8oDr");
+
+// 微信公众号通讯AESKey
+define('EncodingAESKey', 'X8RE65ctmlCQELZVKiAEoWT5EWGslCGY973gfGm4QIE');
+
+// 微信公众号验证TOKEN
+define("TOKEN", "93w8BsGXdEgn19eM");
+
 $config->wxConfigs = array(
-    'token' => 'xYBvTYhVzs9uGGJzveSbBcgkE4',   //填写应用接口的Token
-    'encodingaeskey' => 'rP5x7EVqThC66l5yoS18FdU4nuFMH9Vt2TcpoC6Ma3w',//填写加密用的EncodingAESKey
-    'appid' => 'wx607bfbe0967add53',  //填写高级调用功能的appid
-    'appsecret' => 'ED1lL7zlCm-bxNAfFt1X3-J1iQoZw1OmsoUK3kUo8b9Lsm2JDn1IsPnFhKQrEp7J', //填写高级调用功能的密钥
+    'token' => TOKEN,   //填写应用接口的Token
+    'encodingaeskey' => EncodingAESKey,//填写加密用的EncodingAESKey
+    'appid' => APPID,  //填写高级调用功能的appid
+    'appsecret' => APPSECRET, //填写高级调用功能的密钥
     'agentid' => '0', //应用的id
     'mch_id' => '', // 微信支付，商户ID（可选）
     'partnerkey' => '', // 微信支付，密钥（可选）

@@ -29,7 +29,7 @@
         <span class="glyphicon glyphicon-import" aria-hidden="true"></span><i class='label'>收货管理</i>
     </a>
     <div class='subnavs clearfix' id='subnav3'>
-        <a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="recive">收货入库</a>
+        <a class='cap-nav-item' href='javascript:;' data-page="receive" data-nav="recive">收货入库</a>
         <a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="recive">到货异常维护</a>
     </div>
 {/if}

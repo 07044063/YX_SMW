@@ -31,7 +31,13 @@ class WxPage extends ControllerWx
         header("Pragma: no-cache"); // Date in the past
     }
 
-    public function wxtest()
+    public function auth()
+    {
+        //企业号验证通过直接跳转到首页
+        $this->redirect($this->root . '?/WxPage/index/');
+    }
+
+    public function index()
     {
         $this->show(self::TPL . 'wxtest.tpl');
     }

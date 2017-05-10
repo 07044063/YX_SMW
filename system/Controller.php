@@ -183,45 +183,6 @@ class Controller
     }
 
     /**
-     * 获取用户openid
-     * @param type $both 是否同时获取accesstoken
-     * @return boolean | object
-     */
-    final public function getOpenId($redirect_uri = false, $both = false)
-    {
-        $openid = $this->Session->get('openid');
-        if (!empty($openid)) {
-            $this->loadModel('User');
-            $this->Session->set('uid', $this->User->getUidByOpenId($openid));
-            $this->Session->set('urid', $this->User->getURidByOpenId($openid));
-            return $openid;
-        } else {
-            if ($this->inWechat()) {
-                $this->loadModel('WechatSdk');
-                $this->loadModel('User');
-                // 使用原始回调地址
-                $redirect_uri = "http://$_SERVER[HTTP_HOST]" . $_SERVER['REQUEST_URI'];
-                $AccessCode = WechatSdk::getAccessCode($redirect_uri, "snsapi_base");
-                if ($AccessCode !== FALSE) {
-                    // 获取Openid
-                    $Result = WechatSdk::getAccessToken($AccessCode);
-                    if (!empty($Result->openid)) {
-                        $this->Session->set('openid', $Result->openid);
-                        $this->Session->set('uid', $this->User->getUidByOpenId($Result->openid));
-                        $this->Session->set('urid', $this->User->getURidByOpenId($Result->openid));
-                        // 跳转原始回调地址
-                        header("location:" . $redirect_uri);
-                        exit(0);
-                    }
-                }
-            } else {
-                $openid = false;
-            }
-            return $openid;
-        }
-    }
-
-    /**
      * 获取WX企业号UserId
      * @param type $both 是否同时获取accesstoken
      * @return boolean | object
@@ -229,6 +190,7 @@ class Controller
     final public function getWxUserId()
     {
         $wxuid = $this->Session->get('wxuid');
+
         if (!empty($wxuid)) {
             return $wxuid;
         } else {
@@ -236,18 +198,22 @@ class Controller
                 // 使用原始回调地址
                 $redirect_uri = "http://$_SERVER[HTTP_HOST]" . $_SERVER['PHP_SELF'];
                 $AccessCode = $this->pGet('code');
+                Util::log($AccessCode);
                 $weObj = new Wechat($this->config->wxConfigs);
                 if (!empty($AccessCode)) {
                     // 获取Openid
                     $Result = $weObj->getUserId($AccessCode);
-                    if (!empty($Result->UserId)) {
-                        $this->Session->set('wxuid', $Result->UserId);
+                    $UserId = $Result['UserId'];
+                    if (!empty($UserId)) {
+                        $this->Session->set('wxuid', $UserId);
                         // 跳转原始回调地址
                         header("location:" . $redirect_uri);
                         exit(0);
+                    } else {
+                        $wxuid = false;
                     }
                 } else {
-                    $this->redirect($weObj->getOauthRedirect());
+                    $this->redirect($weObj->getOauthRedirect($redirect_uri));
                     exit(0);
                 }
             } else {

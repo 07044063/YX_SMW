@@ -3,7 +3,7 @@
 /**
  * 系统控制器
  */
-class Weixin extends ControllerAdmin
+class Weixin extends ControllerWx
 {
     /**
      *

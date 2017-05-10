@@ -18,23 +18,61 @@ include_once "errorCode.php";
  */
 class WXBizMsgCrypt
 {
-	private $token;
-	private $encodingAesKey;
-	private $appId;
+	private $m_sToken;
+	private $m_sEncodingAesKey;
+	private $m_sCorpid;
 
 	/**
 	 * 构造函数
 	 * @param $token string 公众平台上，开发者设置的token
 	 * @param $encodingAesKey string 公众平台上，开发者设置的EncodingAESKey
-	 * @param $appId string 公众平台的appId
+	 * @param $Corpid string 公众平台的Corpid
 	 */
-	public function WXBizMsgCrypt($token, $encodingAesKey, $appId)
+	public function WXBizMsgCrypt($token, $encodingAesKey, $Corpid)
 	{
-		$this->token = $token;
-		$this->encodingAesKey = $encodingAesKey;
-		$this->appId = $appId;
+		$this->m_sToken = $token;
+		$this->m_sEncodingAesKey = $encodingAesKey;
+		$this->m_sCorpid = $Corpid;
 	}
 
+	/*
+    *验证URL
+    *@param sMsgSignature: 签名串，对应URL参数的msg_signature
+    *@param sTimeStamp: 时间戳，对应URL参数的timestamp
+    *@param sNonce: 随机串，对应URL参数的nonce
+    *@param sEchoStr: 随机串，对应URL参数的echostr
+    *@param sReplyEchoStr: 解密之后的echostr，当return返回0时有效
+    *@return：成功0，失败返回对应的错误码
+    */
+	public function VerifyURL($sMsgSignature, $sTimeStamp, $sNonce, $sEchoStr, &$sReplyEchoStr)
+	{
+		if (strlen($this->m_sEncodingAesKey) != 43) {
+			return ErrorCode::$IllegalAesKey;
+		}
+
+		$pc = new Prpcrypt($this->m_sEncodingAesKey);
+		//verify msg_signature
+		$sha1 = new SHA1;
+		$array = $sha1->getSHA1($this->m_sToken, $sTimeStamp, $sNonce, $sEchoStr);
+		$ret = $array[0];
+
+		if ($ret != 0) {
+			return $ret;
+		}
+
+		$signature = $array[1];
+		if ($signature != $sMsgSignature) {
+			return ErrorCode::$ValidateSignatureError;
+		}
+
+		$result = $pc->decrypt($sEchoStr, $this->m_sCorpid);
+		if ($result[0] != 0) {
+			return $result[0];
+		}
+		$sReplyEchoStr = $result[1];
+
+		return ErrorCode::$OK;
+	}
 	/**
 	 * 将公众平台回复用户的消息加密打包.
 	 * <ol>
@@ -51,25 +89,25 @@ class WXBizMsgCrypt
 	 *
 	 * @return int 成功0，失败返回对应的错误码
 	 */
-	public function encryptMsg($replyMsg, $timeStamp, $nonce, &$encryptMsg)
+	public function EncryptMsg($sReplyMsg, $sTimeStamp, $sNonce, &$sEncryptMsg)
 	{
-		$pc = new Prpcrypt($this->encodingAesKey);
+		$pc = new Prpcrypt($this->m_sEncodingAesKey);
 
 		//加密
-		$array = $pc->encrypt($replyMsg, $this->appId);
+		$array = $pc->encrypt($sReplyMsg, $this->m_sCorpid);
 		$ret = $array[0];
 		if ($ret != 0) {
 			return $ret;
 		}
 
-		if ($timeStamp == null) {
-			$timeStamp = time();
+		if ($sTimeStamp == null) {
+			$sTimeStamp = time();
 		}
 		$encrypt = $array[1];
 
 		//生成安全签名
 		$sha1 = new SHA1;
-		$array = $sha1->getSHA1($this->token, $timeStamp, $nonce, $encrypt);
+		$array = $sha1->getSHA1($this->m_sToken, $sTimeStamp, $sNonce, $encrypt);
 		$ret = $array[0];
 		if ($ret != 0) {
 			return $ret;
@@ -78,7 +116,7 @@ class WXBizMsgCrypt
 
 		//生成发送的xml
 		$xmlparse = new XMLParse;
-		$encryptMsg = $xmlparse->generate($encrypt, $signature, $timeStamp, $nonce);
+		$sEncryptMsg = $xmlparse->generate($encrypt, $signature, $sTimeStamp, $sNonce);
 		return ErrorCode::$OK;
 	}
 
@@ -99,25 +137,25 @@ class WXBizMsgCrypt
 	 *
 	 * @return int 成功0，失败返回对应的错误码
 	 */
-	public function decryptMsg($msgSignature, $timestamp = null, $nonce, $postData, &$msg)
+	public function DecryptMsg($sMsgSignature, $sTimeStamp = null, $sNonce, $sPostData, &$sMsg)
 	{
-		if (strlen($this->encodingAesKey) != 43) {
+		if (strlen($this->m_sEncodingAesKey) != 43) {
 			return ErrorCode::$IllegalAesKey;
 		}
 
-		$pc = new Prpcrypt($this->encodingAesKey);
+		$pc = new Prpcrypt($this->m_sEncodingAesKey);
 
 		//提取密文
 		$xmlparse = new XMLParse;
-		$array = $xmlparse->extract($postData);
+		$array = $xmlparse->extract($sPostData);
 		$ret = $array[0];
 
 		if ($ret != 0) {
 			return $ret;
 		}
 
-		if ($timestamp == null) {
-			$timestamp = time();
+		if ($sTimeStamp == null) {
+			$sTimeStamp = time();
 		}
 
 		$encrypt = $array[1];
@@ -125,7 +163,7 @@ class WXBizMsgCrypt
 
 		//验证安全签名
 		$sha1 = new SHA1;
-		$array = $sha1->getSHA1($this->token, $timestamp, $nonce, $encrypt);
+		$array = $sha1->getSHA1($this->m_sToken, $sTimeStamp, $sNonce, $encrypt);
 		$ret = $array[0];
 
 		if ($ret != 0) {
@@ -133,15 +171,15 @@ class WXBizMsgCrypt
 		}
 
 		$signature = $array[1];
-		if ($signature != $msgSignature) {
+		if ($signature != $sMsgSignature) {
 			return ErrorCode::$ValidateSignatureError;
 		}
 
-		$result = $pc->decrypt($encrypt, $this->appId);
+		$result = $pc->decrypt($encrypt, $this->m_sCorpid);
 		if ($result[0] != 0) {
 			return $result[0];
 		}
-		$msg = $result[1];
+		$sMsg = $result[1];
 
 		return ErrorCode::$OK;
 	}

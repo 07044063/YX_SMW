@@ -31,9 +31,10 @@ class mCommon extends Model
     public function create($table, $data)
     {
         $data['create_by'] = $this->Session->get('uid');
-        $this->Dao->insert($table, array_keys($data))
+        $id = $this->Dao->insert($table, array_keys($data))
             ->values(array_values($data))
             ->exec();
+        return $id;
     }
 
 }

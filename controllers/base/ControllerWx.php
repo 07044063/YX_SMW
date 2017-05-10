@@ -14,9 +14,11 @@ class ControllerWx extends Controller
     public function __construct($ControllerName, $Action, $QueryString)
     {
         parent::__construct($ControllerName, $Action, $QueryString);
-        slog($this->getWxUserId());
+        if ($this->config->debug) {
+            $this->Session->set('wxuid', $this->config->WxUserId);
+        }
         if (!$this->getWxUserId()) {
-            $this->redirect("?/Index/wxerror");
+            $this->redirect("wxerror.php");
         }
     }
 }

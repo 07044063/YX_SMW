@@ -26,6 +26,8 @@ define('TABLE_STOCK_LOAN', 'stock_loan');
 define('TABLE_GOODS', 'goods');
 define('VIEW_GOODS', 'v_goods');
 
+define('TABLE_RECEIVE', 'receive');
+
 define('TABLE_MODEL', 'model');
 define('TABLE_MODEL_GOODS', 'model_goods');
 #Conghu add by 2017/5/4
