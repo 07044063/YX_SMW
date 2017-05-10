@@ -1,0 +1,7 @@
+CREATE OR REPLACE VIEW v_stock_loan AS
+SELECT L.id,L.area,L.price,S.stock_code,S.stock_name,V.vendor_code,
+V.vendor_name,V.vendor_shortname,L.remark
+FROM stock_loan L,STOCK S,VENDOR V
+WHERE L.stock_id=S.id
+AND L.vendor_id=V.id
+AND L.isvalid=1 AND S.isvalid=1 AND V.isvalid=1
