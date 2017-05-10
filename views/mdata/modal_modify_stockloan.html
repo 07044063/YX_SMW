@@ -14,34 +14,23 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="form-group">
-                            <label>仓库信息</label>
-                            <!--<input type="text" placeholder="请输入仓库信息" ng-model="stockloan.stock_id"-->
-                                   <!--class="form-control"/>-->
+                            <label>仓库名称</label>
                             <select class="form-control"
                             ng-model="stockloan.stock_id"
-                            ng-options="x as y for (x,y) in truck_type_list">
+                            ng-options="stock.id as stock.name for stock in stockList">
                             </select>
-                            <!--<select class="form-control"-->
-                                    <!--ng-model="person.org_id"-->
-                                    <!--ng-options="org.id as org.name for org in orglist">-->
-                            <!--</select>-->
                         </div>
                     </div>
                     <div class="col-xs-6">
                         <div class="form-group">
-                            <label>供应商信息</label>
-                            <input type="text" placeholder="请输入供应商信息" ng-model="stockloan.vendor_id"
-                            class="form-control"/>
-                            <!--<select class="form-control"-->
-                                    <!--ng-model="stockloan.vendor_id"-->
-                                    <!--ng-options="y for (x,y) in truck_type_list">-->
-                            <!--</select>-->
+                            <label>供应商名称</label>
+                            <select class="form-control"
+                                    ng-model="stockloan.vendor_id"
+                                    ng-options="vendor.id as vendor.name for vendor in vendorList">
+                            </select>
                         </div>
                     </div>
                 </div>
-                <!--<div class="row">-->
-
-                <!--</div>-->
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="form-group">
@@ -58,9 +47,6 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="row">-->
-
-                <!--</div>-->
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="form-group">
