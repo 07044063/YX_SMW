@@ -15,7 +15,7 @@
 
     <div class="pheader clearfix">
         <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"
-                                         placeholder="输入厂商信息或仓库信息描述按回车"/></div>
+                                         placeholder="输入厂商或仓库信息按回车"/></div>
         <div class="button-set" style="margin-top: 13px;margin-right: 13px;">
             <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modal_modify_stockloan">添加</a>
             <!--<a class="btn btn-primary" ng-click="refresh($event)">刷新</a>-->

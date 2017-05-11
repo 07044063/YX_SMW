@@ -105,18 +105,16 @@ class StockLoan extends ControllerAdmin
     {
          $options = $this->Dao->select("id,stock_name as name")
            ->from(TABLE_STOCK)
-           ->where("isvalid = 1 order by stock_name")
+           ->where("isvalid = 1")
            ->exec();
-
         return $this->echoMsg(0, $options);
     }
     public function getVendorList()
     {
         $options = $this->Dao->select("id,vendor_name as name")
             ->from(TABLE_VENDOR)
-            ->where("isvalid = 1 order by vendor_name")
+            ->where("isvalid = 1")
             ->exec();
-
         return $this->echoMsg(0, $options);
     }
 
