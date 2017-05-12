@@ -94,4 +94,9 @@ class Page extends ControllerAdmin
     {
         $this->show(self::TPL . 'receive/receive.tpl');
     }
+
+    public function receiveCheck()
+    {
+        $this->show(self::TPL . 'receive/receiveCheck.tpl');
+    }
 }

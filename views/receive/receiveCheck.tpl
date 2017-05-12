@@ -1,15 +1,15 @@
 <?php /** Created by conghu on 2017/5/3.**/
 ?>
 {include file='../__header_v2.tpl'}
-{assign var="script_name" value="truck_list_controller"}
+{assign var="script_name" value="receive_check_controller"}
 <style type="text/css">
     td {
         padding: 0px 6px !important;
     }
 </style>
-<div class="pd15" ng-controller="truckListController" ng-app="ngApp">
+<div class="pd15" ng-controller="receiveCheckController" ng-app="ngApp">
 
-    {include file='../mdata/modal_modify_truck.html'}
+    {*{include file='../mdata/modal_modify_truck.html'}*}
 
     {literal}
 
@@ -54,8 +54,8 @@
     {/literal}
 </div>
 
-
-<script type="text/javascript" src="{$docroot}static/script/mdata/{$script_name}.js"></script>
+<script src="{$docroot}static/script/lib/select2/select2.full.min.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/receive/{$script_name}.js"></script>
 
 <div class="navbar-fixed-bottom bottombar">
     <div id="pager-bottom">
