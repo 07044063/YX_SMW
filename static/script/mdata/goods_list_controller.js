@@ -13,11 +13,7 @@ app.controller('goodsListController', function ($scope, $http, Util) {
             pagesize: 20
         };
 
-        $scope.ptypelist = {
-            1: "纸箱",
-            2: "料盒",
-            3: "器具"
-        };
+        $scope.ptypelist = goodpacktypelist;
 
         $scope.vendorlist = {};
         $scope.stocklist = {};

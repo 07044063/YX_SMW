@@ -25,7 +25,7 @@ services.factory('Util', ['$http', function ($http) {
                 warn = 'success'
             }
             Lobibox.notify(warn, {
-                soundPath: '//cdn.iwshop.org/public/sounds/',
+                soundPath: '',
                 sound: false,
                 position: 'top center',
                 size: 'mini',
@@ -49,7 +49,7 @@ services.factory('Util', ['$http', function ($http) {
                 warn = 'success'
             }
             Lobibox.notify(warn, {
-                soundPath: '//cdn.iwshop.org/public/sounds/',
+                soundPath: '',
                 sound: false,
                 position: 'top center',
                 size: 'mini',

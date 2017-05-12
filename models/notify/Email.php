@@ -107,7 +107,7 @@ class Email extends Model {
         }
 
         $data = array(
-            'api_user' => 'xb_iwshop_notify', # 使用api_user和api_key进行验证
+            'api_user' => 'xb_notify', # 使用api_user和api_key进行验证
             'api_key' => '0Qz3I5NPMsh6hGMF',
             'from' => $config->mail['formAddress'], # 发信人，用正确邮件地址替代
             'fromname' => $this->_fromName,

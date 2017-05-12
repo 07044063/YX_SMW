@@ -25,11 +25,7 @@ app.controller('truckListController', function ($scope, $http, Util) {
         //    format: 'Y-m-d'
         //});
 
-    $scope.truck_type_list = {
-        1: "飞翼",
-        2: "箱车"
-    };
-
+        $scope.truck_type_list = truck_type_list;
 
         // 搜索框回车
         $('#search_text').bind('keyup', function (e) {

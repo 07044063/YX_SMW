@@ -13,11 +13,7 @@ app.controller('personListController', function ($scope, $http, Util) {
             pagesize: 20
         };
 
-        $scope.ptypelist = {
-            1: "供货商员工",
-            2: "需求方员工",
-            3: "仓储员工"
-        };
+        $scope.ptypelist = persontypelist;
 
         //$.datetimepicker.setLocale('zh');
         //

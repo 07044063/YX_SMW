@@ -185,6 +185,15 @@ class Db extends Model
     }
 
     /**
+     * 记录log
+     */
+    private function log($message)
+    {
+        $sql_str = "INSERT INTO SYSTEM_LOGS(LOG_LEVEL,LOG_INFO) VALUES(0,'$message') ";
+        $this->db->exec($sql_str);
+    }
+
+    /**
      * 查询一个数据
      * @param string $SQL
      * @return string
