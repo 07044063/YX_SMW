@@ -46,11 +46,11 @@ app.controller('receiveCheckController', function ($scope, $http, Util) {
             Util.loading();
             $http.get('?/Receive/getList/', {
                 params: {
-                    stock_name: $scope.receiveCheck.stock_name,
-                    vendor_name: $scope.receiveCheck.vendor_name,
-                    goods_name:$scope.receiveCheck.goods_name,
-                    receiveFrom_date:$scope.receiveCheck.receiveFrom_date,
-                    receiveTo_date:$scope.receiveCheck.receiveTo_date
+                    stock_name: $scope.stock_name,
+                    vendor_name: $scope.vendor_name,
+                    goods_name:$scope.goods_name,
+                    receiveFrom_date:$scope.receiveFrom_date,
+                    receiveTo_date:$scope.receiveTo_date
                 }
             }).success(function (r) {
                 Util.loading(false);

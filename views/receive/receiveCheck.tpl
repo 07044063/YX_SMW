@@ -16,40 +16,40 @@
         <div class="row">
             <div class="col-xs-2">
                 <div class="form-group">
-                    <lable>库区</lable>
-                    <select class="form-control" id="stock_name"  ng-model="receiveCheck.stock_name"
-                            ng-options="stock.text for stock in stocklist">
+                    <lable>库区（必填）</lable>
+                    <select class="form-control" id="stock_name"  ng-model="stock_name"
+                            ng-options="stock.text as stock.text for stock in stocklist">
                     </select>
                 </div>
             </div>
             <div class="col-xs-2">
                 <div class="form-group">
-                    <lable>供货商</lable>
-                    <select class="form-control" id="vendor_name"  ng-model="receiveCheck.vendor_name"
-                            ng-options="vendor.text for vendor in vendorlist">
+                    <lable>供货商（必填）</lable>
+                    <select class="form-control" id="vendor_name"  ng-model="vendor_name"
+                            ng-options="vendor.text as vendor.text for vendor in vendorlist">
                     </select>
                 </div>
             </div>
             <div class="col-xs-2">
                 <div class="form-group">
                     <lable>物料名称</lable>
-                    <input type="text" placeholder="请输入物料名称" ng-model="receiveCheck.goods_name"
+                    <input type="text" placeholder="请输入物料名称" ng-model="goods_name"
                            class="form-control"/>
                 </div>
             </div>
             <div class="col-xs-2">
                 <div class="form-group">
-                    <lable>收货日期开始:</lable>
-                    <input  type="text" id="receiveFrom_date"
-                           placeholder="请选择收货日期" ng-model="receiveCheck.receiveFrom_date"
+                    <lable>收货日期开始（必填）:</lable>
+                    <input  type="text" id="receiveFrom_date" value="2017-05-13"
+                           placeholder="请选择收货日期" ng-model="receiveFrom_date"
                            class="form-control"/>
                 </div>
             </div>
             <div class="col-xs-2">
                 <div class="form-group">
-                    <lable>收货日期结束:</lable>
+                    <lable>收货日期结束（必填）:</lable>
                     <input  type="text" id="receiveTo_date"
-                           placeholder="请选择收货日期" ng-model="receiveCheck.receiveTo_date"
+                           placeholder="请选择收货日期" ng-model="receiveTo_date"
                            class="form-control"/>
                 </div>
             </div>
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-        <div class="panel panel-default">
+
         <table class="table table-hover table-bordered" style="margin-bottom: 50px;">
         <thead>
         <tr>
@@ -87,12 +87,12 @@
         </tr>
         </tbody>
         </table>
-        </div>
+
 
     {/literal}
 </div>
 
-<script src="{$docroot}static/script/lib/select2/select2.full.min.js"></script>
+{*<script src="{$docroot}static/script/lib/select2/select2.full.min.js"></script>*}
 <script type="text/javascript" src="{$docroot}static/script/receive/{$script_name}.js"></script>
 
 <div class="navbar-fixed-bottom bottombar">
