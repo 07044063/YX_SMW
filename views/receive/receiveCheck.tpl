@@ -1,7 +1,7 @@
 <?php /** Created by conghu on 2017/5/3.**/
 ?>
 {include file='../__header_v2.tpl'}
-{assign var="script_name" value="receive_check_controller"}
+{assign var="script_name" value="receiveCheck_controller"}
 <style type="text/css">
     td {
         padding: 0px 6px !important;
@@ -9,47 +9,85 @@
 </style>
 <div class="pd15" ng-controller="receiveCheckController" ng-app="ngApp">
 
-    {*{include file='../mdata/modal_modify_truck.html'}*}
-
     {literal}
+    <div class="panel panel-default">
+        <div class="panel-heading">收货信息查询（请任意输入条件查询）</div>
+        <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-2">
+                <div class="form-group">
+                    <lable>库区</lable>
+                    <select class="form-control" id="stock_name"  ng-model="receiveCheck.stock_name"
+                            ng-options="stock.text for stock in stocklist">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="form-group">
+                    <lable>供货商</lable>
+                    <select class="form-control" id="vendor_name"  ng-model="receiveCheck.vendor_name"
+                            ng-options="vendor.text for vendor in vendorlist">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="form-group">
+                    <lable>物料名称</lable>
+                    <input type="text" placeholder="请输入物料名称" ng-model="receiveCheck.goods_name"
+                           class="form-control"/>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="form-group">
+                    <lable>收货日期开始:</lable>
+                    <input  type="text" id="receiveFrom_date"
+                           placeholder="请选择收货日期" ng-model="receiveCheck.receiveFrom_date"
+                           class="form-control"/>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="form-group">
+                    <lable>收货日期结束:</lable>
+                    <input  type="text" id="receiveTo_date"
+                           placeholder="请选择收货日期" ng-model="receiveCheck.receiveTo_date"
+                           class="form-control"/>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btn-lg btn-block" ng-click="receiveCheckList($event)">查询
+                    </button>
+                </div>
+            </div>
 
-    <div class="pheader clearfix">
-        <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"
-                                         placeholder="输入车牌号或车辆描述按回车"/></div>
-        <div class="button-set" style="margin-top: 13px;margin-right: 13px;">
-            <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modal_modify_truck">添加</a>
-            <!--<a class="btn btn-primary" ng-click="refresh($event)">刷新</a>-->
+        </div>
         </div>
     </div>
 
-    <table class="table table-hover table-bordered" style="margin-bottom: 50px;">
+        <div class="panel panel-default">
+        <table class="table table-hover table-bordered" style="margin-bottom: 50px;">
         <thead>
         <tr>
-            <th class="hidden">ID</th>
-            <th>车牌号</th>
-            <th>车型</th>
-            <th>车辆长度（米）</th>
-            <th>车辆描述</th>
-            <th>购买日期</th>
-            <th width="100px" class="text-center">操作</th>
+            <th>stock_name</th>
+            <th>goods_name</th>
+            <th>vendor_name</th>
+            <th>count</th>
+            <th>receive_date</th>
+            <th>remark</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="rowTruck in trcuklist">
-            <td class="hidden">{{rowTruck.id}}</td>
-            <td>{{rowTruck.truck_code}}</td>
-            <td>{{rowTruck.truck_type}}</td>
-            <td>{{rowTruck.truck_length}}</td>
-            <td>{{rowTruck.truck_desc}}</td>
-            <td>{{rowTruck.truck_date}}</td>
-            <td>
-                <a class="text-success" data-toggle="modal" data-target="#modal_modify_truck" data-id="{{rowTruck.id}}"
-                   href="#">编辑</a>
-                <a class="text-danger" data-id="{{rowTruck.id}}" ng-click="deleteModelTruck($event)" href="#">删除</a>
-            </td>
+        <tr ng-repeat="rowReceive in receiveList">
+            <td>{{rowReceive.stock_name}}</td>
+            <td>{{rowReceive.goods_name}}</td>
+            <td>{{rowReceive.vendor_name}}</td>
+            <td>{{rowReceive.count}}</td>
+            <td>{{rowReceive.receive_date}}</td>
+            <td>{{rowReceive.remark}}</td>
         </tr>
         </tbody>
-    </table>
+        </table>
+        </div>
 
     {/literal}
 </div>
