@@ -40,7 +40,7 @@
             <div class="col-xs-2">
                 <div class="form-group">
                     <lable>收货日期开始（必填）:</lable>
-                    <input  type="text" id="receiveFrom_date" value="2017-05-13"
+                    <input  type="text" id="receiveFrom_date"
                            placeholder="请选择收货日期" ng-model="receiveFrom_date"
                            class="form-control"/>
                 </div>

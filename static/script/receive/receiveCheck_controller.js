@@ -36,8 +36,8 @@ app.controller('receiveCheckController', function ($scope, $http, Util) {
 
 
         $scope.receiveCheckList = function (e) {
-            var btn = $(e.currentTarget);
-            btn.html('查询中');
+            // var btn = $(e.currentTarget);
+            Util.alert('开始查询');
             fnGetList();
             Util.alert('查询完成');
         };
