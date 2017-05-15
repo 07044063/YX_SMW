@@ -18,9 +18,4 @@ Date: 2017-05-15 10:46:06
 -- ----------------------------
 DROP VIEW IF EXISTS `v_receive`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_receive`
-AS SELECT `r`.`id` AS `id`, `s`.`stock_code` AS `stock_code`, `s`.`stock_name` AS `stock_name`, `g`.`goods_name` AS `goods_name`,
-`v`.`vendor_code` AS `vendor_code`, `v`.`vendor_name` AS `vendor_name`, `v`.`vendor_shortname` AS `vendor_shortname`,
-`r`.`count` AS `count`, `r`.`receive_date` AS `receive_date`, `r`.`remark` AS `remark` FROM (((`receive` `r` JOIN `stock` `s`)
-JOIN `vendor` `v` ) JOIN `goods` `g` ) WHERE ((`r`.`stock_id` = `s`.`id`) AND (`r`.`vendor_id` = `v`.`id`)
-AND (`r`.`goods_id` = `g`.`id`) AND (`r`.`isvalid` = 1) AND (`s`.`isvalid` = 1) AND (`v`.`isvalid` = 1) AND (`g`.`isvalid` = 1));
+CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_receive` AS SELECT `r`.`id` AS `id`, `r`.`stock_id` AS `stock_id`, `s`.`stock_code` AS `stock_code`, `s`.`stock_name` AS `stock_name`, `r`.`goods_id` AS `goods_id`, `g`.`goods_name` AS `goods_name`, `r`.`vendor_id` AS `vendor_id`, `v`.`vendor_code` AS `vendor_code`, `v`.`vendor_name` AS `vendor_name`, `v`.`vendor_shortname` AS `vendor_shortname`, `r`.`count` AS `count`, `r`.`receive_date` AS `receive_date`, `r`.`remark` AS `remark` FROM (((`receive` `r` JOIN `stock` `s`) JOIN `vendor` `v` ) JOIN `goods` `g` ) WHERE ((`r`.`stock_id` = `s`.`id`) AND (`r`.`vendor_id` = `v`.`id`) AND (`r`.`goods_id` = `g`.`id`) AND (`r`.`isvalid` = 1) AND (`s`.`isvalid` = 1) AND (`v`.`isvalid` = 1) AND (`g`.`isvalid` = 1));

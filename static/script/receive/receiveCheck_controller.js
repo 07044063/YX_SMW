@@ -25,15 +25,48 @@ app.controller('receiveCheckController', function ($scope, $http, Util) {
             format: 'Y-m-d'
         });
 
-        $scope.vendorlist = {};
         $scope.stocklist = {};
         $http.get('?/Receive/getSelectOption/', {
             params: {}
         }).success(function (r) {
-            $scope.vendorlist = r.ret_msg.vendorlist;
             $scope.stocklist = r.ret_msg.stocklist;
         });
 
+        $scope.vendorlist = {};
+        $scope.goodslist = {};
+        $scope.vendorListChange = function () {
+            //变化时 整体联动
+            $scope.vendorlist = {};
+            $scope.goodslist = {};
+            if ($scope.stock_id !='') {
+                $http.get('?/Receive/getVendorList/', {
+                    params: {
+                        stock_id: $scope.stock_id
+                    }
+                }).success(function (r) {
+                    $scope.vendorlist = r.ret_msg;
+                });
+            } else {
+                $scope.vendorlist = {};
+                $scope.goodslist = {};
+            }
+        };
+        $scope.goodsListChange = function () {
+            //变化时 整体联动
+            $scope.goodslist = {};
+            if ($scope.vendor_id !='') {
+                $http.get('?/Receive/getGoodsList/', {
+                    params: {
+                        vendor_id: $scope.vendor_id,
+                        stock_id: $scope.stock_id
+                    }
+                }).success(function (r) {
+                    $scope.goodslist = r.ret_msg;
+                });
+            } else {
+                $scope.goodslist = {};
+            }
+        };
 
         $scope.receiveCheckList = function (e) {
             // var btn = $(e.currentTarget);
@@ -46,9 +79,9 @@ app.controller('receiveCheckController', function ($scope, $http, Util) {
             Util.loading();
             $http.get('?/Receive/getList/', {
                 params: {
-                    stock_name: $scope.stock_name,
-                    vendor_name: $scope.vendor_name,
-                    goods_name:$scope.goods_name,
+                    stock_id: $scope.stock_id,
+                    vendor_id: $scope.vendor_id,
+                    goods_id:$scope.goods_id,
                     receiveFrom_date:$scope.receiveFrom_date,
                     receiveTo_date:$scope.receiveTo_date
                 }
@@ -62,6 +95,7 @@ app.controller('receiveCheckController', function ($scope, $http, Util) {
                     fnInitPager();
                 }
             });
+
         }
 
         /**
