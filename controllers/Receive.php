@@ -53,4 +53,37 @@ class Receive extends ControllerAdmin
         return $this->echoMsg(0, $goodslist);
     }
 
+    public function getList()
+    {
+        $pagesize = $this->pGet('pagesize') ? intval($this->pGet('pagesize')) : 20;
+        $page = $this->pGet('page');
+        $vendor_name ='\''. $this->pGet('vendor_name').'\'';
+        $stock_name= '\''.$this->pGet('stock_name').'\'';
+        $goods_name='\'%' . $this->pGet('goods_name') . '%\'';
+        $receiveFrom_date= '\''.$this->pGet('receiveFrom_date').'\'' ;
+        $receiveTo_date='\''.$this->pGet('receiveTo_date').'\'';
+        $list = $this->Dao->select()
+            ->from(VIEW_RECEIVE)
+            ->where("stock_name = $stock_name")
+            ->aw("vendor_name = $vendor_name ")
+            ->aw("goods_name like $goods_name")
+            ->aw("receive_date between date_format($receiveFrom_date,'%Y-%m-%d %h:%i:%s') and date_format($receiveTo_date,'%Y-%m-%d %h:%i:%s')")
+            ->limit($pagesize * $page, $pagesize)
+            ->exec();
+        $list_count = $this->Dao->select('count(*)')
+            ->from(VIEW_RECEIVE)
+            ->where("stock_name = $stock_name")
+            ->aw("vendor_name = $vendor_name ")
+            ->aw("goods_name like $goods_name")
+            ->aw("receive_date between date_format($receiveFrom_date,'%Y-%m-%d %h:%i:%s') and date_format($receiveTo_date,'%Y-%m-%d %h:%i:%s')")
+            ->getOne();
+        $data = $this->toJson([
+            'total' => $list_count,
+            'list' => $list
+        ]);
+
+        return $this->echoJsonRaw($data);
+    }
+
+
 }

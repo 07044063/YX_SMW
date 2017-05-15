@@ -56,9 +56,8 @@
         </tr>
         </tbody>
     </table>
-</div>
 
-{/literal}
+    {/literal}
 
 </div>
 

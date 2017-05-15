@@ -50,11 +50,10 @@
         </tr>
         </tbody>
     </table>
+
+    {/literal}
 </div>
 
-{/literal}
-
-</div>
 
 <script type="text/javascript" src="{$docroot}static/script/mdata/{$script_name}.js"></script>
 
