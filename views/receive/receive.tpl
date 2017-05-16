@@ -16,7 +16,7 @@
                         <lable>供货商</lable>
                         <select class="form-control" id="vendor_select"
                                 style="display: inline; width: 80%; margin-left: 15px"
-                                ng-model="vendor_id" ng-change="selectChange()"
+                                ng-model="vendor_id" ng-change="vendorChange()"
                                 ng-options="vendor.id as vendor.text for vendor in vendorlist">
                         </select>
                     </div>
@@ -26,7 +26,7 @@
                         <lable>库区</lable>
                         <select class="form-control" id="stock_select"
                                 style="display: inline; width: 80%; margin-left: 15px"
-                                ng-model="stock_id" ng-change="selectChange()"
+                                ng-model="stock_id" ng-change="stockChange()"
                                 ng-options="stock.id as stock.text for stock in stocklist">
                         </select>
                     </div>

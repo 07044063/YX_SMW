@@ -19,6 +19,7 @@ app.controller('receiveController', function ($scope, $http, Util) {
             format: 'Y-m-d'
         });
 
+        //设置默认的收货日期
         var date = new Date();
         var seperator = "-";
         var year = date.getFullYear();
@@ -28,12 +29,35 @@ app.controller('receiveController', function ($scope, $http, Util) {
 
         $scope.vendorlist = {};
         $scope.stocklist = {};
-        $http.get('?/Receive/getSelectOption/', {
+        $http.get('?/Receive/getVendorSelect/', {
             params: {}
         }).success(function (r) {
-            $scope.vendorlist = r.ret_msg.vendorlist;
-            $scope.stocklist = r.ret_msg.stocklist;
+            $scope.vendorlist = r.ret_msg;
+            //$scope.stocklist = r.ret_msg.stocklist;
         });
+
+        $scope.vendorChange = function () {
+            //供应商选择变化时 库区的下拉菜单联动
+            $scope.stock_id = 0;
+            $scope.selectChange();
+            if ($scope.vendor_id > 0) {
+                $http.get('?/Receive/getStockSelect/', {
+                    params: {
+                        vendor_id: $scope.vendor_id
+                    }
+                }).success(function (r) {
+                    $scope.stocklist = r.ret_msg;
+                    if ($scope.stocklist.length == 1) {
+                        $scope.stock_id = $scope.stocklist[0].id;
+                        $scope.selectChange();
+                    }
+                });
+            }
+        }
+
+        $scope.stockChange = function () {
+            $scope.selectChange();
+        }
 
         $scope.selectChange = function () {
             //供应商和库区变化时 物料的下拉菜单联动
@@ -54,6 +78,7 @@ app.controller('receiveController', function ($scope, $http, Util) {
                     }
                 });
             } else {
+                $("#goods_select").html("");
                 $("#goods_select").select2({
                     placeholder: "请选择物料",
                     data: {}
@@ -90,8 +115,8 @@ app.controller('receiveController', function ($scope, $http, Util) {
                 Util.alert('物料清单为空', true);
             }
             for (var i = 0; i < $scope.receivelist.length; i++) {
-                $scope.receivelist[i].vendor_id = $scope.vendor_id;
-                $scope.receivelist[i].stock_id = $scope.stock_id;
+                //$scope.receivelist[i].vendor_id = $scope.vendor_id;
+                //$scope.receivelist[i].stock_id = $scope.stock_id;
                 $scope.receivelist[i].receive_date = $scope.receive_date;
             }
             Util.loading();
@@ -108,7 +133,6 @@ app.controller('receiveController', function ($scope, $http, Util) {
                 }
             });
         }
-
 
         $scope.selectChange();
     }

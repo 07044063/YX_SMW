@@ -20,6 +20,7 @@ if (!defined('APP_PATH')) {
  * @property mAdmin $mAdmin
  * @property mCommon $mCommon
  * @property mStock $mStock
+ * @property mReceive $mReceive
  */
 class Controller
 {

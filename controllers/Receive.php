@@ -12,12 +12,12 @@ class Receive extends ControllerAdmin
     public function createRecords()
     {
         $data = $this->pPost('receiveData');
-        $this->loadModel(['mCommon']);
+        $this->loadModel(['mReceive']);
         try {
             foreach ($data as $receive) {
                 unset($receive['goods_name']);
                 unset($receive['$$hashKey']);
-                $this->mCommon->create(TABLE_RECEIVE, $receive);
+                $this->mReceive->create($receive);
             }
         } catch (Exception $ex) {
             return $this->echoMsg(-1, $ex->getMessage());
@@ -25,19 +25,28 @@ class Receive extends ControllerAdmin
         return $this->echoMsg(0, "保存成功");
     }
 
-    public function getSelectOption()
+    public function getVendorSelect()
     {
         $vendorlist = $this->Dao->select("id,vendor_name as text")
             ->from(TABLE_VENDOR)
             ->where("isvalid = 1")
             ->exec();
-        $stocklist = $this->Dao->select("id,stock_name as text")
-            ->from(TABLE_STOCK)
-            ->where("isvalid = 1")
+        return $this->echoMsg(0, $vendorlist);
+    }
+
+    public function getStockSelect()
+    {
+        $vendor_id = $this->pGet('vendor_id');
+        $stocklist = $this->Dao->select("s.id,s.stock_name as text")
+            ->from(TABLE_STOCK_LOAN)
+            ->alias("sl")
+            ->leftJoin(TABLE_STOCK)
+            ->alias("s")
+            ->on("sl.stock_id = s.id")
+            ->where("sl.isvalid = 1")
+            ->aw("sl.vendor_id = $vendor_id")
             ->exec();
-        $options['vendorlist'] = $vendorlist;
-        $options['stocklist'] = $stocklist;
-        return $this->echoMsg(0, $options);
+        return $this->echoMsg(0, $stocklist);
     }
 
     public function getGoodsList()
@@ -57,25 +66,33 @@ class Receive extends ControllerAdmin
     {
         $pagesize = $this->pGet('pagesize') ? intval($this->pGet('pagesize')) : 20;
         $page = $this->pGet('page');
-        $vendor_name ='\''. $this->pGet('vendor_name').'\'';
-        $stock_name= '\''.$this->pGet('stock_name').'\'';
-        $goods_name='\'%' . $this->pGet('goods_name') . '%\'';
-        $receiveFrom_date= '\''.$this->pGet('receiveFrom_date').'\'' ;
-        $receiveTo_date='\''.$this->pGet('receiveTo_date').'\'';
+        $vendor_id = $this->pGet('vendor_id');
+        $stock_id = $this->pGet('stock_id');
+        $goods_id = $this->pGet('goods_id');
+        $receiveFrom_date = $this->pGet('receiveFrom_date');
+        $receiveTo_date = $this->pGet('receiveTo_date');
+        $where = '1=1';
+        if (isset($vendor_id) and $vendor_id > 0) {
+            $where .= " and vendor_id = '$vendor_id'";
+        }
+        if (isset($stock_id) and $stock_id > 0) {
+            $where .= " and stock_id = '$stock_id'";
+        }
+        if (isset($goods_id) and $goods_id > 0) {
+            $where .= " and goods_id = '$goods_id'";
+        }
+        if ((isset($receiveFrom_date) and $receiveFrom_date != '') and (isset($receiveTo_date) and $receiveTo_date != '')) {
+            $where .= " and receive_date between date_format('$receiveFrom_date','%Y-%m-%d') and date_format('$receiveTo_date','%Y-%m-%d') ";
+        }
+
         $list = $this->Dao->select()
             ->from(VIEW_RECEIVE)
-            ->where("stock_name = $stock_name")
-            ->aw("vendor_name = $vendor_name ")
-            ->aw("goods_name like $goods_name")
-            ->aw("receive_date between date_format($receiveFrom_date,'%Y-%m-%d %h:%i:%s') and date_format($receiveTo_date,'%Y-%m-%d %h:%i:%s')")
+            ->where($where)
             ->limit($pagesize * $page, $pagesize)
             ->exec();
         $list_count = $this->Dao->select('count(*)')
             ->from(VIEW_RECEIVE)
-            ->where("stock_name = $stock_name")
-            ->aw("vendor_name = $vendor_name ")
-            ->aw("goods_name like $goods_name")
-            ->aw("receive_date between date_format($receiveFrom_date,'%Y-%m-%d %h:%i:%s') and date_format($receiveTo_date,'%Y-%m-%d %h:%i:%s')")
+            ->where($where)
             ->getOne();
         $data = $this->toJson([
             'total' => $list_count,
@@ -85,5 +102,19 @@ class Receive extends ControllerAdmin
         return $this->echoJsonRaw($data);
     }
 
+    public function getVendorList()
+    {
+        $stock_id = $this->pGet('stock_id');
+        $vendorlist = $this->Dao->select("v.id,v.vendor_name as text")
+            ->from(TABLE_VENDOR)
+            ->alias('v')
+            ->leftJoin(TABLE_STOCK_LOAN)
+            ->alias('s')
+            ->on("s.vendor_id = v.id")
+            ->where("s.isvalid = 1 and v.isvalid = 1")
+            ->aw(" s.stock_id='$stock_id'")
+            ->exec();
+        return $this->echoMsg(0, $vendorlist);
+    }
 
 }

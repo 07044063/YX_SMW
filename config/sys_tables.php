@@ -30,6 +30,7 @@ define('TABLE_RECEIVE', 'receive');
 define('TABLE_ORDER', 'order');
 define('TABLE_ORDER_DETAIL', 'order_detail');
 define('TABLE_ORDER_STATUS', 'order_status');
+define('TABLE_INVENTORY', 'inventory');
 
 define('TABLE_MODEL', 'model');
 define('TABLE_MODEL_GOODS', 'model_goods');

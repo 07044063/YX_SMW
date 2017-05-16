@@ -20,7 +20,8 @@
                     <th></th>
                     <th></th>
                     <th>
-                        <button type="button" class="btn btn-success pull-right" ng-click="goBack();">返回
+                        <button type="button" class="btn btn-success pull-right" style="margin-right: 15px"
+                                ng-click="goBack();">返回
                         </button>
                     </th>
                 </tr>

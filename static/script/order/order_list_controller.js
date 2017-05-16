@@ -86,7 +86,7 @@ app.controller('orderListController', function ($scope, $http, Util) {
                     Util.alert('保存成功');
                     fnGetList();
                 } else {
-                    Util.alert('操作失败 ' + r.ret_msg, true);
+                    Util.alert('操作失败 ' + order_error_list[r.ret_code], true);
                 }
             });
         }

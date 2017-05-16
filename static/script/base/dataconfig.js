@@ -28,3 +28,10 @@ var order_status_list = {
     delivery: "交货已完成",
     done: "全部完成"
 };
+
+var order_error_list = {
+    0: "成功",
+    1: "数据库执行失败",
+    2: "库存不足",
+    9: "需求单信息不正确"
+};
