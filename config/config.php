@@ -20,7 +20,7 @@ $config->WxUserId = '1';
 $config->db['host'] = '127.0.0.1';
 $config->db['db'] = 'wms';
 $config->db['user'] = 'root';
-$config->db['pass'] = '';
+$config->db['pass'] = 'root';
 
 // 系统根目录
 $config->webroot = '/WMS/';

@@ -40,7 +40,7 @@
         <span class="glyphicon glyphicon-export" aria-hidden="true"></span><i class='label'>发货管理</i>
     </a>
     <div class='subnavs clearfix' id='subnav4'>
-        <a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="send">需求单管理</a>
+        <a class='cap-nav-item' href='javascript:;' data-page="order" data-nav="send">需求单管理</a>
         <a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="send">客服确认</a>
     </div>
 {/if}

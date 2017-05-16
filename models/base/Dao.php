@@ -118,7 +118,7 @@ class Dao {
      */
     public function update($table) {
         $this->emp();
-        $this->sqlStr .= $this->sqlUpdate . $table;
+        $this->sqlStr .= $this->sqlUpdate . '`' . $table . '`';
         return $this;
     }
 

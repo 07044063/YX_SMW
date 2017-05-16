@@ -99,4 +99,9 @@ class Page extends ControllerAdmin
     {
         $this->show(self::TPL . 'receive/receiveCheck.tpl');
     }
+
+    public function order()
+    {
+        $this->show(self::TPL . 'order/order_list.tpl');
+    }
 }

@@ -123,7 +123,8 @@ class Db extends Model
     public function query($statement, $mcache = true, $fetchStyle = PDO::FETCH_ASSOC)
     {
         global $config;
-        slog($statement, $this->db);
+//        slog($statement, $this->db);
+        slog($statement);
         try {
             if (preg_match("/INSERT/is", $statement)) {
                 // INSERT
@@ -133,7 +134,7 @@ class Db extends Model
                 // UPDATE|DELETE|REPLACE
                 $this->db->exec($statement);
                 // 修复更新没有内容变更的情况下，总是返回错误的bug
-                return true;
+                $result = true;
             } else {
                 // 使用redis而且连接成功
                 if ($config->redis_on && $mcache && $this->cache) {

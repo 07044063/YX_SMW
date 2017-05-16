@@ -1,0 +1,62 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_order_status">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">查看状态</h4>
+            </div>
+            <input ng-model="order_id" class="hidden"/>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        {literal}
+
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>操作时间</th>
+                                <th>操作人员</th>
+                                <th>状态变更为</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="status in statuslist">
+                                <td><span>{{status.create_at}}</span></td>
+                                <td><span>{{status.person_name}}</span></td>
+                                <td><span>{{status.statusX}}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        {/literal}
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-if="order.status == 'create'" class="btn btn-primary"
+                        ng-click="modifyOrderStatus('receive')">接收订单
+                </button>
+                <button type="button" ng-if="order.status == 'receive'" class="btn btn-primary"
+                        ng-click="modifyOrderStatus('ready')">备货完成
+                </button>
+                <button type="button" ng-if="order.status == 'ready'" class="btn btn-primary"
+                        ng-click="modifyOrderStatus('check')">对点完成
+                </button>
+                <button type="button" ng-if="order.status == 'check'" class="btn btn-primary"
+                        ng-click="modifyOrderStatus('send')">发货完成
+                </button>
+                <button type="button" ng-if="order.status == 'send'" class="btn btn-primary"
+                        ng-click="modifyOrderStatus('delivery')">交货完成
+                </button>
+                <button type="button" ng-if="order.status == 'delivery'" class="btn btn-primary"
+                        ng-click="modifyOrderStatus('done')">确认完成
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

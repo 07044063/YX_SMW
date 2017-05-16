@@ -27,6 +27,9 @@ define('TABLE_GOODS', 'goods');
 define('VIEW_GOODS', 'v_goods');
 
 define('TABLE_RECEIVE', 'receive');
+define('TABLE_ORDER', 'order');
+define('TABLE_ORDER_DETAIL', 'order_detail');
+define('TABLE_ORDER_STATUS', 'order_status');
 
 define('TABLE_MODEL', 'model');
 define('TABLE_MODEL_GOODS', 'model_goods');

@@ -18,3 +18,13 @@ var truck_type_list = {
     1: "飞翼",
     2: "厢车"
 };
+
+var order_status_list = {
+    create: "新创建",
+    receive: "仓库已接收",
+    ready: "备货已完成",
+    check: "对点已完成",
+    send: "发货已完成",
+    delivery: "交货已完成",
+    done: "全部完成"
+};
