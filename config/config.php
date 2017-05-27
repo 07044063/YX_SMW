@@ -23,7 +23,7 @@ $config->db['user'] = 'root';
 $config->db['pass'] = 'root';
 
 // 系统根目录
-$config->webroot = '/WMS/';
+//$config->webroot = '/';
 
 // 系统根域名 /结尾
 $config->domain = 'http://127.0.0.1/WMS/';

@@ -80,7 +80,7 @@
     </a>
     <div class='subnavs clearfix' id='subnav10'>
         <a class='cap-nav-item' href='javascript:;' data-page="logs" data-nav="system">系统日志</a>
-        <a class='cap-nav-item' href='?/Wxpage/wxtest' data-nav="system">微信调试</a>
+        <a class='cap-nav-item' href='?/Wxpage/index' data-nav="system">微信调试</a>
     </div>
 {/if}
 

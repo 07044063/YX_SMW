@@ -15,28 +15,19 @@ app.controller('stockLoanListController', function ($scope, $http, Util) {
             pagesize: 20,
         };
 
-        $scope.stockList={};
+        $scope.stockList = [];
         $http.get('?/Stockloan/getStockList/', {
-            params: $scope.params
+            params: {}
         }).success(function (r) {
             $scope.stockList = r.ret_msg;
         });
 
-        $scope.vendorList={};
+        $scope.vendorList = [];
         $http.get('?/Stockloan/getVendorList/', {
-            params: $scope.params
+            params: {}
         }).success(function (r) {
             $scope.vendorList = r.ret_msg;
         });
-        // $.datetimepicker.setLocale('zh');
-        //
-        // // 日期选择器
-        // $('#truck_date').datetimepicker({
-        //     format: 'Y-m-d'
-        // });
-        //$('#etime').datetimepicker({
-        //    format: 'Y-m-d'
-        //});
 
 
         // 搜索框回车
@@ -52,7 +43,7 @@ app.controller('stockLoanListController', function ($scope, $http, Util) {
             var btn = $(event.relatedTarget);
             $scope.stockloan_id = parseInt(btn.data('id'));
             if ($scope.stockloan_id > 0) {
-                $http.get('?/StockLoan/getById/', {
+                $http.get('?/Stockloan/getById/', {
                     params: {
                         id: $scope.stockloan_id
                     }
@@ -65,24 +56,24 @@ app.controller('stockLoanListController', function ($scope, $http, Util) {
             }
         });
 
-    $scope.modifyStockloan = function (e) {
+        $scope.modifyStockloan = function (e) {
             var btn = $(e.currentTarget);
             btn.html('处理中');
             var param = $.param($scope.stockloan);
-            $http.post('?/StockLoan/createOrUpdate/', param, $scope.post_head).
-            success(function (r) {
-                if (r.ret_code === 0) {
-                    $('#modal_modify_stockloan').modal('hide');
-                    fnGetList();
-                    if ($scope.stockloan_id > 0) {
-                        Util.alert('保存成功');
+            $http.post('?/Stockloan/createOrUpdate/', param, $scope.post_head).
+                success(function (r) {
+                    if (r.ret_code === 0) {
+                        $('#modal_modify_stockloan').modal('hide');
+                        fnGetList();
+                        if ($scope.stockloan_id > 0) {
+                            Util.alert('保存成功');
+                        } else {
+                            Util.alert('添加成功');
+                        }
                     } else {
-                        Util.alert('添加成功');
+                        Util.alert('操作失败 ' + r.ret_msg, true);
                     }
-                } else {
-                    Util.alert('操作失败 ' + r.ret_msg, true);
-                }
-            });
+                });
             btn.html('保存');
         };
 
@@ -92,22 +83,22 @@ app.controller('stockLoanListController', function ($scope, $http, Util) {
                 id: $(node).data('id')
             });
             if (confirm('你确定要删除这个供应商的仓储的信息吗?')) {
-                $http.post('?/StockLoan/deleteById/', param, $scope.post_head).
-                success(function (r) {
-                    if (r.ret_code === 0) {
-                        Util.alert('删除成功');
-                        $(node).parents('tr').remove();
-                    } else {
-                        //alert(r.ret_msg);
-                        Util.alert('操作失败 ' + r.ret_msg, true);
-                    }
-                });
+                $http.post('?/Stockloan/deleteById/', param, $scope.post_head).
+                    success(function (r) {
+                        if (r.ret_code === 0) {
+                            Util.alert('删除成功');
+                            $(node).parents('tr').remove();
+                        } else {
+                            //alert(r.ret_msg);
+                            Util.alert('操作失败 ' + r.ret_msg, true);
+                        }
+                    });
             }
         };
 
         function fnGetList() {
             Util.loading();
-            $http.get('?/StockLoan/getList/', {
+            $http.get('?/Stockloan/getList/', {
                 params: $scope.params
             }).success(function (r) {
                 Util.loading(false);

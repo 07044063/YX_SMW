@@ -38,7 +38,7 @@ if (substr($file, 0, 4) == "http") {
     //header("Expires: " . date(DATE_RFC822, strtotime(" 2 day")));
     header('Content-Type: ' . $src_mime);
     //header('Content-type: image/jpeg');
-    $docroot = $_SERVER['DOCUMENT_ROOT'] . $config->shoproot;
+    $docroot = $_SERVER['DOCUMENT_ROOT'] . $config->webroot;
 
     $ImageUtil = new ImageUtil();
     $exts = $ImageUtil->fileext($filePath);

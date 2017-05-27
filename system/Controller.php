@@ -82,7 +82,7 @@ class Controller
         // css version
         $this->Smarty->assign('cssversion', date('YmdHi'));
         // root
-        $this->Smarty->assign('docroot', $config->shoproot);
+        $this->Smarty->assign('docroot', $config->webroot);
         $this->Smarty->assign('domain', $config->domain);
         // root
         $this->Smarty->assign('config', (array)($config));
@@ -199,7 +199,6 @@ class Controller
                 // 使用原始回调地址
                 $redirect_uri = "http://$_SERVER[HTTP_HOST]" . $_SERVER['PHP_SELF'];
                 $AccessCode = $this->pGet('code');
-                Util::log($AccessCode);
                 $weObj = new Wechat($this->config->wxConfigs);
                 if (!empty($AccessCode)) {
                     // 获取Openid
@@ -506,15 +505,6 @@ class Controller
         } else {
             return false;
         }
-    }
-
-    /**
-     * 获取基URL
-     * @return type
-     */
-    public function getBaseURI()
-    {
-        return $_SERVER["HTTP_HOST"] . $this->config->docroot;
     }
 
     /**

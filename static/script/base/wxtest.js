@@ -16,7 +16,6 @@ app.controller('wxtestController', function ($scope, $http, Util) {
                     id: 0
                 }
             }).success(function (r) {
-                    alert(r);
                     if (r.ret_code == 0) {
                         $scope.accesstoken = r.ret_msg;
                     }

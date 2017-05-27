@@ -75,7 +75,7 @@ class Images extends ControllerAdmin
                     }
                     if (@move_uploaded_file($file->getTempName(), $fullpath)) {
                         // 最终文件URI
-                        $finalUrl = Util::getHOST() . $config->shoproot . $newname;
+                        $finalUrl = Util::getHOST() . $config->webroot . $newname;
                         if ($Q->editor) {
                             // 编辑器模式
                             $return = [

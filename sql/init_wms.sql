@@ -709,44 +709,44 @@ COMMIT;
 -- View structure for `v_goods`
 -- ----------------------------
 DROP VIEW IF EXISTS `v_goods`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_goods` AS select `goods`.`id` AS `id`,`goods`.`goods_ccode` AS `goods_ccode`,`goods`.`goods_vcode` AS `goods_vcode`,`goods`.`goods_name` AS `goods_name`,`vendor`.`vendor_code` AS `vendor_code`,`vendor`.`vendor_name` AS `vendor_name`,`stock`.`stock_code` AS `stock_code`,`stock`.`stock_name` AS `stock_name`,`goods`.`isvalid` AS `isvalid` from ((`goods` join `vendor` on((`goods`.`vendor_id` = `vendor`.`id`))) join `stock` on((`goods`.`stock_id` = `stock`.`id`))) where (`goods`.`isvalid` = 1) ;
-
--- ----------------------------
--- View structure for `v_order_check`
--- ----------------------------
-DROP VIEW IF EXISTS `v_order_check`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_order_check` AS select `od`.`order_id` AS `order_id`,`od`.`goods_id` AS `goods_id`,(ifnull(`i`.`quantity`,0) - `od`.`needs_sum`) AS `gap` from (`v_order_detail_sum` `od` left join `inventory` `i` on((`od`.`goods_id` = `i`.`goods_id`))) ;
+CREATE VIEW `v_goods` AS select `goods`.`id` AS `id`,`goods`.`goods_ccode` AS `goods_ccode`,`goods`.`goods_vcode` AS `goods_vcode`,`goods`.`goods_name` AS `goods_name`,`vendor`.`vendor_code` AS `vendor_code`,`vendor`.`vendor_name` AS `vendor_name`,`stock`.`stock_code` AS `stock_code`,`stock`.`stock_name` AS `stock_name`,`goods`.`isvalid` AS `isvalid` from ((`goods` join `vendor` on((`goods`.`vendor_id` = `vendor`.`id`))) join `stock` on((`goods`.`stock_id` = `stock`.`id`))) where (`goods`.`isvalid` = 1) ;
 
 -- ----------------------------
 -- View structure for `v_order_detail_sum`
 -- ----------------------------
 DROP VIEW IF EXISTS `v_order_detail_sum`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_order_detail_sum` AS select `order_detail`.`order_id` AS `order_id`,`order_detail`.`goods_id` AS `goods_id`,sum(`order_detail`.`needs`) AS `needs_sum` from `order_detail` group by `order_detail`.`order_id`,`order_detail`.`goods_id` ;
+CREATE VIEW `v_order_detail_sum` AS select `order_detail`.`order_id` AS `order_id`,`order_detail`.`goods_id` AS `goods_id`,sum(`order_detail`.`needs`) AS `needs_sum` from `order_detail` group by `order_detail`.`order_id`,`order_detail`.`goods_id` ;
 
 -- ----------------------------
 -- View structure for `v_person`
 -- ----------------------------
 DROP VIEW IF EXISTS `v_person`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_person` AS select `p`.`id` AS `id`,`p`.`person_code` AS `person_code`,`p`.`person_type` AS `person_type`,`p`.`person_name` AS `person_name`,`p`.`person_phone` AS `person_phone`,`p`.`person_email` AS `person_email`,`p`.`person_dept` AS `person_dept`,`v`.`vendor_code` AS `org_code`,`v`.`vendor_name` AS `org_name` from (`person` `p` left join `vendor` `v` on((`p`.`org_id` = `v`.`id`))) where ((`p`.`person_type` = '1') and (`p`.`isvalid` = 1) and (`v`.`isvalid` = 1)) union all select `p`.`id` AS `id`,`p`.`person_code` AS `person_code`,`p`.`person_type` AS `person_type`,`p`.`person_name` AS `person_name`,`p`.`person_phone` AS `person_phone`,`p`.`person_email` AS `person_email`,`p`.`person_dept` AS `person_dept`,`c`.`customer_code` AS `org_code`,`c`.`customer_name` AS `org_name` from (`person` `p` left join `customer` `c` on((`p`.`org_id` = `c`.`id`))) where ((`p`.`person_type` = '2') and (`p`.`isvalid` = 1) and (`c`.`isvalid` = 1)) union all select `p`.`id` AS `id`,`p`.`person_code` AS `person_code`,`p`.`person_type` AS `person_type`,`p`.`person_name` AS `person_name`,`p`.`person_phone` AS `person_phone`,`p`.`person_email` AS `person_email`,`p`.`person_dept` AS `person_dept`,`w`.`warehouse_code` AS `org_code`,`w`.`warehouse_name` AS `org_name` from (`person` `p` left join `warehouse` `w` on((`p`.`org_id` = `w`.`id`))) where ((`p`.`person_type` = '3') and (`p`.`isvalid` = 1) and (`w`.`isvalid` = 1)) ;
+CREATE VIEW `v_person` AS select `p`.`id` AS `id`,`p`.`person_code` AS `person_code`,`p`.`person_type` AS `person_type`,`p`.`person_name` AS `person_name`,`p`.`person_phone` AS `person_phone`,`p`.`person_email` AS `person_email`,`p`.`person_dept` AS `person_dept`,`v`.`vendor_code` AS `org_code`,`v`.`vendor_name` AS `org_name` from (`person` `p` left join `vendor` `v` on((`p`.`org_id` = `v`.`id`))) where ((`p`.`person_type` = '1') and (`p`.`isvalid` = 1) and (`v`.`isvalid` = 1)) union all select `p`.`id` AS `id`,`p`.`person_code` AS `person_code`,`p`.`person_type` AS `person_type`,`p`.`person_name` AS `person_name`,`p`.`person_phone` AS `person_phone`,`p`.`person_email` AS `person_email`,`p`.`person_dept` AS `person_dept`,`c`.`customer_code` AS `org_code`,`c`.`customer_name` AS `org_name` from (`person` `p` left join `customer` `c` on((`p`.`org_id` = `c`.`id`))) where ((`p`.`person_type` = '2') and (`p`.`isvalid` = 1) and (`c`.`isvalid` = 1)) union all select `p`.`id` AS `id`,`p`.`person_code` AS `person_code`,`p`.`person_type` AS `person_type`,`p`.`person_name` AS `person_name`,`p`.`person_phone` AS `person_phone`,`p`.`person_email` AS `person_email`,`p`.`person_dept` AS `person_dept`,`w`.`warehouse_code` AS `org_code`,`w`.`warehouse_name` AS `org_name` from (`person` `p` left join `warehouse` `w` on((`p`.`org_id` = `w`.`id`))) where ((`p`.`person_type` = '3') and (`p`.`isvalid` = 1) and (`w`.`isvalid` = 1)) ;
 
 -- ----------------------------
 -- View structure for `v_receive`
 -- ----------------------------
 DROP VIEW IF EXISTS `v_receive`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_receive` AS select `r`.`id` AS `id`,`r`.`goods_id` AS `goods_id`,`r`.`receive_date` AS `receive_date`,`r`.`count` AS `count`,`r`.`remark` AS `remark`,`g`.`goods_ccode` AS `goods_ccode`,`g`.`goods_name` AS `goods_name`,`g`.`vendor_id` AS `vendor_id`,`g`.`stock_id` AS `stock_id`,`v`.`vendor_code` AS `vendor_code`,`v`.`vendor_name` AS `vendor_name`,`s`.`stock_code` AS `stock_code`,`s`.`stock_name` AS `stock_name` from (((`receive` `r` left join `goods` `g` on((`r`.`goods_id` = `g`.`id`))) left join `vendor` `v` on((`g`.`vendor_id` = `v`.`id`))) left join `stock` `s` on((`g`.`stock_id` = `s`.`id`))) where (`r`.`isvalid` = 1) order by `r`.`id` desc ;
+CREATE VIEW `v_receive` AS select `r`.`id` AS `id`,`r`.`goods_id` AS `goods_id`,`r`.`receive_date` AS `receive_date`,`r`.`count` AS `count`,`r`.`remark` AS `remark`,`g`.`goods_ccode` AS `goods_ccode`,`g`.`goods_name` AS `goods_name`,`g`.`vendor_id` AS `vendor_id`,`g`.`stock_id` AS `stock_id`,`v`.`vendor_code` AS `vendor_code`,`v`.`vendor_name` AS `vendor_name`,`s`.`stock_code` AS `stock_code`,`s`.`stock_name` AS `stock_name` from (((`receive` `r` left join `goods` `g` on((`r`.`goods_id` = `g`.`id`))) left join `vendor` `v` on((`g`.`vendor_id` = `v`.`id`))) left join `stock` `s` on((`g`.`stock_id` = `s`.`id`))) where (`r`.`isvalid` = 1) order by `r`.`id` desc ;
 
 -- ----------------------------
 -- View structure for `v_stock_loan`
 -- ----------------------------
 DROP VIEW IF EXISTS `v_stock_loan`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_stock_loan` AS select `l`.`id` AS `id`,`l`.`area` AS `area`,`l`.`price` AS `price`,`s`.`stock_code` AS `stock_code`,`s`.`stock_name` AS `stock_name`,`v`.`vendor_code` AS `vendor_code`,`v`.`vendor_name` AS `vendor_name`,`v`.`vendor_shortname` AS `vendor_shortname`,`l`.`remark` AS `remark` from ((`stock_loan` `l` join `stock` `s`) join `vendor` `v`) where ((`l`.`stock_id` = `s`.`id`) and (`l`.`vendor_id` = `v`.`id`) and (`l`.`isvalid` = 1) and (`s`.`isvalid` = 1) and (`v`.`isvalid` = 1)) ;
+CREATE VIEW `v_stock_loan` AS select `l`.`id` AS `id`,`l`.`area` AS `area`,`l`.`price` AS `price`,`s`.`stock_code` AS `stock_code`,`s`.`stock_name` AS `stock_name`,`v`.`vendor_code` AS `vendor_code`,`v`.`vendor_name` AS `vendor_name`,`v`.`vendor_shortname` AS `vendor_shortname`,`l`.`remark` AS `remark` from ((`stock_loan` `l` join `stock` `s`) join `vendor` `v`) where ((`l`.`stock_id` = `s`.`id`) and (`l`.`vendor_id` = `v`.`id`) and (`l`.`isvalid` = 1) and (`s`.`isvalid` = 1) and (`v`.`isvalid` = 1)) ;
+
+-- ----------------------------
+-- View structure for `v_order_check`
+-- ----------------------------
+DROP VIEW IF EXISTS `v_order_check`;
+CREATE VIEW `v_order_check` AS select `od`.`order_id` AS `order_id`,`od`.`goods_id` AS `goods_id`,(ifnull(`i`.`quantity`,0) - `od`.`needs_sum`) AS `gap` from (`v_order_detail_sum` `od` left join `inventory` `i` on((`od`.`goods_id` = `i`.`goods_id`))) ;
 
 -- ----------------------------
 -- Procedure structure for `p_update_order_status`
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `p_update_order_status`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `p_update_order_status`(`p_orderid` int,`p_status` varchar(200),`p_userid` int)
+CREATE PROCEDURE `p_update_order_status`(`p_orderid` int,`p_status` varchar(200),`p_userid` int)
 BEGIN
 	
   DECLARE v_count INT DEFAULT 0;

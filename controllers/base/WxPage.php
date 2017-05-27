@@ -9,7 +9,7 @@ if (!defined('APP_PATH')) {
  * @description Hope You Do Good But Not Evil
  *
  */
-class WxPage extends ControllerWx
+class Wxpage extends ControllerWx
 {
 
     const TPL = './views/';
@@ -34,11 +34,13 @@ class WxPage extends ControllerWx
     public function auth()
     {
         //企业号验证通过直接跳转到首页
-        $this->redirect($this->root . '?/WxPage/index/');
+        $this->redirect($this->root . '?/Wxpage/index/');
     }
 
     public function index()
     {
+        $wxuid = $this->Session->get('wxuid');
+        Util::log($wxuid);
         $this->show(self::TPL . 'wxtest.tpl');
     }
 
