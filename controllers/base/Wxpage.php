@@ -40,7 +40,6 @@ class Wxpage extends ControllerWx
     public function index()
     {
         $wxuid = $this->Session->get('wxuid');
-        Util::log($wxuid);
         $this->show(self::TPL . 'wxtest.tpl');
     }
 

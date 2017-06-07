@@ -16,6 +16,7 @@
     <script type="text/javascript" src="{$docroot}static/script/lib/angularjs/angular.min.js"></script>
     <script type="text/javascript" src="{$docroot}static/script/lib/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{$docroot}static/script/service/util_service.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 
 </head>
 <body>
@@ -23,6 +24,7 @@
 {assign var="script_name" value="wxtest"}
 
 <div class="pd15" ng-controller="wxtestController" ng-app="ngApp">
+
     {literal}
         <div class="fv2Field clearfix">
             <div class="fv2Left">
@@ -31,6 +33,24 @@
             <div class="fv2Right">
                 <button class="btn btn-success" ng-click="getAccessToken()">获取AccessToken</button>
                 <div class='fv2Tip'>{{accesstoken}}</div>
+            </div>
+        </div>
+        <div class="fv2Field clearfix">
+            <div class="fv2Left">
+                <span>2.</span>
+            </div>
+            <div class="fv2Right">
+                <button class="btn btn-success" ng-click="choosePhoto()">选择图片</button>
+                <div class='fv2Tip'></div>
+            </div>
+        </div>
+        <div class="fv2Field clearfix">
+            <div class="fv2Left">
+                <span>3.</span>
+            </div>
+            <div class="fv2Right">
+                <button class="btn btn-success" ng-click="scanQRCode()">扫描条码</button>
+                <div class='fv2Tip'></div>
             </div>
         </div>
     {/literal}

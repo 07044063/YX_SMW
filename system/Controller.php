@@ -21,6 +21,7 @@ if (!defined('APP_PATH')) {
  * @property mCommon $mCommon
  * @property mStock $mStock
  * @property mReceive $mReceive
+ * @property mImport $mImport
  */
 class Controller
 {

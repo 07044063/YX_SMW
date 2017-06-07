@@ -5,15 +5,17 @@
         padding: 0px 6px !important;
     }
 </style>
-<div class="pd15" ng-controller="orderListController" ng-app="ngApp">
+<div class="pd15" ng-controller="orderListController" ng-app="ngApp" uploader="uploader">
 
     {include file='../order/modal_order_status.html'}
+    {include file='../order/modal_order_import.html'}
 
     {literal}
         <div class="pheader clearfix">
             <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"
                                              placeholder="输入单号或流水号按回车"/></div>
             <div class="button-set" style="margin-top: 13px;margin-right: 13px;">
+                <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modal_order_import">Excel导入</a>
                 <a class="btn btn-success" href="#">添加</a>
                 <!--<a class="btn btn-primary" ng-click="refresh($event)">刷新</a>-->
             </div>
@@ -51,6 +53,7 @@
     {/literal}
 </div>
 
+<script type="text/javascript" src="{$docroot}static/script/lib/angular-file-upload.js"></script>
 <script type="text/javascript" src="{$docroot}static/script/order/{$script_name}.js"></script>
 
 <div class="navbar-fixed-bottom bottombar">

@@ -16,4 +16,14 @@ class Weixin extends ControllerWx
         return $this->echoMsg(0, $weObj->checkAuth());
     }
 
+
+    public function getSignPackage()
+    {
+        $url = $this->pGet('url');
+        $weObj = new Wechat($this->config->wxConfigs);
+        $signPackage = $weObj->getJsSign($url);
+        //Util::log($this->toJson($signPackage));
+        return $this->echoMsg(0, $signPackage);
+    }
+
 }

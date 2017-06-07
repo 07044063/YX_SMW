@@ -4,7 +4,8 @@
  * Dao数据访问模块
  * @description Hope You Do Good But Not Evil
  */
-class Dao {
+class Dao
+{
 
     /**
      * @var Dao
@@ -54,7 +55,8 @@ class Dao {
     /**
      * @return Dao
      */
-    public static function get_instance() {
+    public static function get_instance()
+    {
         if (!self::$instance instanceof Dao) {
             self::$instance = new self;
         }
@@ -64,14 +66,16 @@ class Dao {
     /**
      * Dao constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->Db = Db::get_instance();
     }
 
     /**
      * 清空sql
      */
-    public function emp() {
+    public function emp()
+    {
         $this->sqlStr = '';
     }
 
@@ -80,7 +84,8 @@ class Dao {
      * @param string $as
      * @return \Dao
      */
-    public function alias($as) {
+    public function alias($as)
+    {
         $this->sqlStr .= ' AS ' . $as;
         return $this;
     }
@@ -90,7 +95,8 @@ class Dao {
      * @param type $condition
      * @return \Dao
      */
-    public function having($condition) {
+    public function having($condition)
+    {
         $this->sqlStr .= ' HAVING(' . $condition . ')';
         return $this;
     }
@@ -100,7 +106,8 @@ class Dao {
      * @param mixed $fields
      * @return \Dao
      */
-    public function select($fields = '*') {
+    public function select($fields = '*')
+    {
         $this->emp();
         if (is_array($fields)) {
             $this->sqlStr .= $this->sqlSelect . implode(',', $fields);
@@ -116,7 +123,8 @@ class Dao {
      * @param array $fields
      * @return \Dao
      */
-    public function update($table) {
+    public function update($table)
+    {
         $this->emp();
         $this->sqlStr .= $this->sqlUpdate . '`' . $table . '`';
         return $this;
@@ -128,7 +136,8 @@ class Dao {
      * @param boolean $raw
      * @return \Dao
      */
-    public function set($fields, $raw = false) {
+    public function set($fields, $raw = false)
+    {
         $tmp = array();
         foreach ($fields as $k => $v) {
             if ($raw) {
@@ -157,7 +166,8 @@ class Dao {
      * @param type $field
      * @return \Dao
      */
-    public function count($field = '*') {
+    public function count($field = '*')
+    {
         $this->sqlStr .= ' COUNT(' . $field . ')';
         return $this;
     }
@@ -167,7 +177,8 @@ class Dao {
      * @param string $field
      * @return \Dao
      */
-    public function sum($field) {
+    public function sum($field)
+    {
         $this->sqlStr .= ' SUM(' . $field . ')';
         return $this;
     }
@@ -177,7 +188,8 @@ class Dao {
      * @param string $table
      * @return \Dao
      */
-    public function from($table) {
+    public function from($table)
+    {
         $this->sqlStr .= $this->sqlFrom . '`' . $table . '`';
         return $this;
     }
@@ -187,7 +199,8 @@ class Dao {
      * @param string|array $condition
      * @return \Dao
      */
-    public function where($condition, $second = false, $implider = 'AND') {
+    public function where($condition, $second = false, $implider = 'AND')
+    {
         if (is_array($condition)) {
             if (sizeof($condition) == 0) {
                 return $this;
@@ -218,7 +231,8 @@ class Dao {
      * @param string|array $condition
      * @return \Dao
      */
-    public function ow($condition) {
+    public function ow($condition)
+    {
         if ($condition && $condition != '') {
             $this->sqlStr .= $this->sqlOrWhere . $condition;
         }
@@ -230,7 +244,8 @@ class Dao {
      * @param string $condition
      * @return \Dao
      */
-    public function aw($condition) {
+    public function aw($condition)
+    {
         $condition = trim($condition);
         if (!empty($condition)) {
             $this->sqlStr .= $this->sqlAndWhere . $condition;
@@ -244,7 +259,8 @@ class Dao {
      * @param boolean $t
      * @return \Dao
      */
-    public function limit($f, $t = false) {
+    public function limit($f, $t = false)
+    {
         if (!$t) {
             $this->sqlStr .= " LIMIT $f";
         } else {
@@ -258,7 +274,8 @@ class Dao {
      * @param string $table
      * @return \Dao
      */
-    public function leftJoin($table, $condition = false) {
+    public function leftJoin($table, $condition = false)
+    {
         $this->sqlStr .= $this->sqlLeftJoin . $table;
         if ($condition) {
             $this->on($condition);
@@ -271,7 +288,8 @@ class Dao {
      * @param string $condition
      * @return \Dao
      */
-    public function on($condition) {
+    public function on($condition)
+    {
         $this->sqlStr .= $this->sqlOn . $condition;
         return $this;
     }
@@ -279,7 +297,8 @@ class Dao {
     /**
      * @return \Dao
      */
-    public function delete() {
+    public function delete()
+    {
         $this->emp();
         $this->sqlStr .= 'DELETE';
         return $this;
@@ -290,7 +309,8 @@ class Dao {
      * @param boolean $cache 是否缓存结果
      * @return type
      */
-    public function exec($cache = false) {
+    public function exec($cache = false)
+    {
         $this->sqlStr .= ';';
         $this->ret = $this->Db->query($this->sqlStr, $cache);
         return $this->ret;
@@ -301,7 +321,8 @@ class Dao {
      * @param boolean $cache 是否缓存结果
      * @return type
      */
-    public function getOne($cache = true) {
+    public function getOne($cache = true)
+    {
         $this->sqlStr .= ';';
         $this->ret = $this->Db->getOne($this->sqlStr, $cache);
         return $this->ret;
@@ -312,7 +333,8 @@ class Dao {
      * @param boolean $cache 是否缓存结果
      * @return type
      */
-    public function getOneRow($cache = true) {
+    public function getOneRow($cache = true)
+    {
         $this->sqlStr .= ';';
         $this->ret = $this->Db->getOneRow($this->sqlStr, $cache);
         return $this->ret;
@@ -324,7 +346,8 @@ class Dao {
      * @param var $fields
      * @return \Dao
      */
-    public function insert($table, $fields = '') {
+    public function insert($table, $fields = '')
+    {
         $this->emp();
         if (empty($fields)) {
             $this->sqlStr .= $this->sqlInsert . $table;
@@ -336,7 +359,7 @@ class Dao {
                     $field = '`' . $field . '`';
                 }
             }
-            $this->sqlStr .= $this->sqlInsert . $table . ' (' . implode(',', $fields) . ')';
+            $this->sqlStr .= $this->sqlInsert . '`' . $table . '`' . ' (' . implode(',', $fields) . ')';
         } else {
             if (strpos($fields, '`') === -1 || false === strpos($fields, '`')) {
                 // 自动补充` 避免sql关键字冲突
@@ -352,7 +375,8 @@ class Dao {
      * @param mixed $fields
      * @return \Dao
      */
-    public function values($fields) {
+    public function values($fields)
+    {
         if (is_array($fields)) {
             $tmpArr = array();
             $this->sqlStr .= ' VALUES ';
@@ -375,7 +399,8 @@ class Dao {
      * @param string $field
      * @return \Dao
      */
-    public function orderby($field) {
+    public function orderby($field)
+    {
         $this->sqlStr .= ' ORDER BY ' . $field;
         return $this;
     }
@@ -385,7 +410,8 @@ class Dao {
      * @param string $field
      * @return \Dao
      */
-    public function groupby($field) {
+    public function groupby($field)
+    {
         $this->sqlStr .= ' GROUP BY ' . $field;
         return $this;
     }
@@ -394,7 +420,8 @@ class Dao {
      * ASC
      * @return \Dao
      */
-    public function asc() {
+    public function asc()
+    {
         $this->sqlStr .= ' ASC';
         return $this;
     }
@@ -403,7 +430,8 @@ class Dao {
      * DESC
      * @return \Dao
      */
-    public function desc() {
+    public function desc()
+    {
         $this->sqlStr .= ' DESC';
         return $this;
     }
@@ -411,14 +439,16 @@ class Dao {
     /**
      * var_dump
      */
-    public function dump() {
+    public function dump()
+    {
         var_dump($this->ret);
     }
 
     /**
      * 输出sql语句
      */
-    public function echoSql() {
+    public function echoSql()
+    {
         echo $this->sqlStr;
     }
 
@@ -426,7 +456,8 @@ class Dao {
      * 获取sql语句
      * @return String
      */
-    public function getSql() {
+    public function getSql()
+    {
         return $this->sqlStr;
     }
 
@@ -434,7 +465,8 @@ class Dao {
      * FOR UPDATE 独占锁
      * @return $this
      */
-    public function forUpdate() {
+    public function forUpdate()
+    {
         $this->sqlStr .= ' FOR UPDATE';
         return $this;
     }
