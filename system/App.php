@@ -92,6 +92,14 @@ class App
                 if (method_exists($this->Controller, $RouteParam->action)) {
                     // 注册当前URI
                     $this->Controller->uri = $URI = preg_replace('/\/\?\/$/', '', Util::getURI());
+                    if ($RouteParam->controller == 'Page') {
+                        //如果是页面，要检查页面权限
+                        $authCheck = Util::checkAuth($RouteParam->controller, $RouteParam->action);
+                        if (!$authCheck > 0) {
+                            header('Location: ?/Common/noauth');
+                            throw new Exception("访问错误：{$RouteParam->controller}->{$RouteParam->action}() 没有权限");
+                        }
+                    }
                     // 回调根目录
                     $this->Controller->root = Util::getROOT();
                     // 调用对应方法

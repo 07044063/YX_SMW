@@ -20,6 +20,17 @@ class mImport extends Model
             $order = [];
             $order_detail = [];
             $emsg = '';
+
+            //检查是否设置了导入的默认客户编码
+            $default_customer_id = intval($this->Dao->select('value')
+                ->from(TABLE_SETTINGS)
+                ->where("`key` = 'default_customer_id'")
+                ->aw("isvalid = 1")
+                ->getOne());
+            if (!$default_customer_id > 0) {
+                return ['code' => 1, "无效的客户ID:$default_customer_id"];
+            }
+
             $this->Db->transtart();
             for ($i = 2; $i <= $rowCount; $i++) {
                 if ($data[$i]["M"] <> null) {

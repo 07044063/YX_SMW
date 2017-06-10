@@ -3,11 +3,15 @@
 //设置表
 define('TABLE_SETTINGS', 'system_settings');
 
-// 用户表
-define('TABLE_AUTH', 'admin');
+// 角色表
+define('TABLE_AUTH', 'auth');
+// 角色权限表
+define('TABLE_ROLE_AUTH', 'role_auth');
 //用户登陆日志
 define('TABLE_LGOIN_RECORDS', 'system_login_records');
 
+// 职位表
+define('TABLE_TITLE', 'title');
 
 // 供货商
 define('TABLE_VENDOR', 'vendor');
@@ -28,6 +32,7 @@ define('VIEW_GOODS', 'v_goods');
 
 define('TABLE_RECEIVE', 'receive');
 define('TABLE_ORDER', 'order');
+define('VIEW_ORDER', 'v_order');
 define('TABLE_ORDER_DETAIL', 'order_detail');
 define('TABLE_ORDER_STATUS', 'order_status');
 define('TABLE_INVENTORY', 'inventory');

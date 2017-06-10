@@ -6,13 +6,6 @@
 class Order extends ControllerAdmin
 {
 
-    public function OrderDetail($Query)
-    {
-        $id = $Query->id;
-        $this->Smarty->assign('order_id', $id);
-        $this->show('./views/order/order_detail.tpl');
-    }
-
     /**
      *
      */
@@ -22,20 +15,12 @@ class Order extends ControllerAdmin
         $page = $this->pGet('page');
         $search_text = '%' . $this->pGet('search_text') . '%';
         $where = "(order_code like '$search_text' or order_serial_no like '$search_text')";
-        $list = $this->Dao->select('o.*,c.customer_code,c.customer_name')
-            ->from(TABLE_ORDER)
-            ->alias('o')
-            ->leftJoin(TABLE_CUSTOMER)
-            ->alias('c')
-            ->on("o.customer_id = c.id")
-            ->where($where)
-            ->aw("o.isvalid = 1")
+        $list = $this->Dao->select()
+            ->from(VIEW_ORDER)
             ->limit($pagesize * $page, $pagesize)
             ->exec();
         $list_count = $this->Dao->select('count(*)')
-            ->from(TABLE_ORDER)
-            ->where($where)
-            ->aw("isvalid = 1")
+            ->from(VIEW_ORDER)
             ->getOne();
         $data = $this->toJson([
             'total' => $list_count,
@@ -48,14 +33,10 @@ class Order extends ControllerAdmin
     public function getById()
     {
         $id = intval($this->pGet('id'));
-        $data['order'] = $this->Dao->select('o.*,c.customer_code,c.customer_name')
-            ->from(TABLE_ORDER)
+        $data['order'] = $this->Dao->select()
+            ->from(VIEW_ORDER)
             ->alias('o')
-            ->leftJoin(TABLE_CUSTOMER)
-            ->alias('c')
-            ->on("o.customer_id = c.id")
             ->where("o.id = $id")
-            ->aw("o.isvalid = 1")
             ->getOneRow();
         $data['goodslist'] = $this->Dao->select('od.goods_id,od.bar_code,od.needs,od.remark,g.goods_name,g.goods_ccode,g.goods_packing,g.packing_volume,v.vendor_name,s.stock_name')
             ->from(TABLE_ORDER_DETAIL)

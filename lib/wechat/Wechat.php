@@ -888,7 +888,6 @@ class Wechat
         if (intval($data->expire_time) < intval(time())) {
             return false;
         } else {
-//            Util::log("get cache $cachename return " . $data->data);
             return $data->data;
         }
     }
@@ -913,7 +912,6 @@ class Wechat
     {
         $fp = fopen($filename, "w");
         fwrite($fp, "<?php exit();?>" . $content);
-//        Util::log("write $filename $content");
         fclose($fp);
     }
 
@@ -933,18 +931,16 @@ class Wechat
             $this->access_token = $token;
             return $this->access_token;
         }
-
         //$authname = 'qywechat_access_token'.$appid;
         $authname = 'access_token';
         if ($rs = $this->getCache($authname)) {
             $this->access_token = $rs;
             return $rs;
         }
-
         $result = $this->http_get(self::API_URL_PREFIX . self::TOKEN_GET_URL . 'corpid=' . $appid . '&corpsecret=' . $appsecret);
         if ($result) {
             $json = json_decode($result, true);
-            if (!$json || isset($json['errcode'])) {
+            if (!$json || !$json['errcode'] == '0') {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
                 return false;
@@ -966,7 +962,7 @@ class Wechat
     {
         if (!$appid) $appid = $this->appid;
         $this->access_token = '';
-        $authname = 'qywechat_access_token' . $appid;
+        $authname = 'access_token' . $appid;
         $this->removeCache($authname);
         return true;
     }
@@ -1714,6 +1710,7 @@ class Wechat
         if (!$agentid) $agentid = $this->agentid;
         if (!$this->access_token && !$this->checkAuth()) return false;
         $result = $this->http_get(self::API_URL_PREFIX . self::USER_GETINFO_URL . 'access_token=' . $this->access_token . '&code=' . $code . '&agentid=' . $agentid);
+        Util::log('getUserId: ' . $result);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode']) || $json['errcode'] != 0) {

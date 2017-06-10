@@ -54,24 +54,29 @@ app.controller('personListController', function ($scope, $http, Util) {
             }
         });
 
+        $http.get('?/Person/getTitleOption/', {
+            params: {}
+        }).success(function (r) {
+            $scope.titlelist = r.ret_msg;
+        });
+
         $scope.modifyPerson = function (e) {
             var btn = $(e.currentTarget);
             btn.html('处理中');
             var param = $.param($scope.person);
-            $http.post('?/Person/createOrUpdate/', param, $scope.post_head).
-                success(function (r) {
-                    if (r.ret_code === 0) {
-                        $('#modal_modify_person').modal('hide');
-                        fnGetList();
-                        if ($scope.person_id > 0) {
-                            Util.alert('保存成功');
-                        } else {
-                            Util.alert('添加成功');
-                        }
+            $http.post('?/Person/createOrUpdate/', param, $scope.post_head).success(function (r) {
+                if (r.ret_code === 0) {
+                    $('#modal_modify_person').modal('hide');
+                    fnGetList();
+                    if ($scope.person_id > 0) {
+                        Util.alert('保存成功');
                     } else {
-                        Util.alert('操作失败 ' + r.ret_msg, true);
+                        Util.alert('添加成功');
                     }
-                });
+                } else {
+                    Util.alert('操作失败 ' + r.ret_msg, true);
+                }
+            });
             btn.html('保存');
         };
 
@@ -81,16 +86,15 @@ app.controller('personListController', function ($scope, $http, Util) {
                 id: $(node).data('id')
             });
             if (confirm('你确定要删除这个人员吗?')) {
-                $http.post('?/Person/deleteById/', param, $scope.post_head).
-                    success(function (r) {
-                        if (r.ret_code === 0) {
-                            Util.alert('删除成功');
-                            $(node).parents('tr').remove();
-                        } else {
-                            //alert(r.ret_msg);
-                            Util.alert('操作失败 ' + r.ret_msg, true);
-                        }
-                    });
+                $http.post('?/Person/deleteById/', param, $scope.post_head).success(function (r) {
+                    if (r.ret_code === 0) {
+                        Util.alert('删除成功');
+                        $(node).parents('tr').remove();
+                    } else {
+                        //alert(r.ret_msg);
+                        Util.alert('操作失败 ' + r.ret_msg, true);
+                    }
+                });
             }
         }
         ;

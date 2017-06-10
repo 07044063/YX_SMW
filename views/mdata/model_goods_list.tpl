@@ -9,7 +9,9 @@
 
     {include file='../mdata/modal_modify_model_goods.html'}
 
-    <input id="model_id" value="{{$model.id}}" class="hidden"/>
+    <input id="model_id" value="{{$model_id}}" class="hidden"/>
+
+    {literal}
 
     <table>
         <thead>
@@ -23,16 +25,14 @@
         </thead>
         <tbody>
         <tr>
-            <td><b>主机厂：</b><span>{{$model.customer_name}}</span></td>
-            <td><b>车型代码：</b><span>{{$model.model_code}}</span></td>
-            <td><b>车型名称：</b><span>{{$model.model_name}}</span></td>
-            <td><b>别名：</b><span>{{$model.model_alias}}</span></td>
-            <td><b>生产厂区：</b><span>{{$model.model_plant}}</span></td>
+            <td><b>主机厂：</b><span>{{model.customer_name}}</span></td>
+            <td><b>车型代码：</b><span>{{model.model_code}}</span></td>
+            <td><b>车型名称：</b><span>{{model.model_name}}</span></td>
+            <td><b>别名：</b><span>{{model.model_alias}}</span></td>
+            <td><b>生产厂区：</b><span>{{model.model_plant}}</span></td>
         </tr>
         </tbody>
     </table>
-
-    {literal}
 
     <div class="pheader clearfix">
         <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"

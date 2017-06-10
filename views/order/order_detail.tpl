@@ -15,8 +15,8 @@
                 <thead>
                 <tr>
                     <th>收货单信息</th>
-                    <th></th>
-                    <th></th>
+                    <th>收货单号：{{order.order_code}}</th>
+                    <th>流水号：{{order.order_serial_no}}</th>
                     <th></th>
                     <th></th>
                     <th>
@@ -29,8 +29,8 @@
                 <tbody>
                 <tr>
                     <td><span>客户：{{order.customer_name}}</span></td>
-                    <td><span>收货单号：{{order.order_code}}</span></td>
-                    <td><span>流水号：{{order.order_serial_no}}</span></td>
+                    <td><span>供货商：{{order.vendor_name}}</span></td>
+                    <td><span>类型：{{order.order_type}}</span></td>
                     <td><span>收货时间：{{order.order_date}}</span></td>
                     <td><span>道口：{{order.dock}}</span></td>
                     <td><span>状态：{{order.statusX}}</span></td>

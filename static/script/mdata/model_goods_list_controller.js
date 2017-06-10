@@ -9,12 +9,12 @@ app.controller('modelGoodsListController', function ($scope, $http, Util) {
         };
 
         $scope.mg = {};
-        $scope.mg.model_id = $('#model_id').val();
+        $scope.model_id = $('#model_id').val();
 
         $scope.params = {
             page: 0,
             pagesize: 20,
-            model_id: $scope.mg.model_id
+            id: $scope.model_id
         };
 
         $scope.goodslist = {};
@@ -75,20 +75,19 @@ app.controller('modelGoodsListController', function ($scope, $http, Util) {
             btn.html('处理中');
             $scope.mg.goods_id = $("#goods_select").val();
             var param = $.param($scope.mg);
-            $http.post('?/Modelx/createOrUpdateMg/', param, $scope.post_head).
-                success(function (r) {
-                    if (r.ret_code === 0) {
-                        $('#modal_modify_model_goods').modal('hide');
-                        fnGetList();
-                        if ($scope.mg_id > 0) {
-                            Util.alert('保存成功');
-                        } else {
-                            Util.alert('添加成功');
-                        }
+            $http.post('?/Modelx/createOrUpdateMg/', param, $scope.post_head).success(function (r) {
+                if (r.ret_code === 0) {
+                    $('#modal_modify_model_goods').modal('hide');
+                    fnGetList();
+                    if ($scope.mg_id > 0) {
+                        Util.alert('保存成功');
                     } else {
-                        Util.alert('操作失败 ' + r.ret_msg, true);
+                        Util.alert('添加成功');
                     }
-                });
+                } else {
+                    Util.alert('操作失败 ' + r.ret_msg, true);
+                }
+            });
             btn.html('保存');
         };
 
@@ -98,19 +97,17 @@ app.controller('modelGoodsListController', function ($scope, $http, Util) {
                 id: $(node).data('id')
             });
             if (confirm('你确定要删除这个物料明细信息吗?')) {
-                $http.post('?/Modelx/deleteMgById/', param, $scope.post_head).
-                    success(function (r) {
-                        if (r.ret_code === 0) {
-                            Util.alert('删除成功');
-                            $(node).parents('tr').remove();
-                        } else {
-                            //alert(r.ret_msg);
-                            Util.alert('操作失败 ' + r.ret_msg, true);
-                        }
-                    });
+                $http.post('?/Modelx/deleteMgById/', param, $scope.post_head).success(function (r) {
+                    if (r.ret_code === 0) {
+                        Util.alert('删除成功');
+                        $(node).parents('tr').remove();
+                    } else {
+                        //alert(r.ret_msg);
+                        Util.alert('操作失败 ' + r.ret_msg, true);
+                    }
+                });
             }
-        }
-        ;
+        };
 
         function fnGetList() {
             Util.loading();
@@ -125,6 +122,17 @@ app.controller('modelGoodsListController', function ($scope, $http, Util) {
                     $scope.init = true;
                     fnInitPager();
                 }
+            });
+        }
+
+        function fnGetModel() {
+            Util.loading();
+            $http.get('?/Modelx/getById/', {
+                params: $scope.params
+            }).success(function (r) {
+                Util.loading(false);
+                var json = r.ret_msg;
+                $scope.model = json;
             });
         }
 
@@ -144,7 +152,8 @@ app.controller('modelGoodsListController', function ($scope, $http, Util) {
             });
         }
 
+        fnGetModel();
         fnGetList();
 
     }
-)
+);

@@ -70,6 +70,13 @@ class Page extends ControllerAdmin
         $this->show(self::TPL . 'mdata/stock_list.tpl');
     }
 
+    public function stockedit($Query)
+    {
+        $id = $Query->id;
+        $this->Smarty->assign('stock_id', $id);
+        $this->show('./views/mdata/modify_stock.tpl');
+    }
+
     public function goods()
     {
         $this->show(self::TPL . 'mdata/goods_list.tpl');
@@ -78,6 +85,16 @@ class Page extends ControllerAdmin
     public function modelx()
     {
         $this->show(self::TPL . 'mdata/model_list.tpl');
+    }
+
+    /**
+     *model对应的物料清单
+     */
+    public function modelxdetail($Query)
+    {
+        $id = $Query->id;
+        $this->Smarty->assign('model_id', $id);
+        $this->show('./views/mdata/model_goods_list.tpl');
     }
 
     public function truck()
@@ -95,7 +112,7 @@ class Page extends ControllerAdmin
         $this->show(self::TPL . 'receive/receive.tpl');
     }
 
-    public function receiveCheck()
+    public function receivecheck()
     {
         $this->show(self::TPL . 'receive/receive_list.tpl');
     }
@@ -103,5 +120,17 @@ class Page extends ControllerAdmin
     public function order()
     {
         $this->show(self::TPL . 'order/order_list.tpl');
+    }
+
+    public function orderdetail($Query)
+    {
+        $id = $Query->id;
+        $this->Smarty->assign('order_id', $id);
+        $this->show('./views/order/order_detail.tpl');
+    }
+
+    public function setting()
+    {
+        $this->show(self::TPL . 'setting/setting.tpl');
     }
 }

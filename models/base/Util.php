@@ -15,7 +15,8 @@ class Util extends Model
     const LOG_ACCESS = 'access';
     const LOG_ERRORS = 'errors';
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->DigCrypt = new DigCrypt();
     }
@@ -24,8 +25,9 @@ class Util extends Model
      * getIPaddress
      * @return type
      */
-    public function getIp() {
-        $cIP  = getenv('REMOTE_ADDR');
+    public function getIp()
+    {
+        $cIP = getenv('REMOTE_ADDR');
         $cIP1 = getenv('HTTP_X_FORWARDED_FOR');
         $cIP2 = getenv('HTTP_CLIENT_IP');
         $cIP1 ? $cIP = $cIP1 : null;
@@ -37,8 +39,9 @@ class Util extends Model
      * getIPaddress
      * @return type
      */
-    public static function getIps() {
-        $cIP  = getenv('REMOTE_ADDR');
+    public static function getIps()
+    {
+        $cIP = getenv('REMOTE_ADDR');
         $cIP1 = getenv('HTTP_X_FORWARDED_FOR');
         $cIP2 = getenv('HTTP_CLIENT_IP');
         $cIP1 ? $cIP = $cIP1 : null;
@@ -52,11 +55,13 @@ class Util extends Model
      * @param type $str
      * @return type
      */
-    public function xssFilter($str) {
+    public function xssFilter($str)
+    {
         return addslashes($str);
     }
 
-    public function getServerIP() {
+    public function getServerIP()
+    {
         return gethostbyname($_SERVER["SERVER_NAME"]);
     }
 
@@ -65,10 +70,11 @@ class Util extends Model
      * @param type $timestamp
      * @return string
      */
-    public function dateTimeFormat($timestamp) {
+    public function dateTimeFormat($timestamp)
+    {
         $timestamp = strtotime($timestamp);
-        $curTime   = time();
-        $space     = $curTime - $timestamp;
+        $curTime = time();
+        $space = $curTime - $timestamp;
         //1分钟
         if ($space < 60) {
             $string = "刚刚";
@@ -78,7 +84,7 @@ class Util extends Model
             return $string;
         }
         $curtimeArray = getdate($curTime);
-        $timeArray    = getDate($timestamp);
+        $timeArray = getDate($timestamp);
         if ($curtimeArray['year'] == $timeArray['year']) {
             if ($curtimeArray['yday'] == $timeArray['yday']) {
                 $format = "%H:%M";
@@ -102,17 +108,20 @@ class Util extends Model
      * @param string $ip
      * @return array
      */
-    public function ipConvAddress($ip) {
+    public function ipConvAddress($ip)
+    {
         $json = file_get_contents('http://ip.taobao.com/service/getIpInfo.php?ip=' . $ip);
-        $arr  = json_decode($json);
+        $arr = json_decode($json);
         return $arr->data;
     }
 
-    public function digEncrypt($nums) {
+    public function digEncrypt($nums)
+    {
         return $this->DigCrypt->en($nums);
     }
 
-    public function digDecrypt($code) {
+    public function digDecrypt($code)
+    {
         return $this->DigCrypt->de($code);
     }
 
@@ -121,7 +130,8 @@ class Util extends Model
      * @param string $sex
      * @return string
      */
-    public function sexConv($sex) {
+    public function sexConv($sex)
+    {
         $s = array(
             'f' => '女',
             'm' => '男'
@@ -139,7 +149,8 @@ class Util extends Model
      * @param int $default
      * @return string
      */
-    public static function digitDefault($input, $default = 0) {
+    public static function digitDefault($input, $default = 0)
+    {
         return (is_numeric($input) && $input > 0) ? intval($input) : $default;
     }
 
@@ -149,7 +160,8 @@ class Util extends Model
      * @param int $default
      * @return int
      */
-    public static function digitDefaultZero($input, $default = 0) {
+    public static function digitDefaultZero($input, $default = 0)
+    {
         return (is_numeric($input) && $input > -1) ? intval($input) : $default;
     }
 
@@ -159,7 +171,8 @@ class Util extends Model
      * @param string $default
      * @return string
      */
-    public static function strDefault($input, $default = '') {
+    public static function strDefault($input, $default = '')
+    {
         return !empty($input) ? trim(addslashes($input)) : $default;
     }
 
@@ -168,7 +181,8 @@ class Util extends Model
      * @param string $dir
      * @return bool
      */
-    public function delDirFiles($dir) {
+    public function delDirFiles($dir)
+    {
         $dirs = dir($dir);
         if ($dirs && is_readable($dirs)) {
             try {
@@ -191,7 +205,8 @@ class Util extends Model
      * @param array $arr
      * @return string
      */
-    public function toXML($arr) {
+    public function toXML($arr)
+    {
         $xml = "<xml>";
         foreach ($arr as $key => $val) {
             if (is_numeric($val)) {
@@ -207,7 +222,8 @@ class Util extends Model
     /**
      * 格式化参数格式化成url参数
      */
-    public function ToUrlParams($arr) {
+    public function ToUrlParams($arr)
+    {
         $buff = "";
         foreach ($arr as $k => $v) {
             if ($k != "sign" && $v != "" && !is_array($v)) {
@@ -223,7 +239,8 @@ class Util extends Model
      * @param array $pack
      * @return string
      */
-    public function paySign($pack) {
+    public function paySign($pack)
+    {
         ksort($pack);
         $string = $this->ToUrlParams($pack);
         $string = $string . "&key=" . PARTNERKEY;
@@ -237,9 +254,10 @@ class Util extends Model
      * @param int $length
      * @return string
      */
-    public function createNoncestr($length = 16) {
+    public function createNoncestr($length = 16)
+    {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        $str   = "";
+        $str = "";
         for ($i = 0; $i < $length; $i++) {
             $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
             //$str .= $chars[ mt_rand(0, strlen($chars) - 1) ];  
@@ -251,7 +269,8 @@ class Util extends Model
      * 检查是否登陆
      * @return bool
      */
-    public function isLogin() {
+    public function isLogin()
+    {
         if (isset($_COOKIE['uopenid']) && isset($_COOKIE['uid'])) {
             return $this->User->checkUserExt($_COOKIE['uopenid']);
         } else {
@@ -264,7 +283,8 @@ class Util extends Model
      * @param string $message
      * @param int $type 默认错误级别
      */
-    public static function log($message, $type = self::LOG_ERRORS) {
+    public static function log($message, $type = self::LOG_ERRORS)
+    {
         $dao = Dao::get_instance();
         $dao->insert(TABLE_LOGS, [
             'log_level',
@@ -281,11 +301,36 @@ class Util extends Model
         ])->exec();
     }
 
+    public static function checkAuth($controller, $action)
+    {
+        //检查用户权限
+        $uid = $_COOKIE['adid'];
+        $dao = Dao::get_instance();
+        $roles = $dao->select('t.title_roles')
+            ->from(TABLE_PERSON)
+            ->alias('p')
+            ->leftJoin(TABLE_TITLE)
+            ->alias('t')
+            ->on('p.person_title = t.id and t.isvalid = 1')
+            ->where("p.id = '$uid'")
+            ->aw("p.isvalid = 1")
+            ->getOne();
+        return $dao->select('count(1)')
+            ->from(TABLE_ROLE_AUTH)
+            ->alias('r')
+            ->where("r.role_id in ($roles)")
+            ->aw("r.isvalid = 1")
+            ->aw("r.controller = '" . $controller . "'")
+            ->aw("r.function = '" . $action . "'")
+            ->getOne();
+    }
+
     /**
      * 组合数组key
      * @param $array
      */
-    public static function combineArrayKey($array) {
+    public static function combineArrayKey($array)
+    {
         $tmp = [];
         foreach ($array as $key => $a) {
             $tmp[] = $key;
@@ -297,7 +342,8 @@ class Util extends Model
      * 组合数组值
      * @param $array
      */
-    public static function combineArrayValue($array) {
+    public static function combineArrayValue($array)
+    {
         $tmp = [];
         foreach ($array as $key => $a) {
             $tmp[] = $a;
@@ -309,7 +355,8 @@ class Util extends Model
      * 获取完整根域名
      * @return string
      */
-    public static function getHOST() {
+    public static function getHOST()
+    {
         return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://" . $_SERVER['HTTP_HOST'];
     }
 
@@ -317,7 +364,8 @@ class Util extends Model
      * 获取请求完整路径
      * @return string
      */
-    public static function getURI() {
+    public static function getURI()
+    {
         return self::getHOST() . $_SERVER['REQUEST_URI'];
     }
 
@@ -325,7 +373,8 @@ class Util extends Model
      * 获取根路径
      * @return string
      */
-    public static function getROOT() {
+    public static function getROOT()
+    {
         global $config;
         return self::getHOST() . $config->webroot;
     }
@@ -333,7 +382,8 @@ class Util extends Model
     /**
      * @return bool|string
      */
-    public static function getNOW() {
+    public static function getNOW()
+    {
         return date('Y-m-d H:i:s');
     }
 
@@ -341,7 +391,8 @@ class Util extends Model
      * 打包商品图片地址数据
      * @param $name
      */
-    public static function packProductImgURI($name) {
+    public static function packProductImgURI($name)
+    {
         global $config;
         if (isset($config->oss) && $config->oss['on']) {
             // 兼容oss
@@ -356,7 +407,8 @@ class Util extends Model
      * @param string $url
      * @return string
      */
-    public static function convURI($url) {
+    public static function convURI($url)
+    {
         $url = preg_replace("/(\?|\&)from=(timeline|singlemessage|groupmessage)&isappinstalled=0/", "", $url);
         $tmp = parse_url($url);
         parse_str($tmp[query], $t);
@@ -373,7 +425,8 @@ class Util extends Model
     /**
      * 获取今天星期几
      */
-    public function getTodayStr() {
+    public function getTodayStr()
+    {
         $weekarray = array(
             "日",
             "一",
@@ -390,7 +443,8 @@ class Util extends Model
      * 充值订单序列号
      * @return string
      */
-    public function createDepositSerial(){
+    public function createDepositSerial()
+    {
         return "D_" . time() . mt_rand(100, 999);
     }
 

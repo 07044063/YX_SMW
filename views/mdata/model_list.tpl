@@ -43,7 +43,7 @@
             <td>
                 <a class="text-success" data-toggle="modal" data-target="#modal_modify_model" data-id="{{models.id}}"
                    href="#">编辑</a>
-                <a class="text-info" href="?/Modelx/detailGoods/id={{models.id}}">物料详情</a>
+                <a class="text-info" href="?/Page/modelxdetail/id={{models.id}}">物料详情</a>
                 <a class="text-danger" data-id="{{models.id}}" ng-click="deleteModel($event)" href="#">删除</a>
             </td>
         </tr>

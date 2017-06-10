@@ -91,6 +91,12 @@ class Person extends ControllerAdmin
             }
         }
 
+        if (!$id > 0) {
+            //创建初始密码
+            $this->loadModel(['mAdmin']);
+            $data['person_password'] = $this->mAdmin->encryptPassword(substr($data['person_phone'], -6));
+        }
+
         $this->loadModel(['mCommon']);
         try {
             if ($id > 0) {
@@ -103,6 +109,16 @@ class Person extends ControllerAdmin
             return $this->echoMsg(-1, $ex->getMessage());
         }
     }
+
+    public function getTitleOption()
+    {
+        $title = $this->Dao->select("id,title_name as text")
+            ->from(TABLE_TITLE)
+            ->where("isvalid = 1")
+            ->exec();
+        return $this->echoMsg(0, $title);
+    }
+
 
     public function getOrgOption()
     {

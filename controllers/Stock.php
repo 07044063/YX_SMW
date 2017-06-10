@@ -6,13 +6,6 @@
 class Stock extends ControllerAdmin
 {
 
-    public function editShow($Query)
-    {
-        $id = $Query->id;
-        $this->Smarty->assign('stock_id', $id);
-        $this->show('./views/mdata/modify_stock.tpl');
-    }
-
     /**
      *
      */

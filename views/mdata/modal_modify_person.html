@@ -73,11 +73,20 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-xs-4">
                         <div class="form-group">
                             <label>人员部门</label>
                             <input type="text" placeholder="请输入人员部门" ng-model="person.person_dept"
                                    class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>人员职位</label>
+                            <select class="form-control"
+                                    ng-model="person.person_title"
+                                    ng-options="title.id as title.text for title in titlelist">
+                            </select>
                         </div>
                     </div>
                 </div>

@@ -20,6 +20,7 @@ class Weixin extends ControllerWx
     public function getSignPackage()
     {
         $url = $this->pGet('url');
+        slog('URL is @@@@ '.$url);
         $weObj = new Wechat($this->config->wxConfigs);
         $signPackage = $weObj->getJsSign($url);
         //Util::log($this->toJson($signPackage));

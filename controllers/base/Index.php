@@ -45,10 +45,17 @@ class Index extends Controller
                 $this->cacheId = $authStr;
                 $this->Smarty->cache_lifetime = 7200;
                 if (!$this->isCached()) {
+                    $authData = $this->Dao->select("distinct `function` as auth")
+                        ->from(TABLE_ROLE_AUTH)
+                        ->where("role_id in ($authStr)")
+                        ->aw("(controller = 'Page' or controller = 'Menu')")
+                        ->aw('isvalid = 1')
+                        ->exec();
                     $authArr = array();
-                    foreach (explode(',', $authStr) as $a) {
-                        $authArr[$a] = 1;
+                    foreach ($authData as $au) {
+                        $authArr[$au['auth']] = 1;
                     }
+//                    slog($authArr);
                     $this->Smarty->assign('adid', $this->pCookie('adid'));
                     $this->Smarty->assign('adname', $this->pCookie('adname'));
                     $this->Smarty->assign('admin_level', $this->pCookie('lev'));
@@ -97,7 +104,7 @@ class Index extends Controller
             ->exec();
         if ($admininfo) {
             // 校验成功
-            if ($this->mAdmin->pwdCheck((string)$admininfo['admin_password'], (string)$admin_pwd)) {
+            if ($this->mAdmin->pwdCheck((string)$admininfo['person_password'], (string)$admin_pwd)) {
                 // 更新管理员登录状态
                 $this->mAdmin->updateAdminState($admin_acc, $ip, $admininfo['id']);
                 // 权限密钥
@@ -105,12 +112,14 @@ class Index extends Controller
                 // 写入数据到session
                 $this->Session->set('loginKey', $loginKey);
                 $this->Session->set('uid', $admininfo['id']);
+                $this->Session->set('utype', $admininfo['person_type']);
+                $this->Session->set('uorg', $admininfo['org_id']);
                 Util::log("登录成功 " . $admin_acc);
                 // 下发管理员权限表
-                $this->sCookieHttpOnly('auth', $admininfo['admin_auth'], self::COOKIE_EXP);
                 $this->sCookieHttpOnly('loginKey', $loginKey, self::COOKIE_EXP);
                 $this->sCookieHttpOnly('adid', $admininfo['id'], self::COOKIE_EXP);
-                $this->sCookieHttpOnly('adname', $admininfo['admin_name'], self::COOKIE_EXP);
+                $this->sCookieHttpOnly('adname', $admininfo['person_name'], self::COOKIE_EXP);
+                $this->sCookieHttpOnly('auth', $admininfo['roles'], self::COOKIE_EXP);
                 $this->sCookieHttpOnly('lev', 0, self::COOKIE_EXP);
                 // 删除cookie
                 $this->sCookie('admin_acc', '', 1);
@@ -144,7 +153,8 @@ class Index extends Controller
     private $expire = 7200;
 
 
-    public function wxerror() {
+    public function wxerror()
+    {
         $this->show('./views/wxerror.tpl');
     }
 

@@ -51,10 +51,10 @@ class mAdmin extends Model
     public function updateAdminState($account, $ip, $id)
     {
         // 更新登陆时间
-        $this->Dao->update(TABLE_AUTH)
+        $this->Dao->update(TABLE_PERSON)
             ->set(array(
-                'admin_last_login' => 'NOW()',
-                'admin_ip_address' => $ip
+                'person_last_login' => 'NOW()',
+                'person_ip_address' => $ip
             ))
             ->where("id = $id")
             ->exec();
@@ -67,9 +67,14 @@ class mAdmin extends Model
      */
     public function get($admin_acc)
     {
-        return $this->Dao->select()
-            ->from(TABLE_AUTH)
-            ->where("admin_account = '$admin_acc'")
+        return $this->Dao->select('p.*,t.title_roles as roles')
+            ->from(TABLE_PERSON)
+            ->alias('p')
+            ->leftJoin(TABLE_TITLE)
+            ->alias('t')
+            ->on('p.person_title = t.id and t.isvalid = 1')
+            ->where("person_phone = '$admin_acc'")
+            ->aw("p.isvalid = 1")
             ->getOneRow();
     }
 

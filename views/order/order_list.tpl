@@ -43,7 +43,7 @@
                 <td>{{order.dock}}</td>
                 <td>{{order.statusX}}</td>
                 <td>
-                    <a class="text-success" href="?/Order/OrderDetail/id={{order.id}}">查看明细</a>
+                    <a class="text-success" href="?/Page/orderdetail/id={{order.id}}">查看明细</a>
                     <a class="text-info" data-id="{{order.id}}" data-toggle="modal" data-target="#modal_order_status"
                        href="#">状态变更</a>
                 </td>

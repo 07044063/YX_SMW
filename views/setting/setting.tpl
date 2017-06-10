@@ -1,19 +1,21 @@
 {include file='../__header_v2.tpl'}
-{assign var="script_name" value="stock_list_controller"}
+{assign var="script_name" value="setting_list_controller"}
 <style type="text/css">
     td {
         padding: 0px 6px !important;
     }
 </style>
-<div class="pd15" ng-controller="stockListController" ng-app="ngApp">
+<div class="pd15" ng-controller="settingListController" ng-app="ngApp">
+
+    {include file='../setting/modal_modify_setting.html'}
 
     {literal}
 
     <div class="pheader clearfix">
         <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"
-                                         placeholder="输入编号或名称按回车"/></div>
+                                         placeholder="输入编码按回车"/></div>
         <div class="button-set" style="margin-top: 13px;margin-right: 13px;">
-            <a class="btn btn-success" href="?/Page/stockedit/">添加</a>
+            <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modal_modify_setting">添加</a>
             <!--<a class="btn btn-primary" ng-click="refresh($event)">刷新</a>-->
         </div>
     </div>
@@ -23,22 +25,21 @@
         <tr>
             <th class="hidden">ID</th>
             <th>代码</th>
-            <th>名称</th>
-            <th>面积(平方米)</th>
-            <th>所属仓储</th>
+            <th>值</th>
+            <th>备注</th>
             <th width="100px" class="text-center">操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="stocks in stocklist">
-            <td class="hidden">{{stocks.id}}</td>
-            <td>{{stocks.stock_code}}</td>
-            <td>{{stocks.stock_name}}</td>
-            <td>{{stocks.stock_area}}</td>
-            <td>{{stocks.warehouse_name}}</td>
+        <tr ng-repeat="settings in settinglist">
+            <td class="hidden">{{settings.id}}</td>
+            <td>{{settings.key}}</td>
+            <td>{{settings.value}}</td>
+            <td>{{settings.remark}}</td>
             <td>
-                <a class="text-success" href="?/Page/stockedit/id={{stocks.id}}">编辑</a>
-                <a class="text-danger" data-id="{{stocks.id}}" ng-click="deleteStock($event)" href="#">删除</a>
+                <a class="text-success" data-toggle="modal" data-target="#modal_modify_setting" data-id="{{settings.id}}"
+                   href="#">编辑</a>
+                <a class="text-danger" data-id="{{settings.id}}" ng-click="deleteSetting($event)" href="#">删除</a>
             </td>
         </tr>
         </tbody>
@@ -49,7 +50,7 @@
 
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/mdata/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/setting/{$script_name}.js"></script>
 
 <div class="navbar-fixed-bottom bottombar">
     <div id="pager-bottom">

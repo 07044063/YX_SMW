@@ -27,6 +27,11 @@ class Common extends ControllerAdmin
         $this->show('views/error500.tpl');
     }
 
+    public function noauth()
+    {
+        $this->show('views/noauth.tpl');
+    }
+
     /**
      * 解析excel
      */

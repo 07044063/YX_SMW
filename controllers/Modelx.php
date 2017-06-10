@@ -7,25 +7,6 @@ class Modelx extends ControllerAdmin
 {
 
     /**
-     *model对应的物料清单
-     */
-    public function detailGoods($Query)
-    {
-        $id = $Query->id;
-        $model = $this->Dao->select('m.*,c.customer_code,c.customer_name')
-            ->from(TABLE_MODEL)
-            ->alias('m')
-            ->leftJoin(TABLE_CUSTOMER)
-            ->alias('c')
-            ->on("m.customer_id = c.id")
-            ->where("m.id = $id")
-            ->aw("m.isvalid = 1")
-            ->getOneRow();
-        $this->Smarty->assign('model', $model);
-        $this->show('./views/mdata/model_goods_list.tpl');
-    }
-
-    /**
      *获取model列表
      */
     public function getList()
@@ -63,13 +44,16 @@ class Modelx extends ControllerAdmin
     public function getById()
     {
         $id = intval($this->pGet('id'));
-        $dataone = $this->Dao->select()
+        $dataone = $this->Dao->select('m.*,c.customer_code,c.customer_name')
             ->from(TABLE_MODEL)
-            ->where("id = $id")
-            ->aw("isvalid = 1")
+            ->alias('m')
+            ->leftJoin(TABLE_CUSTOMER)
+            ->alias('c')
+            ->on("m.customer_id = c.id")
+            ->where("m.id = $id")
+            ->aw("m.isvalid = 1")
             ->getOneRow();
         return $this->echoMsg(0, $dataone);
-
     }
 
     /**
@@ -152,7 +136,7 @@ class Modelx extends ControllerAdmin
     {
         $pagesize = $this->pGet('pagesize') ? intval($this->pGet('pagesize')) : 20;
         $page = $this->pGet('page');
-        $model_id = $this->pGet('model_id');
+        $model_id = $this->pGet('id');
         $search_text = '%' . $this->pGet('search_text') . '%';
         $where = "(goods_ccode like '$search_text' or goods_vcode like '$search_text' or goods_name like '$search_text')";
         $list = $this->Dao->select('mg.*,g.goods_vcode,g.goods_ccode,g.goods_name')
