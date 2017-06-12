@@ -83,9 +83,10 @@ class Order extends ControllerAdmin
     public function modifyOrderStatus()
     {
         $id = $this->pPost('orderId');
-        $status = $this->pPost('status');
+        $newstatus = $this->pPost('newstatus');
+        $oldstatus = $this->pPost('oldstatus');
         $uid = $this->Session->get('uid');
-        $data = $this->Db->query("call p_update_order_status($id,'$status',$uid);");
+        $data = $this->Db->query("call p_update_order_status($id,'$oldstatus','$newstatus',$uid);");
         return $this->echoMsg((int)$data[0]['res'], '');
     }
 

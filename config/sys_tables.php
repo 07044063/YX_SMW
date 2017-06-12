@@ -34,6 +34,7 @@ define('TABLE_RECEIVE', 'receive');
 define('TABLE_ORDER', 'order');
 define('VIEW_ORDER', 'v_order');
 define('TABLE_ORDER_DETAIL', 'order_detail');
+define('VIEW_ORDER_DETAIL_SUM', 'v_order_detail_sum');
 define('TABLE_ORDER_STATUS', 'order_status');
 define('TABLE_INVENTORY', 'inventory');
 

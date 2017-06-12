@@ -22,6 +22,7 @@ if (!defined('APP_PATH')) {
  * @property mStock $mStock
  * @property mReceive $mReceive
  * @property mImport $mImport
+ * @property mWeixin $mWeixin
  */
 class Controller
 {

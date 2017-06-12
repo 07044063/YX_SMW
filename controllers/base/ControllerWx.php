@@ -17,8 +17,16 @@ class ControllerWx extends Controller
         if ($this->config->debug) {
             $this->Session->set('wxuid', $this->config->WxUserId);
         }
-        if (!$this->getWxUserId()) {
+        $UserId = $this->getWxUserId();
+        if (!$UserId) {
             $this->redirect("wxerror.php");
+        } else {
+            $this->loadModel('mAdmin');
+            $admininfo = $this->mAdmin->get($UserId);
+            $this->Session->set('uid', $admininfo['id']);
+            $this->Session->set('uname', $admininfo['person_name']);
+            $this->Session->set('utype', $admininfo['person_type']);
+            $this->Session->set('uorg', $admininfo['org_id']);
         }
     }
 }

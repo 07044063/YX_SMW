@@ -48,8 +48,13 @@ class Wxpage extends ControllerWx
         $this->show(self::TPL . 'weixin/wxtest.tpl');
     }
 
-    public function order()
+    public function order($Query)
     {
+        $order_code = $Query->order_code;
+        $this->loadModel(['mWeixin']);
+        $data = $this->mWeixin->getOrderByCode($order_code);
+        $this->assign('order', $data);
+        $this->assign('title', '发货单详情-'.$data['order_serial_no']);
         $this->show(self::TPL . 'weixin/order.tpl');
     }
 

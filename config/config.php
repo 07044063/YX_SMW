@@ -14,7 +14,7 @@ include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sys_tables.php';
 
 // debug开关
 $config->debug = true;
-$config->WxUserId = '1';
+$config->WxUserId = 'admin';
 
 // 数据库
 $config->db['host'] = '127.0.0.1';

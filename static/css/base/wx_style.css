@@ -444,7 +444,7 @@ body {
     display: block;
     position: relative;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 25px;
     padding: 6px 0;
     color: #222;
@@ -452,7 +452,7 @@ body {
 
 .text-subtitle {
     color: #222;
-    font-size: 13px;
+    font-size: 18px;
     line-height: 20px;
     margin: 0;
     padding: 3px 0;
@@ -475,7 +475,7 @@ body {
 
 .Thead {
     position: relative;
-    font-size: 15px;
+    font-size: 18px;
     color: #888;
     border-left: 5px solid #44b549;
     padding-left: 10px;
@@ -492,26 +492,6 @@ body {
     background: url(../../images/icon/iconfont-you.png) center no-repeat;
     background-size: 20px;
     opacity: 0.8;
-}
-
-.button {
-    border-radius: 3px;
-    padding: 7px 0;
-    text-align: center;
-    display: block;
-    background: #e4393c;
-    font-size: 15px;
-    margin: 10px;
-    color: #fff
-}
-
-.button.green {
-    background: #3fae38
-}
-
-.button.gary {
-    pointer-events: none;
-    background: #ddd
 }
 
 .listTopcaption {
@@ -578,4 +558,33 @@ body {
     background: #fff;
     height: 45px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+}
+
+.button {
+    border-radius: 3px;
+    padding: 7px 0;
+    text-align: center;
+    display: block;
+    background: #e4393c;
+    font-size: 15px;
+    margin: 10px;
+    color: #fff
+}
+
+.button.green {
+    background: #3fae38
+}
+
+.button.gary {
+    pointer-events: none;
+    background: #ddd
+}
+.bottomWrap {
+    padding: 0 10px;
+    background: rgba(238, 238, 238, 0.8);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
 }

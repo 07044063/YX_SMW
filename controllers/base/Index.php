@@ -56,9 +56,8 @@ class Index extends Controller
                         $authArr[$au['auth']] = 1;
                     }
 //                    slog($authArr);
-                    $this->Smarty->assign('adid', $this->pCookie('adid'));
-                    $this->Smarty->assign('adname', $this->pCookie('adname'));
-                    $this->Smarty->assign('admin_level', $this->pCookie('lev'));
+                    $this->Smarty->assign('adid', $this->pCookie('uid'));
+                    $this->Smarty->assign('adname', $this->pCookie('uname'));
                     $this->Smarty->assign('Auth', $authArr);
                     $this->Smarty->assign('today', date("n月j号 星期") . $this->Util->getTodayStr());
                 }
@@ -112,13 +111,14 @@ class Index extends Controller
                 // 写入数据到session
                 $this->Session->set('loginKey', $loginKey);
                 $this->Session->set('uid', $admininfo['id']);
+                $this->Session->set('uname', $admininfo['person_name']);
                 $this->Session->set('utype', $admininfo['person_type']);
                 $this->Session->set('uorg', $admininfo['org_id']);
                 Util::log("登录成功 " . $admin_acc);
                 // 下发管理员权限表
                 $this->sCookieHttpOnly('loginKey', $loginKey, self::COOKIE_EXP);
-                $this->sCookieHttpOnly('adid', $admininfo['id'], self::COOKIE_EXP);
-                $this->sCookieHttpOnly('adname', $admininfo['person_name'], self::COOKIE_EXP);
+                $this->sCookieHttpOnly('uid', $admininfo['id'], self::COOKIE_EXP);
+                $this->sCookieHttpOnly('uname', $admininfo['person_name'], self::COOKIE_EXP);
                 $this->sCookieHttpOnly('auth', $admininfo['roles'], self::COOKIE_EXP);
                 $this->sCookieHttpOnly('lev', 0, self::COOKIE_EXP);
                 // 删除cookie

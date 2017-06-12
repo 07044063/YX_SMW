@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
+    <script type="text/javascript" src="{$docroot}static/script/base/dataconfig.js"></script>
     <link href="{$docroot}static/css/base/wx_style.css?v={$cssversion}" type="text/css" rel="Stylesheet"/>
     <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.1.1/style/weui.min.css">
     <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/1.0.1/css/jquery-weui.min.css">

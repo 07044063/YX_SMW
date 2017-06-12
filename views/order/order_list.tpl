@@ -27,6 +27,8 @@
                 <th>客户</th>
                 <th>收货单号</th>
                 <th>流水号</th>
+                <th>类型</th>
+                <th>供货商</th>
                 <th>送货时间</th>
                 <th>道口</th>
                 <th>状态</th>
@@ -39,6 +41,8 @@
                 <td>{{order.customer_name}}</td>
                 <td>{{order.order_code}}</td>
                 <td>{{order.order_serial_no}}</td>
+                <td>{{order.order_type}}</td>
+                <td>{{order.vendor_name}}</td>
                 <td>{{order.order_date}}</td>
                 <td>{{order.dock}}</td>
                 <td>{{order.statusX}}</td>

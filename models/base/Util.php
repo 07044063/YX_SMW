@@ -304,7 +304,7 @@ class Util extends Model
     public static function checkAuth($controller, $action)
     {
         //检查用户权限
-        $uid = $_COOKIE['adid'];
+        $uid = $_COOKIE['uid'];
         $dao = Dao::get_instance();
         $roles = $dao->select('t.title_roles')
             ->from(TABLE_PERSON)

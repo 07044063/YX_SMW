@@ -2,16 +2,21 @@ var post_head = {
     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 };
 var signPackage = null;
-var accesstoken = 'AccessToken';
 
-function getAccessToken() {
-    $.get('?/Weixin/getAccessToken/', {}, function (r) {
-            if (r.ret_code == 0) {
-                accesstoken = r.ret_msg;
-                alert(accesstoken);
+function scanQRCode() {
+    wx.scanQRCode({
+        desc: 'scanQRCode desc',
+        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+        success: function (res) {
+            // 回调
+        },
+        error: function (res) {
+            if (res.errMsg.indexOf('function_not_exist') > 0) {
+                $.alert('版本过低请升级')
             }
         }
-    )
+    });
 }
 
 //微信JSSDK签名获取
@@ -20,11 +25,10 @@ var url = window.location.href;
 $.get('?/Weixin/getSignPackage/', {
         url: url
     }, function (r) {
-        //console.info(r);
         if (r.ret_code == 0) {
             signPackage = r.ret_msg;
             wx.config({
-                debug: true,
+                debug: false,
                 appId: signPackage['appid'],
                 timestamp: signPackage['timestamp'],
                 nonceStr: signPackage['noncestr'],
@@ -39,41 +43,32 @@ $.get('?/Weixin/getSignPackage/', {
                 // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
                 // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
                 // 则可以直接调用，不需要放在ready函数中。
-                scanQRCode();
+                // scanQRCode();
             });
             wx.error(function (res) {
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，
                 // 具体错误信息可以打开config的debug模式查看，
                 // 也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                alert('JSSDK初始化失败！');
+                // $.alert('JSSDK初始化失败！');
             });
         }
     }
 );
 
-function choosePhoto() {
-    wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function (res) {
-            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-        }
-    });
-}
+$('#scan_qrcode').click(function () {
+    scanQRCode();
+});
 
-function scanQRCode() {
-    wx.scanQRCode({
-        desc: 'scanQRCode desc',
-        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-        success: function (res) {
-            // 回调
-        },
-        error: function (res) {
-            if (res.errMsg.indexOf('function_not_exist') > 0) {
-                alert('版本过低请升级')
-            }
+$('#do_order').click(function () {
+    $.post('?/Weixin/changeOrderStatus/', {
+        order_id: $('#order_id').val(),
+        oldstatus: $('#order_status').val()
+    }, function (r) {
+        if (!r.ret_code == 0) {
+            $.alert('操作失败 ' + order_error_list[r.ret_code]);
+        }else{
+            $.toast("操作成功");
+            location.reload();
         }
     });
-}
+});

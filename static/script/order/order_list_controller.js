@@ -103,7 +103,8 @@ app.controller('orderListController', function ($scope, $http, Util, FileUploade
             Util.loading();
             $.post('?/Order/modifyOrderStatus/', {
                 orderId: $scope.order_id,
-                status: status
+                oldstatus: $scope.order.status,
+                newstatus: status
             }, function (r) {
                 Util.loading(false);
                 if (r.ret_code === 0) {

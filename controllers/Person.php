@@ -35,7 +35,7 @@ class Person extends ControllerAdmin
     public function getById()
     {
         $id = intval($this->pGet('id'));
-        $dataone = $this->Dao->select()
+        $dataone = $this->Dao->select('id,person_code,person_type,org_id,person_name,person_phone,person_email,person_dept,person_title')
             ->from(TABLE_PERSON)
             ->where("id = $id")
             ->aw("isvalid = 1")
