@@ -19,7 +19,7 @@
                 <label class="weui-form-preview__label">状态</label>
                 <em class="weui-form-preview__value">&nbsp;{$order.statusX}</em>
             </div>
-            <div class="weui-form-preview__bd">
+            <div class="weui-form-preview__bd" style="border-bottom: 1px solid #d9d9d9;">
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">客户</label>
                     <span class="weui-form-preview__value">{$order.customer_name}</span>

@@ -29,9 +29,17 @@ function scanQRCode() {
     wx.scanQRCode({
         desc: 'scanQRCode desc',
         needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+        scanType: ["barCode"], // 可以指定扫二维码还是一维码，默认二者都有
         success: function (res) {
             // 回调
+            if (res.resultStr) {
+                var res_str = res.resultStr.split(',');
+                if (res_str[0] == 'CODE_128') {
+                    location.href = '?/Wxpage/order/order_code='+res_str[1];
+                } else {
+                    $.alert('无法识别扫描结果');
+                }
+            }
         },
         error: function (res) {
             if (res.errMsg.indexOf('function_not_exist') > 0) {
@@ -50,7 +58,7 @@ $.get('?/Weixin/getSignPackage/', {
         if (r.ret_code == 0) {
             signPackage = r.ret_msg;
             wx.config({
-                debug: true,
+                debug: false,
                 appId: signPackage['appid'],
                 timestamp: signPackage['timestamp'],
                 nonceStr: signPackage['noncestr'],
@@ -65,7 +73,7 @@ $.get('?/Weixin/getSignPackage/', {
                 // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
                 // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
                 // 则可以直接调用，不需要放在ready函数中。
-                scanQRCode();
+                //scanQRCode();
             });
             wx.error(function (res) {
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，

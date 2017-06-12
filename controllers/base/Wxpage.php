@@ -34,7 +34,7 @@ class Wxpage extends ControllerWx
     public function auth()
     {
         //企业号验证通过直接跳转到首页
-        $action = 'test';
+        $action = 'index';
         if (isset($_GET['action'])) {
             $action = $_GET['action'];
         }
@@ -43,9 +43,14 @@ class Wxpage extends ControllerWx
 
     public function test()
     {
-        $wxuid = $this->Session->get('wxuid');
         $this->assign('title', '测试页');
         $this->show(self::TPL . 'weixin/wxtest.tpl');
+    }
+
+    public function index()
+    {
+        $this->assign('title', '功能清单');
+        $this->show(self::TPL . 'weixin/index.tpl');
     }
 
     public function order($Query)

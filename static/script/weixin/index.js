@@ -2,6 +2,7 @@ var post_head = {
     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 };
 var signPackage = null;
+var accesstoken = 'AccessToken';
 
 function scanQRCode() {
     wx.scanQRCode({
@@ -10,6 +11,14 @@ function scanQRCode() {
         scanType: ["barCode"], // 可以指定扫二维码还是一维码，默认二者都有
         success: function (res) {
             // 回调
+            if (res.resultStr) {
+                var res_str = res.resultStr.split(',');
+                if (res_str[0] == 'CODE_128') {
+                    location.href = '?/Wxpage/order/order_code=' + res_str[1];
+                } else {
+                    $.alert('无法识别扫描结果');
+                }
+            }
         },
         error: function (res) {
             if (res.errMsg.indexOf('function_not_exist') > 0) {
@@ -35,7 +44,7 @@ $.get('?/Weixin/getSignPackage/', {
                 signature: signPackage['signature'],
                 jsApiList: [
                     // 所有要调用的 API 都要加到这个列表中
-                    'chooseImage', 'uploadImage', 'scanQRCode'
+                    'scanQRCode'
                 ]
             });
             wx.ready(function () {
@@ -43,32 +52,18 @@ $.get('?/Weixin/getSignPackage/', {
                 // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
                 // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
                 // 则可以直接调用，不需要放在ready函数中。
-                // scanQRCode();
+                //scanQRCode();
             });
             wx.error(function (res) {
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，
                 // 具体错误信息可以打开config的debug模式查看，
                 // 也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                // $.alert('JSSDK初始化失败！');
+                $.alert('JSSDK初始化失败！');
             });
         }
     }
 );
 
-$('#scan_qrcode').click(function () {
+$('#order_scan').click(function () {
     scanQRCode();
-});
-
-$('#do_order').click(function () {
-    $.post('?/Weixin/changeOrderStatus/', {
-        order_id: $('#order_id').val(),
-        oldstatus: $('#order_status').val()
-    }, function (r) {
-        if (!r.ret_code == 0) {
-            $.alert('操作失败 ' + order_error_list[r.ret_code]);
-        } else {
-            $.toast("操作成功");
-            location.reload();
-        }
-    });
 });
