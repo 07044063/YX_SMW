@@ -34,7 +34,7 @@ class Wxpage extends ControllerWx
     public function auth()
     {
         //企业号验证通过直接跳转到首页
-        $action = 'order';
+        $action = 'test';
         if (isset($_GET['action'])) {
             $action = $_GET['action'];
         }
