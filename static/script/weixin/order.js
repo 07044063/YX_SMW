@@ -1,6 +1,4 @@
-var post_head = {
-    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-};
+
 var signPackage = null;
 
 function scanQRCode() {
@@ -35,7 +33,7 @@ $.get('?/Weixin/getSignPackage/', {
                 signature: signPackage['signature'],
                 jsApiList: [
                     // 所有要调用的 API 都要加到这个列表中
-                    'chooseImage', 'uploadImage', 'scanQRCode'
+                    'scanQRCode'
                 ]
             });
             wx.ready(function () {

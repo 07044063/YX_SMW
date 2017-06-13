@@ -13,9 +13,9 @@
         </div>
         <div class="weui-cell__ft"></div>
     </a>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a id="delivery_scan" class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__hd"><img
-                    src="{$docroot}static/images/weixin/scan.png" style="width:32px;margin-right:5px;display:block">
+                    src="{$docroot}static/images/weixin/truck.png" style="width:32px;margin-right:5px;display:block">
         </div>
         <div class="weui-cell__bd">
             <p>发货装车</p>

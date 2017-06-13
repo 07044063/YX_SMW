@@ -1,27 +1,6 @@
-
 var signPackage = null;
 var accesstoken = 'AccessToken';
-
-function getAccessToken() {
-    $.get('?/Weixin/getAccessToken/', {}, function (r) {
-            if (r.ret_code == 0) {
-                accesstoken = r.ret_msg;
-                $.alert(accesstoken);
-            }
-        }
-    )
-}
-
-function choosePhoto() {
-    wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function (res) {
-            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-        }
-    });
-}
+var orderlist = [];
 
 function scanQRCode() {
     wx.scanQRCode({
@@ -33,7 +12,8 @@ function scanQRCode() {
             if (res.resultStr) {
                 var res_str = res.resultStr.split(',');
                 if (res_str[0] == 'CODE_128') {
-                    location.href = '?/Wxpage/order/order_code='+res_str[1];
+                    orderlist.push(res_str[1]);
+                    scanQRCode();
                 } else {
                     $.alert('无法识别扫描结果');
                 }
@@ -47,6 +27,9 @@ function scanQRCode() {
     });
 }
 
+function showOrderList() {
+}
+
 //微信JSSDK签名获取
 var url = window.location.href;
 
@@ -56,14 +39,14 @@ $.get('?/Weixin/getSignPackage/', {
         if (r.ret_code == 0) {
             signPackage = r.ret_msg;
             wx.config({
-                debug: true,
+                debug: false,
                 appId: signPackage['appid'],
                 timestamp: signPackage['timestamp'],
                 nonceStr: signPackage['noncestr'],
                 signature: signPackage['signature'],
                 jsApiList: [
                     // 所有要调用的 API 都要加到这个列表中
-                    'chooseImage', 'uploadImage', 'scanQRCode'
+                    'scanQRCode'
                 ]
             });
             wx.ready(function () {
@@ -77,18 +60,12 @@ $.get('?/Weixin/getSignPackage/', {
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，
                 // 具体错误信息可以打开config的debug模式查看，
                 // 也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                $.alert('JSSDK初始化失败！');
+                //$.alert('JSSDK初始化失败！');
             });
         }
     }
 );
 
-$('#get_access_token').click(function () {
-    getAccessToken();
-});
-$('#select_pic').click(function () {
-    choosePhoto();
-});
-$('#scan_qrcode').click(function () {
+$('#begin_scan').click(function () {
     scanQRCode();
 });

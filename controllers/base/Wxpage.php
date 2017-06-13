@@ -59,8 +59,14 @@ class Wxpage extends ControllerWx
         $this->loadModel(['mWeixin']);
         $data = $this->mWeixin->getOrderByCode($order_code);
         $this->assign('order', $data);
-        $this->assign('title', '发货单详情-'.$data['order_serial_no']);
+        $this->assign('title', '发货单详情-' . $data['order_serial_no']);
         $this->show(self::TPL . 'weixin/order.tpl');
+    }
+
+    public function delivery()
+    {
+        $this->assign('title', '发货装车');
+        $this->show(self::TPL . 'weixin/delivery.tpl');
     }
 
 }

@@ -1,6 +1,4 @@
-var post_head = {
-    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-};
+
 var signPackage = null;
 var accesstoken = 'AccessToken';
 
@@ -58,7 +56,7 @@ $.get('?/Weixin/getSignPackage/', {
                 // config信息验证失败会执行error函数，如签名过期导致验证失败，
                 // 具体错误信息可以打开config的debug模式查看，
                 // 也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-                $.alert('JSSDK初始化失败！');
+                //$.alert('JSSDK初始化失败！');
             });
         }
     }
@@ -66,4 +64,8 @@ $.get('?/Weixin/getSignPackage/', {
 
 $('#order_scan').click(function () {
     scanQRCode();
+});
+
+$('#delivery_scan').click(function () {
+    location.href = '?/Wxpage/delivery/';
 });
