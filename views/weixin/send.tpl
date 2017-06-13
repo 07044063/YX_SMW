@@ -1,6 +1,6 @@
 {include file="../__header_wx.tpl"}
 
-{assign var="script_name" value="delivery"}
+{assign var="script_name" value="send"}
 
 <div class="weui-cells__title">请选择车辆信息</div>
 <div class="weui-cells">
@@ -19,7 +19,7 @@
             <label class="weui-label">当前发货单</label>
         </div>
         <div class="weui-cell__bd">
-            <label class="weui-label">0张</label>
+            <label id="listcount" class="weui-label"></label>
         </div>
         <div class="weui-cell__ft">
             <button id="begin_scan" class="weui-vcode-btn">开始扫描</button>
@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<div id="orderDetailsWrapper" data-minheight="68px"></div>
+<div id="orderlist"></div>
 
 <div class="weui-cells">
     <div class="weui-cell">
@@ -58,7 +58,6 @@
         <% var carts = list[i].cart_datas; %>
 
         <%for(var j=0;j < carts.length;j++){%>
-
         <section class="cartListWrap clearfix" id="cartsec<%=carts[j].product_id%>">
             <input type="hidden" value="<%=carts[j].envstr%>" id="pd-envs-<%=carts[j].product_id%>"
                    data-pid="<%=carts[j].product_id%>" class="pd-envstr"/>
@@ -99,12 +98,11 @@
                 <a class="cartDelbtn" data-pdid="<%=carts[j].product_id%>" data-spid="<%=carts[j].spec_id%>"></a>
             </div>
         </section>
-
         <%}%>
 
         <%}%>
     {/literal}
-<!-- 模板结束 -->
+    <!-- 模板结束 -->
 </textarea>
 
 <script type="text/javascript" src="{$docroot}static/script/lib/baiduTemplate.js"></script>

@@ -63,10 +63,10 @@ class Wxpage extends ControllerWx
         $this->show(self::TPL . 'weixin/order.tpl');
     }
 
-    public function delivery()
+    public function send()
     {
         $this->assign('title', '发货装车');
-        $this->show(self::TPL . 'weixin/delivery.tpl');
+        $this->show(self::TPL . 'weixin/send.tpl');
     }
 
 }

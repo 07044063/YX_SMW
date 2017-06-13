@@ -12,22 +12,36 @@ function scanQRCode() {
             if (res.resultStr) {
                 var res_str = res.resultStr.split(',');
                 if (res_str[0] == 'CODE_128') {
-                    orderlist.push(res_str[1]);
-                    scanQRCode();
+                    orderlist.push("'" + res_str[1] + "'");
                 } else {
                     $.alert('无法识别扫描结果');
                 }
+                setTimeout(scanQRCode, 500);
             }
         },
         error: function (res) {
             if (res.errMsg.indexOf('function_not_exist') > 0) {
                 $.alert('版本过低请升级')
             }
+        },
+        cancel: function (res) {
+            //用户点击取消，扫描结束
+            getOrderInfo(orderlist.join(","));
         }
     });
 }
 
+function getOrderInfo(olist) {
+    alert(olist);
+    $.post('?/Weixin/getOrderInfoByList/', {
+        orderlist: olist
+    }, function (r) {
+        console.info(r.ret_msg);
+    });
+}
+
 function showOrderList() {
+    $('#listcount').html(orderlist.length + '单');
 }
 
 //微信JSSDK签名获取
@@ -67,5 +81,6 @@ $.get('?/Weixin/getSignPackage/', {
 );
 
 $('#begin_scan').click(function () {
-    scanQRCode();
+    getOrderInfo("'XBH590E0A','XBH590E0A'");
+    //scanQRCode();
 });

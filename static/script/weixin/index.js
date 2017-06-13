@@ -67,5 +67,5 @@ $('#order_scan').click(function () {
 });
 
 $('#delivery_scan').click(function () {
-    location.href = '?/Wxpage/delivery/';
+    location.href = '?/Wxpage/send/';
 });

@@ -45,4 +45,18 @@ class Weixin extends ControllerWx
         return $this->echoMsg((int)$data[0]['res'], '');
     }
 
+    public function getOrderInfoByList()
+    {
+        $postdata = $this->post();
+        $orderlist = $postdata['orderlist'];
+        $data = $this->Dao->select("id,concat(order_type,order_serial_no,'-',order_code) as desc")
+            ->from(TABLE_ORDER)
+            ->alias('o')
+            ->where("o.order_code in ($orderlist)")
+            ->aw('o.isvalid = 1')
+            ->aw("status = 'check'")
+            ->exec();
+        return $this->echoMsg(0, $data);
+    }
+
 }
