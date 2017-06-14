@@ -2,6 +2,12 @@
 
 {assign var="script_name" value="index"}
 
+<div id="container">
+    <p class="text-title">
+        欢迎您，{$uname}
+    </p>
+</div>
+
 <header class="Thead">发货</header>
 <div class="weui-cells">
     <a id="order_scan" class="weui-cell weui-cell_access" href="javascript:;">

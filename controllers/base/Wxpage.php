@@ -49,6 +49,7 @@ class Wxpage extends ControllerWx
 
     public function index()
     {
+        $this->assign('uname', $this->Session->get('uname'));
         $this->assign('title', '功能清单');
         $this->show(self::TPL . 'weixin/index.tpl');
     }
