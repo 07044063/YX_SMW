@@ -1,4 +1,3 @@
-
 var signPackage = null;
 
 function scanQRCode() {
@@ -58,6 +57,8 @@ $('#scan_qrcode').click(function () {
 });
 
 $('#do_order').click(function () {
+    //禁用按钮防止重复点击
+    $('#do_order').attr({"disabled": "disabled"});
     $.post('?/Weixin/changeOrderStatus/', {
         order_id: $('#order_id').val(),
         oldstatus: $('#order_status').val()
@@ -69,4 +70,6 @@ $('#do_order').click(function () {
             location.reload();
         }
     });
+    //启用按钮防止重复点击
+    $('#do_order').removeAttr("disabled");
 });

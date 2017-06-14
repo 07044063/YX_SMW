@@ -65,6 +65,12 @@ class Wxpage extends ControllerWx
 
     public function send()
     {
+        $utitle = intval($this->Session->get('utitle'));
+        slog("utitle is $utitle");
+        if ($utitle <> 7) {
+            $this->show(self::TPL . 'wxnoauth.tpl');
+            return;
+        }
         $this->assign('title', '发货装车');
         $this->show(self::TPL . 'weixin/send.tpl');
     }

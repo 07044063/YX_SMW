@@ -23,10 +23,7 @@ class ControllerWx extends Controller
         } else {
             $this->loadModel('mAdmin');
             $admininfo = $this->mAdmin->get($UserId);
-            $this->Session->set('uid', $admininfo['id']);
-            $this->Session->set('uname', $admininfo['person_name']);
-            $this->Session->set('utype', $admininfo['person_type']);
-            $this->Session->set('uorg', $admininfo['org_id']);
+            $this->setUserSession($admininfo);
         }
     }
 }

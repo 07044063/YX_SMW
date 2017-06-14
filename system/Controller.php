@@ -520,6 +520,18 @@ class Controller
     }
 
     /**
+     * 将用户信息写到session
+     */
+    public function setUserSession($admininfo)
+    {
+        $this->Session->set('uid', $admininfo['id']);
+        $this->Session->set('uname', $admininfo['person_name']);
+        $this->Session->set('utype', $admininfo['person_type']);
+        $this->Session->set('uorg', $admininfo['org_id']);
+        $this->Session->set('utitle', $admininfo['person_title']);
+    }
+
+    /**
      * Smarty assign
      * @param string $key
      * @param mixed $value

@@ -6,7 +6,7 @@
  */
 class mWeixin extends Model
 {
-
+    //根据发货单条形码获取发货单信息，以及用户是否有操作权限
     public function getOrderByCode($order_code)
     {
         $status = array(

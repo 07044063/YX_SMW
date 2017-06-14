@@ -110,10 +110,7 @@ class Index extends Controller
                 $loginKey = $this->mAdmin->encryptToken($ip, $admininfo['id']);
                 // 写入数据到session
                 $this->Session->set('loginKey', $loginKey);
-                $this->Session->set('uid', $admininfo['id']);
-                $this->Session->set('uname', $admininfo['person_name']);
-                $this->Session->set('utype', $admininfo['person_type']);
-                $this->Session->set('uorg', $admininfo['org_id']);
+                $this->setUserSession($admininfo);
                 Util::log("登录成功 " . $admin_acc);
                 // 下发管理员权限表
                 $this->sCookieHttpOnly('loginKey', $loginKey, self::COOKIE_EXP);

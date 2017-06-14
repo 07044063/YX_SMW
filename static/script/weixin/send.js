@@ -1,6 +1,7 @@
 var signPackage = null;
 var accesstoken = 'AccessToken';
-var orderlist = [];
+var orderscanlist = [];
+var odlist = [];
 
 function scanQRCode() {
     wx.scanQRCode({
@@ -12,7 +13,7 @@ function scanQRCode() {
             if (res.resultStr) {
                 var res_str = res.resultStr.split(',');
                 if (res_str[0] == 'CODE_128') {
-                    orderlist.push("'" + res_str[1] + "'");
+                    orderscanlist.push("'" + res_str[1] + "'");
                 } else {
                     $.alert('无法识别扫描结果');
                 }
@@ -26,22 +27,46 @@ function scanQRCode() {
         },
         cancel: function (res) {
             //用户点击取消，扫描结束
-            getOrderInfo(orderlist.join(","));
+            getOrderInfo(orderscanlist.join(","));
         }
     });
 }
 
 function getOrderInfo(olist) {
-    alert(olist);
+    $.toptip('正在获取数据', 2000, 'warning');
+    odlist = [];
     $.post('?/Weixin/getOrderInfoByList/', {
         orderlist: olist
     }, function (r) {
-        console.info(r.ret_msg);
+        odlist = r.ret_msg;
+        showOrderList();
     });
 }
 
 function showOrderList() {
-    $('#listcount').html(orderlist.length + '单');
+    var data = {
+        title: 'baiduTemplate',
+        list: odlist
+    };
+    var html0 = baidu.template('order_temp', data);
+    $('#orderlist').html(html0);
+    $('#listcount').html(odlist.length + '单');
+
+    //添加点击事件
+    $('#orderlist .weui-cell').click(function () {
+        var click_orderid = $(this).data('id');
+        $.actions({
+            actions: [{
+                text: "移除",
+                className: "color-danger",
+                onClick: function () {
+                    //删除元素
+                    $('#od' + click_orderid).remove();
+                }
+            }]
+        });
+    });
+
 }
 
 //微信JSSDK签名获取
@@ -80,7 +105,46 @@ $.get('?/Weixin/getSignPackage/', {
     }
 );
 
+$.get('?/Weixin/getTruckList/', {}, function (r) {
+    $("#truck_select").select({
+        title: "选择车辆",
+        items: r.ret_msg
+    });
+});
+
 $('#begin_scan').click(function () {
-    getOrderInfo("'XBH590E0A','XBH590E0A'");
-    //scanQRCode();
+    scanQRCode();
+});
+
+$('#test_btn').click(function () {
+    getOrderInfo("'XBH590E0A','XBH5RCECF'");
+});
+
+$('#do_order').click(function () {
+    var truckid = $('#truck_select').data('values');
+    if (!truckid) {
+        $.alert('没有选择车辆！');
+        return;
+    }
+    //禁用按钮防止重复点击
+    $('#do_order').attr({"disabled": "disabled"});
+    var odcommitlist = '';
+    $('#orderlist .weui-cell').each(function () {
+        odcommitlist = odcommitlist + "," + $(this).data('id');
+    });
+    odcommitlist = odcommitlist.slice(1);
+    if (odcommitlist.length > 0) {
+        //处理发货数据
+        $.post('?/Weixin/orderSend/', {truckid: truckid, odlist: odcommitlist}, function (r) {
+            if (r.ret_code == 0) {
+                $.toast('发货成功');
+            } else {
+                $.alert('操作失败 ' + send_error_list[r.ret_code]);
+            }
+        });
+    } else {
+        $.alert('没有添加发货单！');
+    }
+    //启用按钮防止重复点击
+    $('#do_order').removeAttr("disabled");
 });

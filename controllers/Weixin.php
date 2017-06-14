@@ -26,6 +26,7 @@ class Weixin extends ControllerWx
         return $this->echoMsg(0, $signPackage);
     }
 
+    //发货流程中，变更发货单状态调用的方法
     public function changeOrderStatus()
     {
         $postdata = $this->post();
@@ -45,11 +46,12 @@ class Weixin extends ControllerWx
         return $this->echoMsg((int)$data[0]['res'], '');
     }
 
+    //发货操作时，扫描发货单之后，获取发货单的数据
     public function getOrderInfoByList()
     {
         $postdata = $this->post();
         $orderlist = $postdata['orderlist'];
-        $data = $this->Dao->select("id,concat(order_type,order_serial_no,'-',order_code) as desc")
+        $data = $this->Dao->select("id,order_type,order_serial_no,order_code")
             ->from(TABLE_ORDER)
             ->alias('o')
             ->where("o.order_code in ($orderlist)")
@@ -58,5 +60,28 @@ class Weixin extends ControllerWx
             ->exec();
         return $this->echoMsg(0, $data);
     }
+
+    //发货操作时，获取选择车辆的选项
+    public function getTruckList()
+    {
+        $data = $this->Dao->select("id as `value`,truck_code as `title`")
+            ->from(TABLE_TRUCK)
+            ->alias('t')
+            ->where("t.isvalid = 1")
+            ->exec();
+        return $this->echoMsg(0, $data);
+    }
+
+    //发货操作
+    public function orderSend()
+    {
+        $postdata = $this->post();
+        $truckid = intval($postdata['truckid']);
+        $odlist = $postdata['odlist'];
+        $uid = $this->Session->get('uid');
+        $data = $this->Db->query("call p_send_order('$odlist',$truckid,$uid);");
+        return $this->echoMsg((int)$data[0]['res'], '');
+    }
+
 
 }
