@@ -39,7 +39,7 @@ function slog($log,$type='log',$css='')
     {
         $type=preg_replace_callback('/_([a-zA-Z])/',create_function('$matches', 'return strtoupper($matches[1]);'),$type);
 
-        if(method_exists('\Util\SocketLog',$type) || in_array($type,\Util\SocketLog::$log_types))
+        if(method_exists('\Util\SocketLog',$type))
         {
            return  call_user_func(array('\Util\SocketLog',$type),$log,$css);
         }
@@ -60,7 +60,7 @@ function slog($log,$type='log',$css='')
            return \Util\SocketLog::pdolog($log,$type);
     }
 
-    throw new Exception($type.' is not SocketLog method');
+    //throw new Exception($type.' is not SocketLog method');
 }
 
 
