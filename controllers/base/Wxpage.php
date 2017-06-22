@@ -57,8 +57,8 @@ class Wxpage extends ControllerWx
     public function order($Query)
     {
         $order_code = $Query->order_code;
-        $this->loadModel(['mWeixin']);
-        $data = $this->mWeixin->getOrderByCode($order_code);
+        $this->loadModel(['mQuery']);
+        $data = $this->mQuery->getOrderByCode($order_code);
         $this->assign('order', $data);
         $this->assign('title', '发货单详情-' . $data['order_serial_no']);
         $this->show(self::TPL . 'weixin/order.tpl');
@@ -66,8 +66,9 @@ class Wxpage extends ControllerWx
 
     public function send()
     {
+        //权限判断
         $utitle = intval($this->Session->get('utitle'));
-        if ($utitle <> 7) {
+        if ($utitle != 7) {
             $this->show(self::TPL . 'wxnoauth.tpl');
             return;
         }

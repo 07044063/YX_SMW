@@ -67,6 +67,7 @@ class Modelx extends ControllerAdmin
         if ($id > 0) {
             try {
                 $this->mCommon->deleteById(TABLE_MODEL, $id);
+                $this->mCommon->deleteByWhere(TABLE_MODEL_GOODS, ['model_id' => $id]);
                 $this->echoMsg(0, '');
             } catch (Exception $ex) {
                 return $this->echoMsg(-1, $ex->getMessage());

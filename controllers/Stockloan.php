@@ -73,10 +73,13 @@ class Stockloan extends ControllerAdmin
         $id = intval($data['id']);
 
         if (!isset($data['stock_id']) or $data['stock_id'] == '') {
-            return $this->echoMsg(-1, '仓库号不能为空');
+            return $this->echoMsg(-1, '库区不能为空');
         }
         if (!isset($data['vendor_id']) or $data['vendor_id'] == '') {
-            return $this->echoMsg(-1, '供货商名称不能为空');
+            return $this->echoMsg(-1, '供货商不能为空');
+        }
+        if (!intval($data['price']) > 0) {
+            return $this->echoMsg(-1, '单价不正确');
         }
         $exsist = $this->Dao->select('count(*)')
             ->from(TABLE_STOCK_LOAN)
@@ -86,7 +89,7 @@ class Stockloan extends ControllerAdmin
             ->aw("id <> $id")
             ->getOne();
         if ($exsist > 0) {
-            return $this->echoMsg(-1, '当前仓库与厂商已经存在绑定，请避免重复绑定');
+            return $this->echoMsg(-1, '已有此供应商和库区的租赁数据');
         }
 
         $this->loadModel(['mCommon']);

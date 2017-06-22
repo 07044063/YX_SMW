@@ -20,8 +20,12 @@ app.controller('systemLogsController', function ($scope, $http, Util) {
         }).success(function (r) {
             Util.loading(false);
             $scope.list = r.list;
+            var paget = 1;
+            if (r.total > 0) {
+                paget = Math.ceil(r.total / $scope.params.pagesize);
+            }
             if (!$scope.init) {
-                Util.initPaginator(Math.ceil(r.total / $scope.params.pagesize), function (page) {
+                Util.initPaginator(paget, function (page) {
                     if ($scope.init) {
                         $(window).scrollTop(0);
                         $scope.params.page = page - 1;

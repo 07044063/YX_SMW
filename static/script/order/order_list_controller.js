@@ -2,32 +2,7 @@
 
 var app = angular.module('ngApp', ['Util.services', 'angularFileUpload']);
 
-app.controller('orderListController', function ($scope, $http, Util, FileUploader) {
-
-        var uploader = $scope.uploader = new FileUploader({
-            url: '?/Common/uploadExcel/',
-            formData: new Array({action: "Order"})
-        });
-
-        uploader.onBeforeUploadItem = function (fileItem) {
-            Util.loading();
-        };
-        uploader.onAfterAddingFile = function (fileItem) {
-        };
-        uploader.onCompleteItem = function (fileItem, response, status, headers) {
-            if (response.ret_code == 0) {
-                Util.alert(response.ret_msg);
-            } else if (response.ret_code == 1) {
-                Util.alert(response.ret_msg, true);
-            }
-        };
-        $scope.clearItems = function () {    //重新选择文件时，清空队列，达到覆盖文件的效果
-            uploader.clearQueue();
-        };
-        uploader.onCompleteAll = function () {
-            uploader.clearQueue();
-            Util.loading(false);
-        };
+app.controller('orderListController', function ($scope, $http, Util) {
 
         $scope.post_head = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
@@ -117,6 +92,23 @@ app.controller('orderListController', function ($scope, $http, Util, FileUploade
             });
         };
 
+        $scope.deleteOrder = function (e) {
+            var node = e.currentTarget;
+            var param = $.param({
+                id: $(node).data('id')
+            });
+            if (confirm('确定要删除这个收货单吗?')) {
+                $http.post('?/Order/deleteById/', param, $scope.post_head).success(function (r) {
+                    if (r.ret_code === 0) {
+                        Util.alert('删除成功');
+                        $(node).parents('tr').remove();
+                    } else {
+                        //alert(r.ret_msg);
+                        Util.alert('操作失败 ' + r.ret_msg, true);
+                    }
+                });
+            }
+        };
 
         /**
          * 初始化分页
@@ -137,4 +129,4 @@ app.controller('orderListController', function ($scope, $http, Util, FileUploade
         fnGetList();
 
     }
-)
+);

@@ -15,7 +15,7 @@
 
     <div class="pheader clearfix">
         <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"
-                                         placeholder="输入厂商或仓库信息按回车"/></div>
+                                         placeholder="输入厂商或库区信息按回车"/></div>
         <div class="button-set" style="margin-top: 13px;margin-right: 13px;">
             <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modal_modify_stockloan">添加</a>
             <!--<a class="btn btn-primary" ng-click="refresh($event)">刷新</a>-->
@@ -26,14 +26,14 @@
         <thead>
         <tr>
             <th class="hidden">ID</th>
-            <th>仓库代码</th>
-            <th>仓库名称</th>
+            <th>库区代码</th>
+            <th>库区名称</th>
             <th>供货商代码</th>
             <th>供货商名称</th>
             <th>供货商简码</th>
             <th>租赁单价</th>
             <th>租赁面积</th>
-            <th>其他描述</th>
+            <th>备注</th>
             <th width="100px" class="text-center">操作</th>
         </tr>
         </thead>

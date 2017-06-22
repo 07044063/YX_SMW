@@ -33,11 +33,12 @@ function scanQRCode() {
 }
 
 function getOrderInfo(olist) {
-    $.toptip('正在获取数据', 2000, 'warning');
+    $.showLoading();
     odlist = [];
     $.post('?/Weixin/getOrderInfoByList/', {
         orderlist: olist
     }, function (r) {
+        $.hideLoading();
         odlist = r.ret_msg;
         showOrderList();
     });
@@ -113,6 +114,11 @@ $.get('?/Weixin/getTruckList/', {}, function (r) {
 });
 
 $('#begin_scan').click(function () {
+    var truckid = $('#truck_select').data('values');
+    if (!truckid) {
+        $.alert('请先选择车辆！');
+        return;
+    }
     scanQRCode();
 });
 
@@ -126,8 +132,7 @@ $('#do_order').click(function () {
         $.alert('没有选择车辆！');
         return;
     }
-    //禁用按钮防止重复点击
-    $('#do_order').attr({"disabled": "disabled"});
+    $.showLoading();
     var odcommitlist = '';
     $('#orderlist .weui-cell').each(function () {
         odcommitlist = odcommitlist + "," + $(this).data('id');
@@ -136,6 +141,7 @@ $('#do_order').click(function () {
     if (odcommitlist.length > 0) {
         //处理发货数据
         $.post('?/Weixin/orderSend/', {truckid: truckid, odlist: odcommitlist}, function (r) {
+            $.hideLoading();
             if (r.ret_code == 0) {
                 $.toast('发货成功');
             } else {
@@ -143,8 +149,7 @@ $('#do_order').click(function () {
             }
         });
     } else {
+        $.hideLoading();
         $.alert('没有添加发货单！');
     }
-    //启用按钮防止重复点击
-    $('#do_order').removeAttr("disabled");
 });

@@ -6,10 +6,6 @@ var app = angular.module('ngApp', ['Util.services']);
 
 app.controller('receiveListController', function ($scope, $http, Util) {
 
-        $scope.post_head = {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-        };
-
         $scope.params = {
             page: 0,
             pagesize: 12
@@ -19,14 +15,19 @@ app.controller('receiveListController', function ($scope, $http, Util) {
 
         // 日期选择器
         $('#receiveFrom_date').datetimepicker({
-            format: 'Y-m-d'
+            timepicker: true,
+            format: 'Y-m-d H:i',
+            step: 5
         });
         $('#receiveTo_date').datetimepicker({
-            format: 'Y-m-d'
+            timepicker: true,
+            format: 'Y-m-d H:i',
+            step: 5
         });
 
         $scope.vendorlist = [];
         $scope.stocklist = [];
+
         $http.get('?/Receive/getVendorSelect/', {
             params: {}
         }).success(function (r) {
@@ -38,44 +39,62 @@ app.controller('receiveListController', function ($scope, $http, Util) {
             //供应商选择变化时 库区的下拉菜单联动
             $scope.stock_id = 0;
             $scope.selectChange();
-            if ($scope.vendor_id > 0) {
-                $http.get('?/Receive/getStockSelect/', {
-                    params: {
-                        vendor_id: $scope.vendor_id
-                    }
-                }).success(function (r) {
-                    $scope.stocklist = r.ret_msg;
-                    if ($scope.stocklist.length == 1) {
-                        $scope.stock_id = $scope.stocklist[0].id;
-                        $scope.selectChange();
-                    }
-                });
-            }
-        }
+            $http.get('?/Receive/getStockSelect/', {
+                params: {
+                    vendor_id: $scope.vendor_id
+                }
+            }).success(function (r) {
+                $scope.stocklist = r.ret_msg;
+                if ($scope.stocklist.length == 1) {
+                    $scope.stock_id = $scope.stocklist[0].id;
+                    $scope.selectChange();
+                }
+            });
+        };
 
         $scope.stockChange = function () {
             $scope.selectChange();
-        }
+        };
 
         $scope.selectChange = function () {
             //供应商和库区变化时 物料的下拉菜单联动
-            if ($scope.vendor_id > 0 && $scope.stock_id > 0) {
-                $http.get('?/Receive/getGoodsList/', {
-                    params: {
-                        vendor_id: $scope.vendor_id,
-                        stock_id: $scope.stock_id
-                    }
-                }).success(function (r) {
-                    $scope.goodslist = r.ret_msg;
-                });
-            } else {
-                $scope.goodslist = [];
-            }
+            $http.get('?/Receive/getGoodsList/', {
+                params: {
+                    vendor_id: $scope.vendor_id,
+                    stock_id: $scope.stock_id
+                }
+            }).success(function (r) {
+                $scope.goodslist = r.ret_msg;
+                $("#goods_select").html("");
+                if ($scope.goodslist.length > 0) {
+                    $("#goods_select").select2({
+                        placeholder: "请选择物料",
+                        data: $scope.goodslist
+                    }).val(0).trigger("change");
+                }
+            });
         };
 
         $scope.receiveCheckList = function (e) {
             //开始查询
+            $scope.init = false;
             fnGetList();
+        };
+
+        $scope.export = function (e) {
+            //导出数据
+            initparams();
+            Util.loading();
+            $http.get('?/Receive/export/', {
+                params: $scope.params
+            }).success(function (r) {
+                Util.loading(false);
+                if (r.ret_code == 0) {
+                    window.open(r.ret_msg);
+                } else {
+                    Util.Alert(r.ret_msg, true);
+                }
+            });
         };
 
         $scope.resetQuery = function (e) {
@@ -85,21 +104,29 @@ app.controller('receiveListController', function ($scope, $http, Util) {
             $scope.stock_id = 0;
             $scope.vendor_id = 0;
             $scope.goods_id = 0;
+            $scope.receiveFrom_date = '';
+            $scope.receiveTo_date = '';
+            $("#goods_select").html("");
+            $scope.vendorChange();
         };
 
-        function fnGetList() {
-            Util.loading();
+        function initparams() {
             $scope.params.stock_id = $scope.stock_id;
             $scope.params.vendor_id = $scope.vendor_id;
-            $scope.params.goods_id = $scope.goods_id;
+            $scope.params.goods_id = $("#goods_select").val();
             $scope.params.receiveFrom_date = $scope.receiveFrom_date;
             $scope.params.receiveTo_date = $scope.receiveTo_date;
+        }
+
+        function fnGetList() {
+            initparams();
+            Util.loading();
             $http.get('?/Receive/getList/', {
                 params: $scope.params
             }).success(function (r) {
                 Util.loading(false);
-                var json = r.list;
-                $scope.receiveList = json;
+                var sjson = r.list;
+                $scope.receiveList = sjson;
                 $scope.listcount = r.total;
                 if (!$scope.init) {
                     $scope.init = true;
@@ -127,5 +154,8 @@ app.controller('receiveListController', function ($scope, $http, Util) {
 
         fnGetList();
 
+        $scope.vendorChange();
+
     }
 )
+;

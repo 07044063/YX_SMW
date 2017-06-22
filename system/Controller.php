@@ -20,9 +20,11 @@ if (!defined('APP_PATH')) {
  * @property mAdmin $mAdmin
  * @property mCommon $mCommon
  * @property mStock $mStock
- * @property mReceive $mReceive
+ * @property mOrder $mOrder
+ * @property mInventory $mInventory
  * @property mImport $mImport
- * @property mWeixin $mWeixin
+ * @property mExport $mExport
+ * @property mQuery $mQuery
  */
 class Controller
 {

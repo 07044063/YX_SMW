@@ -57,12 +57,12 @@ $('#scan_qrcode').click(function () {
 });
 
 $('#do_order').click(function () {
-    //禁用按钮防止重复点击
-    $('#do_order').attr({"disabled": "disabled"});
+    $.showLoading();
     $.post('?/Weixin/changeOrderStatus/', {
         order_id: $('#order_id').val(),
         oldstatus: $('#order_status').val()
     }, function (r) {
+        $.hideLoading();
         if (!r.ret_code == 0) {
             $.alert('操作失败 ' + order_error_list[r.ret_code]);
         } else {
@@ -70,6 +70,4 @@ $('#do_order').click(function () {
             location.reload();
         }
     });
-    //启用按钮防止重复点击
-    $('#do_order').removeAttr("disabled");
 });

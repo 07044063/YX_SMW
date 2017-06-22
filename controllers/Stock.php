@@ -85,6 +85,12 @@ class Stock extends ControllerAdmin
     {
         $data = $this->post();
         $id = intval($data['id']);
+        if (!isset($data['warehouse_id']) or $data['warehouse_id'] == '') {
+            return $this->echoMsg(-1, '所属仓储不能为空');
+        }
+        if (!isset($data['stock_area']) or $data['stock_area'] == '') {
+            return $this->echoMsg(-1, '库区面积不能为空');
+        }
         if (!isset($data['stock_code']) or $data['stock_code'] == '') {
             return $this->echoMsg(-1, '库区代码不能为空');
         } else {
@@ -95,11 +101,11 @@ class Stock extends ControllerAdmin
                 ->aw("id <> $id")
                 ->getOne();
             if ($exsist > 0) {
-                return $this->echoMsg(-1, '供货商代码重复');
+                return $this->echoMsg(-1, '库区代码重复');
             }
         }
         if (!isset($data['stock_name']) or $data['stock_name'] == '') {
-            return $this->echoMsg(-1, '供货商名称不能为空');
+            return $this->echoMsg(-1, '库区名称不能为空');
         }
 
         $this->loadModel(['mStock']);

@@ -10,22 +10,30 @@ app.controller('receiveController', function ($scope, $http, Util) {
 
         $scope.goods = {};
         $scope.receivelist = [];
-        $scope.receiveId = [];
 
         $.datetimepicker.setLocale('zh');
 
         // 日期选择器
         $('#receive_date').datetimepicker({
-            format: 'Y-m-d'
+            timepicker: true,
+            format: 'Y-m-d H:i',
+            step: 5
         });
 
-        //设置默认的收货日期
+        ///设置默认的收货日期
         var date = new Date();
         var seperator = "-";
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
         var strDate = date.getDate();
-        $scope.receive_date = year + seperator + month + seperator + strDate;
+        if (strDate < 10) {
+            strDate = '0' + strDate;
+        }
+        var datestr = year + seperator + month + seperator + strDate + ' 08:00';
+        $scope.receive_date = datestr;
 
         $scope.vendorlist = {};
         $scope.stocklist = {};
@@ -53,11 +61,11 @@ app.controller('receiveController', function ($scope, $http, Util) {
                     }
                 });
             }
-        }
+        };
 
         $scope.stockChange = function () {
             $scope.selectChange();
-        }
+        };
 
         $scope.selectChange = function () {
             //供应商和库区变化时 物料的下拉菜单联动
@@ -90,29 +98,24 @@ app.controller('receiveController', function ($scope, $http, Util) {
             $scope.goods.goods_id = $("#goods_select").val();
             $scope.goods.goods_name = $("#goods_select option:selected").text();
             if (!$scope.vendor_id > 0 || !$scope.stock_id > 0 || $scope.receive_date == null) {
-                Util.alert('请填写完整的收货信息', true);
-            } else if (!$scope.goods.goods_id > 0 || !$scope.goods.count > 0) {
+                Util.alert('请先填写收货信息', true);
+            } else if (!$scope.goods.goods_id > 0 || isNaN($scope.goods.count)) {
                 Util.alert('物料信息或数量不正确', true);
             } else {
                 $scope.receivelist.push($scope.goods);
-                $scope.receiveId.push($scope.goods.goods_id);
                 $scope.goods = {};
                 $("#goods_select").select2().val(0).trigger("change");
             }
-        }
+        };
 
-        $scope.remove = function (e) {
-            var goods_id = $(e.target).data('id') + '';
-            var delindex = $scope.receiveId.indexOf(goods_id);
-            if (delindex != -1) {
-                $scope.receiveId.splice(delindex, 1);
-                $scope.receivelist.splice(delindex, 1);
-            }
-        }
+        $scope.remove = function (index) {
+            $scope.receivelist.splice(index, 1);
+        };
 
         $scope.saveAll = function () {
             if (!$scope.receivelist.length > 0) {
-                Util.alert('物料清单为空', true);
+                Util.alert('请先添加收货信息', true);
+                return;
             }
             for (var i = 0; i < $scope.receivelist.length; i++) {
                 //$scope.receivelist[i].vendor_id = $scope.vendor_id;
@@ -132,8 +135,8 @@ app.controller('receiveController', function ($scope, $http, Util) {
                     Util.alert('操作失败 ' + r.ret_msg, true);
                 }
             });
-        }
+        };
 
         $scope.selectChange();
     }
-)
+);

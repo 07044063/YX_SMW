@@ -78,4 +78,30 @@ class mAdmin extends Model
             ->getOneRow();
     }
 
+
+    /**
+     * 修改密码
+     * @param string $admin_acc
+     * @return array
+     */
+    public function changePass($data)
+    {
+        $old_pass = $this->encryptPassword($data['old']);
+        $isExist = $this->Dao->select('count(1)')
+            ->from(TABLE_PERSON)
+            ->where("isvalid = 1")
+            ->aw("id = " . $data['uid'])
+            ->aw("person_password = '$old_pass'")
+            ->getOne();
+        if ($isExist > 0) {
+            $this->Dao->update(TABLE_PERSON)
+                ->set(['person_password' => $this->encryptPassword($data['new'])])
+                ->where("isvalid = 1")
+                ->aw("id = " . $data['uid'])
+                ->exec();
+        } else {
+            throw new exception('原密码不正确');
+        }
+    }
+
 }

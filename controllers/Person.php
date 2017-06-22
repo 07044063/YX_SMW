@@ -90,12 +90,12 @@ class Person extends ControllerAdmin
                 return $this->echoMsg(-1, '手机号码不能重复');
             }
         }
-
-        if (!$id > 0) {
-            //创建初始密码
+        if (!$id > 0 || $data['flag'] == 1) {
+            //如果是创建新用户 或者修改了用户名，则更新初始密码
             $this->loadModel(['mAdmin']);
             $data['person_password'] = $this->mAdmin->encryptPassword(substr($data['person_phone'], -6));
         }
+        unset($data['flag']);
 
         $this->loadModel(['mCommon']);
         try {
@@ -119,6 +119,18 @@ class Person extends ControllerAdmin
         return $this->echoMsg(0, $title);
     }
 
+    public function changePassword()
+    {
+        $data = $this->post();
+        $data['uid'] = $this->Session->get('uid');
+        $this->loadModel(['mAdmin']);
+        try {
+            $this->mAdmin->changePass($data);
+            return $this->echoMsg(0, '');
+        } catch (Exception $ex) {
+            return $this->echoMsg(-1, $ex->getMessage());
+        }
+    }
 
     public function getOrgOption()
     {

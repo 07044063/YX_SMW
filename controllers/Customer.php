@@ -60,7 +60,7 @@ class Customer extends ControllerAdmin
                 return $this->echoMsg(-1, $ex->getMessage());
             }
         } else {
-            return $this->echoMsg(-1, '供货商信息不正确');
+            return $this->echoMsg(-1, '需求方信息不正确');
         }
     }
 
@@ -69,7 +69,7 @@ class Customer extends ControllerAdmin
         $data = $this->post();
         $id = intval($data['id']);
         if (!isset($data['customer_code']) or $data['customer_code'] == '') {
-            return $this->echoMsg(-1, '供货商代码不能为空');
+            return $this->echoMsg(-1, '需求方代码不能为空');
         } else {
             $exsist = $this->Dao->select('count(*)')
                 ->from(TABLE_CUSTOMER)
@@ -78,11 +78,11 @@ class Customer extends ControllerAdmin
                 ->aw("id <> $id")
                 ->getOne();
             if ($exsist > 0) {
-                return $this->echoMsg(-1, '供货商代码重复');
+                return $this->echoMsg(-1, '需求方代码重复');
             }
         }
         if (!isset($data['customer_name']) or $data['customer_name'] == '') {
-            return $this->echoMsg(-1, '供货商名称不能为空');
+            return $this->echoMsg(-1, '需求方名称不能为空');
         }
 
         $this->loadModel(['mCommon']);

@@ -5,8 +5,8 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 ng-if="stockloan.id > 0" class="modal-title">编辑仓储与供应商租赁信息</h4>
-                <h4 ng-if="stockloan.id == null" class="modal-title">创建仓储与供应商租赁信息</h4>
+                <h4 ng-if="stockloan.id > 0" class="modal-title">编辑库区租赁信息</h4>
+                <h4 ng-if="stockloan.id == null" class="modal-title">创建库区租赁信息</h4>
             </div>
             <input ng-model="stockloan.id" class="hidden"/>
 
@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="form-group">
-                            <label>仓库名称</label>
+                            <label>库区名称</label>
                             <select class="form-control"
                             ng-model="stockloan.stock_id"
                             ng-options="stock.id as stock.name for stock in stockList">

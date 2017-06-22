@@ -68,12 +68,17 @@ app.controller('modelGoodsListController', function ($scope, $http, Util) {
 
         $scope.goBack = function () {
             history.back();
-        }
+        };
 
         $scope.modifyModelGoods = function (e) {
             var btn = $(e.currentTarget);
             btn.html('处理中');
             $scope.mg.goods_id = $("#goods_select").val();
+            if(isNaN($scope.mg.goods_count)){
+                Util.alert('操作失败 请输入正确的数量', true);
+                btn.html('保存');
+                return;
+            }
             var param = $.param($scope.mg);
             $http.post('?/Modelx/createOrUpdateMg/', param, $scope.post_head).success(function (r) {
                 if (r.ret_code === 0) {

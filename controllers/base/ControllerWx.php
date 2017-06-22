@@ -19,7 +19,7 @@ class ControllerWx extends Controller
         }
         $UserId = $this->getWxUserId();
         if (!$UserId) {
-            $this->redirect("wxerror.php");
+            $this->redirect("?/Index/wxerror");
         } else {
             $this->loadModel('mAdmin');
             $admininfo = $this->mAdmin->get($UserId);

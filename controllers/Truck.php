@@ -5,6 +5,7 @@
  * Date: 2017/5/4
  * Time: 22:38
  */
+
 /**
  * 系统控制器
  */
@@ -58,7 +59,7 @@ class Truck extends ControllerAdmin
         $this->loadModel(['mCommon']);
         if ($id > 0) {
             try {
-                $this->mCommon->deleteById(TABLE_TRUCK,$id);
+                $this->mCommon->deleteById(TABLE_TRUCK, $id);
                 $this->echoMsg(0, '');
             } catch (Exception $ex) {
                 return $this->echoMsg(-1, $ex->getMessage());
@@ -77,7 +78,7 @@ class Truck extends ControllerAdmin
             return $this->echoMsg(-1, '车牌号不能为空');
         } else {
             $exsist = $this->Dao->select('count(*)')
-                ->from(TABLE_VENDOR)
+                ->from(TABLE_TRUCK)
                 ->where("truck_code = '" . $data['truck_code'] . "'")
                 ->aw("isvalid = 1")
                 ->aw("id <> $id")
@@ -86,16 +87,18 @@ class Truck extends ControllerAdmin
                 return $this->echoMsg(-1, '车牌号重复');
             }
         }
-//        if (!isset($data['vendor_name']) or $data['vendor_name'] == '') {
-//            return $this->echoMsg(-1, '供货商名称不能为空');
-//        }
-
+        if (!isset($data['truck_type']) or $data['truck_type'] == '') {
+            return $this->echoMsg(-1, '车辆类型不能为空');
+        }
+        if ($data['truck_date'] == '') {
+            unset($data['truck_date']);
+        }
         $this->loadModel(['mCommon']);
         try {
             if ($id > 0) {
-                $this->mCommon->updateById(TABLE_TRUCK,$data);
+                $this->mCommon->updateById(TABLE_TRUCK, $data);
             } else {
-                $this->mCommon->create(TABLE_TRUCK,$data);
+                $this->mCommon->create(TABLE_TRUCK, $data);
             }
             return $this->echoMsg(0, '');
         } catch (Exception $ex) {

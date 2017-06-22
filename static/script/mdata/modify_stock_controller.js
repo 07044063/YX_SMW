@@ -14,21 +14,24 @@ app.controller('modifyStockController', function ($scope, $http, Util) {
 
         $scope.modifyStock = function (e) {
             var btn = $(e.currentTarget);
+            if (isNaN($scope.stock.stock_area)) {
+                Util.alert('操作失败 请输入正确的库区面积', true);
+                return;
+            }
             $scope.stock.clerk_ids = $("#clerk_ids").val();
             var param = $.param($scope.stock);
-            $http.post('?/Stock/createOrUpdate/', param, $scope.post_head).
-                success(function (r) {
-                    if (r.ret_code === 0) {
-                        if ($scope.stock_id > 0) {
-                            Util.alert('保存成功');
-                        } else {
-                            Util.alert('添加成功');
-                        }
-                        //history.go(-1);
+            $http.post('?/Stock/createOrUpdate/', param, $scope.post_head).success(function (r) {
+                if (r.ret_code === 0) {
+                    if ($scope.stock_id > 0) {
+                        Util.alert('保存成功');
                     } else {
-                        Util.alert('操作失败 ' + r.ret_msg, true);
+                        Util.alert('添加成功');
                     }
-                });
+                    //history.go(-1);
+                } else {
+                    Util.alert('操作失败 ' + r.ret_msg, true);
+                }
+            });
         };
 
         $scope.goBack = function () {

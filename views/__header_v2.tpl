@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="renderer" content="webkit">
-    <title></title>
+    <title>{$title}</title>
     <link href="{$docroot}favicon.ico" rel="Shortcut Icon"/>
     <script type="text/javascript" src="{$docroot}static/script/lib/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="{$docroot}static/script/lib/angularjs/angular.min.js"></script>

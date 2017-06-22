@@ -17,10 +17,13 @@ class Order extends ControllerAdmin
         $where = "(order_code like '$search_text' or order_serial_no like '$search_text')";
         $list = $this->Dao->select()
             ->from(VIEW_ORDER)
+            ->where($where)
+            ->orderby('id desc')
             ->limit($pagesize * $page, $pagesize)
             ->exec();
         $list_count = $this->Dao->select('count(*)')
             ->from(VIEW_ORDER)
+            ->where($where)
             ->getOne();
         $data = $this->toJson([
             'total' => $list_count,
@@ -32,31 +35,23 @@ class Order extends ControllerAdmin
 
     public function getById()
     {
+        $this->loadModel(['mOrder']);
         $id = intval($this->pGet('id'));
-        $data['order'] = $this->Dao->select()
-            ->from(VIEW_ORDER)
-            ->alias('o')
-            ->where("o.id = $id")
-            ->getOneRow();
-        $data['goodslist'] = $this->Dao->select('od.goods_id,od.bar_code,od.needs,od.remark,g.goods_name,g.goods_ccode,g.goods_packing,g.packing_volume,v.vendor_name,s.stock_name')
-            ->from(TABLE_ORDER_DETAIL)
-            ->alias('od')
-            ->leftJoin(TABLE_GOODS)
-            ->alias("g")
-            ->on("od.goods_id = g.id")
-            ->leftJoin(TABLE_VENDOR)
-            ->alias("v")
-            ->on("g.vendor_id = v.id")
-            ->leftJoin(TABLE_STOCK)
-            ->alias("s")
-            ->on("g.stock_id = s.id")
-            ->where("od.order_id = $id")
-            ->aw("od.isvalid = 1")
-            ->exec();
+        $data = $this->mOrder->getById($id);
         return $this->echoMsg(0, $data);
-
     }
 
+    public function deleteById()
+    {
+        $utitle = $this->Session->get('utitle');
+        if ($utitle != 2) {  //计划员可以删除
+            return $this->echoMsg(1, '没有操作权限');
+        }
+        $this->loadModel(['mOrder']);
+        $id = intval($this->pPost('id'));
+        $data = $this->mOrder->deleteById($id);
+        return $this->echoMsg(0, $data);
+    }
 
     public function getStatusById()
     {
@@ -88,6 +83,84 @@ class Order extends ControllerAdmin
         $uid = $this->Session->get('uid');
         $data = $this->Db->query("call p_update_order_status($id,'$oldstatus','$newstatus',$uid);");
         return $this->echoMsg((int)$data[0]['res'], '');
+    }
+
+    public function getVendorSelect()
+    {
+        $vendorlist = $this->Dao->select("id,vendor_name as text")
+            ->from(TABLE_VENDOR)
+            ->where("isvalid = 1")
+            ->exec();
+        return $this->echoMsg(0, $vendorlist);
+    }
+
+    public function getGoodsList()
+    {
+        $vendor_id = $this->pGet('vendor_id');
+        $goodslist = $this->Dao->select("id, CONCAT(goods.goods_ccode,'  ',goods.goods_name) as text")
+            ->from(TABLE_GOODS)
+            ->where("isvalid = 1")
+            ->aw("vendor_id = $vendor_id")
+            ->exec();
+        return $this->echoMsg(0, $goodslist);
+    }
+
+    public function createOrder()
+    {
+        $postdata = $this->post();
+        $orderdata = $postdata['orderData'];
+        $gddata = $postdata['gdData'];
+
+        if (!isset($orderdata['order_code']) or $orderdata['order_code'] == '') {
+            return $this->echoMsg(-1, '发货单号不能为空');
+        }
+        if (!isset($orderdata['order_date']) or $orderdata['order_date'] == '') {
+            return $this->echoMsg(-1, '需求日期不能为空');
+        }
+        if (!isset($orderdata['vendor_id']) or $orderdata['vendor_id'] == '') {
+            return $this->echoMsg(-1, '供应商不能为空');
+        }
+        if (!isset($orderdata['address']) or $orderdata['address'] == '') {
+            return $this->echoMsg(-1, '收货单位不能为空');
+        }
+
+        $this->loadModel(['mOrder']);
+        $res = $this->mOrder->createOrder($orderdata, $gddata);
+        if ($res['code'] == 0) {
+            return $this->echoMsg(0, $res['msg']);
+        } else {
+            return $this->echoMsg(1, $res['msg']);
+        }
+    }
+
+    public function updateSingelOrderDetail()
+    {
+        $data = $this->post();
+        $this->loadModel(['mCommon']);
+        try {
+            $this->mCommon->updateById(TABLE_ORDER_DETAIL, $data);
+            return $this->echoMsg(0, '');
+        } catch (Exception $ex) {
+            return $this->echoMsg(-1, $ex->getMessage());
+        }
+    }
+
+
+    public function getMaxOrderNo()
+    {
+        $date = $this->pGet('date');
+        $maxno = $this->Dao->select('max(order_code)')
+            ->from(TABLE_ORDER)
+            ->alias('o')
+            ->where("o.order_code like '$date%'")
+            ->aw('isvalid = 1')
+            ->getOne();
+        if ($maxno) {
+            $no = intval($maxno) + 1;
+        } else {
+            $no = $date . '0001';
+        }
+        return $this->echoMsg(0, $no);
     }
 
 }

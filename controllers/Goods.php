@@ -60,7 +60,7 @@ class Goods extends ControllerAdmin
                 return $this->echoMsg(-1, $ex->getMessage());
             }
         } else {
-            return $this->echoMsg(-1, '供货商信息不正确');
+            return $this->echoMsg(-1, '物料信息不正确');
         }
     }
 
@@ -85,7 +85,12 @@ class Goods extends ControllerAdmin
         if (!isset($data['goods_name']) or $data['goods_name'] == '') {
             return $this->echoMsg(-1, '物料名称不能为空');
         }
-
+        if (!isset($data['vendor_id']) or $data['vendor_id'] == '') {
+            return $this->echoMsg(-1, '供应商信息不能为空');
+        }
+        if (!isset($data['stock_id']) or $data['stock_id'] == '') {
+            return $this->echoMsg(-1, '库区信息不能为空');
+        }
         $this->loadModel(['mCommon']);
         try {
             if ($id > 0) {

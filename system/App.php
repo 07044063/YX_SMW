@@ -97,7 +97,8 @@ class App
                         $authCheck = Util::checkAuth($RouteParam->controller, $RouteParam->action);
                         if (!$authCheck > 0) {
                             header('Location: ?/Common/noauth');
-                            throw new Exception("访问错误：{$RouteParam->controller}->{$RouteParam->action}() 没有权限");
+                            return;
+                            //throw new Exception("访问错误：{$RouteParam->controller}->{$RouteParam->action}() 没有权限");
                         }
                     }
                     // 回调根目录

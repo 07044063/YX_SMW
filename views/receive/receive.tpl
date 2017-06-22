@@ -9,6 +9,9 @@
 
     {literal}
         <div class="panel panel-default">
+            <button type="button" class="btn btn-success pull-right" ng-click="saveAll()"
+                    style="float: right;margin-top: 5px;margin-right: 5px">全部保存
+            </button>
             <div class="panel-heading">收货信息</div>
             <div class="pd15 row">
                 <div class="col-xs-4">
@@ -31,18 +34,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-4">
                     <div class="form-group">
-                        <lable>收货日期</lable>
-                        <input style="display: inline; width: 50%; margin-left: 15px" type="text" id="receive_date"
-                               placeholder="请选择收货日期" ng-model="receive_date"
+                        <lable>收货时间</lable>
+                        <input style="display: inline; width: 60%; margin-left: 15px" type="text" id="receive_date"
+                               placeholder="" ng-model="receive_date"
                                class="form-control"/>
-                    </div>
-                </div>
-                <div class="col-xs-1">
-                    <div class="form-group">
-                        <button type="button" class="btn btn-success pull-right" ng-click="saveAll()">全部保存
-                        </button>
                     </div>
                 </div>
             </div>
@@ -87,7 +84,7 @@
                     <td><span>{{receive.goods_name}}</span></td>
                     <td width="20%"><span>数量：{{receive.count}}</span></td>
                     <td width="30%"><span>{{receive.remark}}</span></td>
-                    <td width="5%"><a class="text-danger" data-id="{{receive.goods_id}}" ng-click="remove($event)"
+                    <td width="5%"><a class="text-danger" data-id="{{receive.goods_id}}" ng-click="remove($index)"
                                       href="#">移除</a>
                     </td>
                 </tr>

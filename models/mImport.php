@@ -44,18 +44,19 @@ class mImport extends Model
                     $order["order_code"] = $data[$i]["P"];
                     $order["order_type"] = $data[$i]["D"]; //订单类型
                     $order["vendor_code"] = $data[$i]["E"];  //供应商代码
+                    $order["address"] = $data[$i]["G"];  //生产线
                     $order["dock"] = $data[$i]["H"];   //道口
                     $order["order_serial_no"] = $data[$i]["O"];  //流水号
                     $order["order_date"] = $data[$i]["I"];  //流水号
                     $order["status"] = 'create';
-                    $order["customer_id"] = '3';  //设置收货方ID
+                    $order["customer_id"] = $default_customer_id;  //设置收货方ID
                     $isExist = $this->Dao->select('count(1)')
                         ->from(TABLE_ORDER)
                         ->where("order_code = '" . $order["order_code"] . "'")
                         ->aw('isvalid = 1')
                         ->getOne();
                     if ($isExist > 0) {
-                        $emsg = $emsg . "[发货单" . $order["order_serial_no"] . "已存在]";
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "已存在]";
                         break;
                     }
                     $order["vendor_id"] = $this->Dao->select('id')
@@ -64,7 +65,7 @@ class mImport extends Model
                         ->aw("isvalid = 1")
                         ->getOne();
                     if (!$order["vendor_id"] > 0) {
-                        $emsg = $emsg . "[发货单" . $order["order_serial_no"] . "供应商信息不正确]";
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商信息不正确]";
                         break;
                     }
                     $order_insert = $order;
@@ -84,28 +85,34 @@ class mImport extends Model
                         //保存成功
                         unset($order_insert);
                     } else {
-                        $emsg = $emsg . "[收货单保存失败]";
+                        $emsg = $emsg . "[发货单保存失败]";
                         break;
                     }
                 }
                 //订单明细
                 if ($order["order_code"] == $data[$i]["P"]) {
                     if ($order["order_type"] <> $data[$i]["D"]) {
-                        $emsg = $emsg . "[发货单" . $order["order_serial_no"] . "类型不一致]";
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]";
                         break;
                     }
                     if ($order["vendor_code"] <> $data[$i]["E"]) {
-                        $emsg = $emsg . "[发货单" . $order["order_serial_no"] . "供应商不一致]";
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商不一致]";
                         break;
                     }
                     if ($order["dock"] <> $data[$i]["H"]) {
-                        $emsg = $emsg . "[发货单" . $order["order_serial_no"] . "道口不一致]";
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "道口不一致]";
                         break;
                     }
                     unset($order_detail);
                     $order_detail["order_id"] = $order['id'];  //订单ID
                     $order_detail["bar_code"] = $data[$i]["L"]; //条形码
-                    $order_detail["needs"] = $data[$i]["F"];   //需求数量
+                    $order_detail["needs"] = intval($data[$i]["F"]);   //需求数量
+                    $order_detail["sends"] = $order_detail["needs"];   //需求数量
+                    $order_detail["receives"] = $order_detail["needs"];   //需求数量
+                    if (!$order_detail["needs"] > 0) {
+                        $emsg = $emsg . "[行$i ：需求数量不正确]";
+                        break;
+                    }
                     $order_detail["goods_ccode"] = $data[$i]["B"];  //物料图号
                     $goods_info = $this->Dao->select('id,vendor_id')
                         ->from(TABLE_GOODS)
@@ -113,11 +120,11 @@ class mImport extends Model
                         ->aw("isvalid = 1")
                         ->getOneRow();
                     if (!$goods_info["id"] > 0) {
-                        $emsg = $emsg . "[物料代码" . $order_detail["goods_ccode"] . "不正确]";
+                        $emsg = $emsg . "[行$i ：物料代码" . $order_detail["goods_ccode"] . "不正确]";
                         break;
                     }
                     if (!$goods_info["vendor_id"] > 0 || $goods_info["vendor_id"] <> $order["vendor_id"]) {
-                        $emsg = $emsg . "[供应商代码" . $order["vendor_code"] . "不正确或与系统内不一致]";
+                        $emsg = $emsg . "[行$i ：供应商代码" . $order["vendor_code"] . "不正确或与系统内不一致]";
                         break;
                     }
                     $order_detail["goods_id"] = $goods_info["id"];
@@ -127,7 +134,7 @@ class mImport extends Model
                         ->values(array_values($order_detail))
                         ->exec();
                     if (!$order_detail['id'] > 0) {
-                        $emsg = $emsg . "[收货单明细信息保存失败]";
+                        $emsg = $emsg . "[发货单明细信息保存失败]";
                         break;
                     }
                 }

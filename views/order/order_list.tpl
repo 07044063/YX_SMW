@@ -5,32 +5,26 @@
         padding: 0px 6px !important;
     }
 </style>
-<div class="pd15" ng-controller="orderListController" ng-app="ngApp" uploader="uploader">
+<div class="pd15" ng-controller="orderListController" ng-app="ngApp">
 
     {include file='../order/modal_order_status.html'}
-    {include file='../order/modal_order_import.html'}
 
     {literal}
         <div class="pheader clearfix">
             <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"
                                              placeholder="输入单号或流水号按回车"/></div>
-            <div class="button-set" style="margin-top: 13px;margin-right: 13px;">
-                <a class="btn btn-success" href="#" data-toggle="modal" data-target="#modal_order_import">Excel导入</a>
-                <a class="btn btn-success" href="#">添加</a>
-                <!--<a class="btn btn-primary" ng-click="refresh($event)">刷新</a>-->
-            </div>
         </div>
         <table class="table table-hover table-bordered" style="margin-bottom: 50px;">
             <thead>
             <tr>
                 <th class="hidden">ID</th>
-                <th>客户</th>
-                <th>收货单号</th>
-                <th>流水号</th>
+                <!--<th>客户</th>-->
                 <th>类型</th>
                 <th>供货商</th>
-                <th>送货时间</th>
-                <th>道口</th>
+                <th>收货单号</th>
+                <th>流水号</th>
+                <th>需求时间</th>
+                <!--<th>道口</th>-->
                 <th>状态</th>
                 <th width="100px" class="text-center">操作</th>
             </tr>
@@ -38,18 +32,31 @@
             <tbody>
             <tr ng-repeat="order in orderlist">
                 <td class="hidden">{{order.id}}</td>
-                <td>{{order.customer_name}}</td>
-                <td>{{order.order_code}}</td>
-                <td>{{order.order_serial_no}}</td>
+                <!--<td>{{order.customer_name}}</td>-->
                 <td>{{order.order_type}}</td>
                 <td>{{order.vendor_name}}</td>
+                <td>{{order.order_code}}</td>
+                <td>{{order.order_serial_no}}</td>
                 <td>{{order.order_date}}</td>
-                <td>{{order.dock}}</td>
+                <!--<td>{{order.dock}}</td>-->
                 <td>{{order.statusX}}</td>
                 <td>
-                    <a class="text-success" href="?/Page/orderdetail/id={{order.id}}">查看明细</a>
+                    <a class="text-success" href="?/Page/orderdetail/id={{order.id}}" target="_blank">查看</a>
+
+                    <a ng-show="order.status == 'create'" class="text-warning"
+                       href="?/Page/orderedit/id={{order.id}}" target="_blank">修改</a>
+
+                    <a ng-show="order.status == 'create'" class="text-danger" data-id="{{order.id}}"
+                       ng-click="deleteOrder($event)" href="#">删除</a>
+
                     <a class="text-info" data-id="{{order.id}}" data-toggle="modal" data-target="#modal_order_status"
-                       href="#">状态变更</a>
+                       href="#">状态</a>
+
+                    <a ng-show="order.status == 'delivery'" class="text-primary"
+                       href="?/Page/orderconfirm/id={{order.id}}" target="_blank">客服确认</a>
+
+                    <a ng-show="order.order_type == '手工单'" class="text-muted" href="?/Page/orderprint/orderid={{order.id}}"
+                       target="_blank">打印</a>
                 </td>
             </tr>
             </tbody>

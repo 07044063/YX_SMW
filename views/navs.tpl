@@ -2,7 +2,7 @@
     <span class="glyphicon glyphicon-home" aria-hidden="true"></span><i class="label">首页</i>
 </a>
 <div class='subnavs clearfix' id='subnav1'>
-    <a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="home">首页</a>
+    <a class='cap-nav-item' href='javascript:;' data-page="index" data-nav="home">首页</a>
 </div>
 
 {if $Auth.mdata}
@@ -32,7 +32,7 @@
 
 {if $Auth.receives}
     <a href="javascript:;" class="navItem" id="navitem3" rel='subnav3'>
-        <span class="glyphicon glyphicon-import" aria-hidden="true"></span><i class='label'>收货管理</i>
+        <span class="glyphicon glyphicon-import" aria-hidden="true"></span><i class='label'>入库管理</i>
     </a>
 {/if}
 <div class='subnavs clearfix' id='subnav3'>
@@ -42,26 +42,28 @@
     {if $Auth.receivecheck}
         <a class='cap-nav-item' href='javascript:;' data-page="receivecheck" data-nav="receives">收货信息查询</a>
     {/if}
-    {if $Auth.aaa}<a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="receives">到货异常记录</a>{/if}
+    {if $Auth.returning}
+        <a class='cap-nav-item' href='javascript:;' data-page="returning" data-nav="receives">退货入库</a>
+    {/if}
+    {if $Auth.blank}<a class='cap-nav-item' href='javascript:;' data-page="blank" data-nav="receives">到货异常记录</a>{/if}
 </div>
 
 {if $Auth.send}
     <a href="javascript:;" class="navItem" id="navitem4" rel='subnav4'>
-        <span class="glyphicon glyphicon-export" aria-hidden="true"></span><i class='label'>发货管理</i>
+        <span class="glyphicon glyphicon-export" aria-hidden="true"></span><i class='label'>出库管理</i>
     </a>
 {/if}
 <div class='subnavs clearfix' id='subnav4'>
-    {if $Auth.order}<a class='cap-nav-item' href='javascript:;' data-page="order" data-nav="send">发货单管理</a>{/if}
-</div>
-
-{if $Auth.return}
-    <a href="javascript:;" class="navItem" id="navitem5" rel='subnav5'>
-        <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><i class='label'>退货管理</i>
-    </a>
-{/if}
-<div class='subnavs clearfix' id='subnav5'>
-    {if $Auth.aaa}<a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="return">退货单管理</a>{/if}
-    {if $Auth.aaa}<a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="return">客服确认</a>{/if}
+    {if $Auth.ordercreate}
+        <a class='cap-nav-item' href='javascript:;' data-page="ordercreate" data-nav="send">发货单创建</a>
+    {/if}
+    {if $Auth.order}<a class='cap-nav-item' href='javascript:;' data-page="order" data-nav="send">发货单查询</a>{/if}
+    {if $Auth.backcreate}
+        <a class='cap-nav-item' href='javascript:;' data-page="backcreate" data-nav="send">退回单创建</a>
+    {/if}
+    {if $Auth.back}
+        <a class='cap-nav-item' href='javascript:;' data-page="back" data-nav="send">退回单查询</a>
+    {/if}
 </div>
 
 {if $Auth.report}
@@ -70,8 +72,10 @@
     </a>
 {/if}
 <div class='subnavs clearfix' id='subnav6'>
-    {if $Auth.aaa}<a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="report">库存查询</a>{/if}
-    {if $Auth.aaa}<a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="report">流水查询</a>{/if}
+    {if $Auth.inventory}
+        <a class='cap-nav-item' href='javascript:;' data-page="inventory" data-nav="report">库存查询</a>
+    {/if}
+    {if $Auth.record}<a class='cap-nav-item' href='javascript:;' data-page="record" data-nav="report">流水查询</a>{/if}
 </div>
 
 {if $Auth.settings}
@@ -83,7 +87,10 @@
     {if $Auth.setting}
         <a class='cap-nav-item' href='javascript:;' data-page="setting" data-nav="settings">基础设置</a>
     {/if}
-    {if $Auth.aaa}<a class='cap-nav-item' href='javascript:;' data-page="?" data-nav="settings">管理权限</a>{/if}
+    {if $Auth.blank}<a class='cap-nav-item' href='javascript:;' data-page="blank" data-nav="settings">管理权限</a>{/if}
+    {if $Auth.password}
+        <a class='cap-nav-item' href='javascript:;' data-page="password" data-nav="settings">修改密码</a>
+    {/if}
 </div>
 
 {if $Auth.system}
@@ -93,7 +100,6 @@
 {/if}
 <div class='subnavs clearfix' id='subnav10'>
     {if $Auth.logs}<a class='cap-nav-item' href='javascript:;' data-page="logs" data-nav="system">系统日志</a>{/if}
-    {if $Auth.Wxpage_index}<a class='cap-nav-item' href='?/Wxpage/index' data-nav="system">微信调试</a>{/if}
 </div>
 
 <br/>

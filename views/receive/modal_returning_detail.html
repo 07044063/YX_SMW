@@ -1,0 +1,84 @@
+<!-- modal-用户编辑 -->
+<div class="modal fade" id="modal_returning_detail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑详细信息</h4>
+            </div>
+            <input ng-model="returning_id" class="hidden"/>
+            <div class="modal-body">
+                {literal}
+                <div class="row" ng-show="returning_status == 'receive'">
+                    <div class="col-xs-12">
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>退货日期</label>
+                                <input type="text"
+                                       id="returning_date"
+                                       placeholder="" ng-model="goods.returning_date" class="form-control"/>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <label>类型</label>
+                                <select class="form-control"
+                                        ng-model="goods.returning_type"
+                                        ng-options="x as y for (x,y) in typelist">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <label>物料</label>
+                                <select id="goods_select" class="form-control select2" style="width: 100%">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group">
+                                <label>数量</label>
+                                <input type="text" placeholder="数量" ng-model="goods.counts"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th style="padding-left: 0px">物料明细</th>
+                                <th></th>
+                                <th>
+                                    <button type="button" class="btn btn-success btn-sm pull-right"
+                                            ng-show="returning_status == 'receive'"
+                                            ng-click="addGoods()">添加
+                                    </button>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="gd in gdlist">
+                                <td><span>类型：{{gd.returning_typeX}}</span></td>
+                                <td><span>名称：{{gd.goods_name}}</span></td>
+                                <td><span>数量：{{gd.counts}}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {/literal}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-show="returning_status == 'receive'"
+                        ng-click="saveAll($event)">全部保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

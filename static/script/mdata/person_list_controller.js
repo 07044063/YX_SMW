@@ -45,6 +45,7 @@ app.controller('personListController', function ($scope, $http, Util) {
                 }).success(function (r) {
                     $scope.person = r.ret_msg;
                     $scope.selected_person_type = $scope.ptypelist[$scope.person.person_type];
+                    $('#old_phone').val($scope.person.person_phone);
                     $scope.typeChange();
                 });
             } else {
@@ -63,6 +64,11 @@ app.controller('personListController', function ($scope, $http, Util) {
         $scope.modifyPerson = function (e) {
             var btn = $(e.currentTarget);
             btn.html('处理中');
+            var old_phone = $('#old_phone').val();
+            if ($scope.person.person_phone == old_phone) {
+            } else {
+                $scope.person.flag = 1;
+            }
             var param = $.param($scope.person);
             $http.post('?/Person/createOrUpdate/', param, $scope.post_head).success(function (r) {
                 if (r.ret_code === 0) {
@@ -96,8 +102,7 @@ app.controller('personListController', function ($scope, $http, Util) {
                     }
                 });
             }
-        }
-        ;
+        };
 
         $scope.typeChange = function () {
             //类型变化时 组织的下拉菜单联动

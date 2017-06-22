@@ -12,7 +12,7 @@ app.controller('warehouseListController', function ($scope, $http, Util) {
             page: 0,
             pagesize: 20
         };
-
+        $scope.warehouse = {};
         //$.datetimepicker.setLocale('zh');
         //
         //// 日期选择器
@@ -52,21 +52,19 @@ app.controller('warehouseListController', function ($scope, $http, Util) {
         $scope.modifyWarehouse = function (e) {
             var btn = $(e.currentTarget);
             btn.html('处理中');
-            var param = $.param($scope.warehouse);
-            $http.post('?/Warehouse/createOrUpdate/', param, $scope.post_head).
-                success(function (r) {
-                    if (r.ret_code === 0) {
-                        $('#modal_modify_warehouse').modal('hide');
-                        fnGetList();
-                        if ($scope.warehouse_id > 0) {
-                            Util.alert('保存成功');
-                        } else {
-                            Util.alert('添加成功');
-                        }
+            $.post('?/Warehouse/createOrUpdate/', $scope.warehouse, function (r) {
+                if (r.ret_code === 0) {
+                    $('#modal_modify_warehouse').modal('hide');
+                    fnGetList();
+                    if ($scope.warehouse_id > 0) {
+                        Util.alert('保存成功');
                     } else {
-                        Util.alert('操作失败 ' + r.ret_msg, true);
+                        Util.alert('添加成功');
                     }
-                });
+                } else {
+                    Util.alert('操作失败 ' + r.ret_msg, true);
+                }
+            });
             btn.html('保存');
         };
 
@@ -76,16 +74,17 @@ app.controller('warehouseListController', function ($scope, $http, Util) {
                 id: $(node).data('id')
             });
             if (confirm('你确定要删除这个供货商吗?')) {
-                $http.post('?/Warehouse/deleteById/', param, $scope.post_head).
-                    success(function (r) {
-                        if (r.ret_code === 0) {
-                            Util.alert('删除成功');
-                            $(node).parents('tr').remove();
-                        } else {
-                            //alert(r.ret_msg);
-                            Util.alert('操作失败 ' + r.ret_msg, true);
-                        }
-                    });
+                $.post('?/Warehouse/deleteById/', {
+                    id: $(node).data('id')
+                }, function (r) {
+                    if (r.ret_code === 0) {
+                        Util.alert('删除成功');
+                        $(node).parents('tr').remove();
+                    } else {
+                        //alert(r.ret_msg);
+                        Util.alert('操作失败 ' + r.ret_msg, true);
+                    }
+                });
             }
         }
         ;
@@ -125,4 +124,4 @@ app.controller('warehouseListController', function ($scope, $http, Util) {
         fnGetList();
 
     }
-)
+);
