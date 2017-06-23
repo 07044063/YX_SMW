@@ -123,6 +123,7 @@ $('#begin_scan').click(function () {
 });
 
 $('#test_btn').click(function () {
+    //添加测试数据
     getOrderInfo("'XBH590E0A','XBH5RCECF'");
 });
 

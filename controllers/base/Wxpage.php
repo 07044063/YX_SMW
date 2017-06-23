@@ -56,12 +56,19 @@ class Wxpage extends ControllerWx
 
     public function order($Query)
     {
-        $order_code = $Query->order_code;
+        $code = $Query->order_code;
         $this->loadModel(['mQuery']);
-        $data = $this->mQuery->getOrderByCode($order_code);
-        $this->assign('order', $data);
-        $this->assign('title', '发货单详情-' . $data['order_serial_no']);
-        $this->show(self::TPL . 'weixin/order.tpl');
+        if (substr($code, 0, 1) == 'R') {
+            $data = $this->mQuery->getBackByCode($code);
+            $this->assign('back', $data);
+            $this->assign('title', '退回单详情-' . $data['back_code']);
+            $this->show(self::TPL . 'weixin/back.tpl');
+        } else {
+            $data = $this->mQuery->getOrderByCode($code);
+            $this->assign('order', $data);
+            $this->assign('title', '发货单详情-' . $data['order_serial_no']);
+            $this->show(self::TPL . 'weixin/order.tpl');
+        }
     }
 
     public function send()
@@ -74,6 +81,18 @@ class Wxpage extends ControllerWx
         }
         $this->assign('title', '发货装车');
         $this->show(self::TPL . 'weixin/send.tpl');
+    }
+
+    public function orderlist()
+    {
+        $this->assign('title', '发货单清单');
+        $this->show(self::TPL . 'weixin/orderlist.tpl');
+    }
+
+    public function returninglist()
+    {
+        $this->assign('title', '退货单清单');
+        $this->show(self::TPL . 'weixin/returninglist.tpl');
     }
 
 }

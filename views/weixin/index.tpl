@@ -8,14 +8,14 @@
     </p>
 </div>
 
-<header class="Thead">发货</header>
-<div class="weui-cells">
+<header class="Thead">出库</header>
+<div class="weui-cells" style="margin-top: 0px">
     <a id="order_scan" class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__hd"><img
                     src="{$docroot}static/images/weixin/scan.png" style="width:32px;margin-right:5px;display:block">
         </div>
         <div class="weui-cell__bd">
-            <p>扫描发货单</p>
+            <p>扫描出库单</p>
         </div>
         <div class="weui-cell__ft"></div>
     </a>
@@ -28,26 +28,35 @@
         </div>
         <div class="weui-cell__ft"></div>
     </a>
-</div>
-<header class="Thead">查询</header>
-<div class="weui-cells">
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+    <a id="order_list" class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__hd"><img
-                    src="{$docroot}static/images/weixin/scan.png" style="width:32px;margin-right:5px;display:block">
+                    src="{$docroot}static/images/weixin/list.png" style="width:32px;margin-right:5px;display:block">
         </div>
         <div class="weui-cell__bd">
-            <p>cell standard</p>
+            <p>发货单清单</p>
         </div>
-        <div class="weui-cell__ft">说明文字</div>
+        <div class="weui-cell__ft"></div>
     </a>
-    <a class="weui-cell weui-cell_access" href="javascript:;">
+</div>
+<header class="Thead">入库</header>
+<div class="weui-cells" style="margin-top: 0px">
+    <a id="returing_create" class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__hd"><img
-                    src="{$docroot}static/images/weixin/scan.png" style="width:32px;margin-right:5px;display:block">
+                    src="{$docroot}static/images/weixin/photo.png" style="width:32px;margin-right:5px;display:block">
         </div>
         <div class="weui-cell__bd">
-            <p>cell standard</p>
+            <p>创建退货单</p>
         </div>
-        <div class="weui-cell__ft">说明文字</div>
+        <div class="weui-cell__ft"></div>
+    </a>
+    <a id="returing_list" class="weui-cell weui-cell_access" href="javascript:;">
+        <div class="weui-cell__hd"><img
+                    src="{$docroot}static/images/weixin/list.png" style="width:32px;margin-right:5px;display:block">
+        </div>
+        <div class="weui-cell__bd">
+            <p>退货单清单</p>
+        </div>
+        <div class="weui-cell__ft"></div>
     </a>
 </div>
 

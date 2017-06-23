@@ -1,12 +1,9 @@
 {include file="../__header_wx.tpl"}
 
-{assign var="script_name" value="order"}
-
-<input type="hidden" value="{$status}" id="status"/>
-
 <div id="container">
-    {if {$order_code}}
-        <a class="weui-btn weui-btn_primary" style="margin:10px" id="scan_qrcode" data-prom="" data-add="0">扫描发货单条码</a>
+    {if !$order.id}
+        {*<a class="weui-btn weui-btn_primary" style="margin:10px" id="scan_qrcode" data-prom="" data-add="0">扫描发货单条码</a>*}
+        <p class="text-title">未找到单据资料</p>
     {else}
         <input class="hidden" id="order_id" value="{$order.id}"/>
         <input class="hidden" id="order_status" value="{$order.status}"/>
@@ -16,13 +13,17 @@
                 <em class="weui-form-preview__value">&nbsp;{$order.order_serial_no}</em>
             </div>
             <div class="weui-form-preview__hd">
+                <label class="weui-form-preview__label">类型</label>
+                <em class="weui-form-preview__value">&nbsp;{$order.order_type}</em>
+            </div>
+            <div class="weui-form-preview__hd">
                 <label class="weui-form-preview__label">状态</label>
                 <em class="weui-form-preview__value">&nbsp;{$order.statusX}</em>
             </div>
             <div class="weui-form-preview__bd" style="border-bottom: 1px solid #d9d9d9;">
                 <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">客户</label>
-                    <span class="weui-form-preview__value">{$order.customer_name}</span>
+                    <label class="weui-form-preview__label">需求时间</label>
+                    <span class="weui-form-preview__value">{$order.order_date}</span>
                 </div>
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">收货单号</label>
@@ -33,8 +34,8 @@
                     <span class="weui-form-preview__value">{$order.vendor_name}</span>
                 </div>
                 <div class="weui-form-preview__item">
-                    <label class="weui-form-preview__label">送达时间</label>
-                    <span class="weui-form-preview__value">{$order.order_date}</span>
+                    <label class="weui-form-preview__label">收货单位</label>
+                    <span class="weui-form-preview__value">{$order.address}</span>
                 </div>
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">道口</label>
@@ -84,6 +85,22 @@
 
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
+<script>
+    $('#do_order').click(function () {
+        $.showLoading();
+        $.post('?/Weixin/changeOrderStatus/', {
+            order_id: $('#order_id').val(),
+            oldstatus: $('#order_status').val()
+        }, function (r) {
+            $.hideLoading();
+            if (!r.ret_code == 0) {
+                $.alert('操作失败 ' + order_error_list[r.ret_code]);
+            } else {
+                $.toast("操作成功");
+                location.reload();
+            }
+        });
+    });
+</script>
 
 {include file="../__footer_wx.tpl"}

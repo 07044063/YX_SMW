@@ -26,6 +26,20 @@ class Weixin extends ControllerWx
         return $this->echoMsg(0, $signPackage);
     }
 
+    //变更退回单状态调用的方法
+    public function changeBackStatus()
+    {
+        $postdata = $this->post();
+        $back_id = intval($postdata['back_id']);
+        $this->loadModel(['mInventory']);
+        try {
+            $this->mInventory->updateBackStatus($back_id);
+            return $this->echoMsg(0, '');
+        } catch (Exception $ex) {
+            return $this->echoMsg(-1, $ex->getMessage());
+        }
+    }
+
     //发货流程中，变更发货单状态调用的方法
     public function changeOrderStatus()
     {
@@ -72,6 +86,21 @@ class Weixin extends ControllerWx
         return $this->echoMsg(0, $data);
     }
 
+    //确认退货单已收货调用的方法
+    public function confirmReturningReceive()
+    {
+        $postdata = $this->post();
+        $data['id'] = intval($postdata['id']);
+        $data['status'] = 'receive';
+        $this->loadModel(['mCommon']);
+        try {
+            $this->mCommon->updateById($data);
+            return $this->echoMsg(0, '');
+        } catch (Exception $ex) {
+            return $this->echoMsg(-1, $ex->getMessage());
+        }
+    }
+
     //发货操作
     public function orderSend()
     {
@@ -83,5 +112,95 @@ class Weixin extends ControllerWx
         return $this->echoMsg((int)$data[0]['res'], '');
     }
 
+    //查看发货单清单
+    public function getOrderListByStatus($Query)
+    {
+        $this->Db->cache = false;
+        $this->Smarty->caching = false;
+
+        $status = array(
+            'create' => "新创建",
+            'receive' => "仓库已接收",
+            'ready' => "备货已完成",
+            'check' => "对点已完成",
+            'send' => "发货已完成",
+            'delivery' => "交货已完成",
+            'done' => "全部完成"
+        );
+
+        !isset($Query->page) && $Query->page = 0;
+        $limit = (15 * $Query->page) . ",15";
+
+        if ($Query->status == '' || !$Query->status) {
+            $where = '1 = 1';
+        } else {
+            if ($Query->status == 'readying') {
+                $where = "( status = 'receive' or status = 'ready' or status = 'check' )";
+            } else {
+                $where = "status = '" . $Query->status . "'";
+            }
+        }
+        if (!$this->isCached()) {
+            $orders = $this->Dao->select()
+                ->from(VIEW_ORDER)
+                ->alias('o')
+                ->where('o.isvalid = 1')
+                ->aw($where)
+                ->orderby('order_date desc')
+                ->limit($limit)
+                ->exec();
+            foreach ($orders as $i => $od) {
+                $orders[$i]['statusX'] = $status[$orders[$i]['status']];
+            }
+        }
+        $this->assign('orders', $orders);
+        $this->show('./views/weixin/orderlisttemp.tpl');
+    }
+
+    //查看发货单清单
+    public function getReturningListByStatus($Query)
+    {
+        $this->Db->cache = false;
+        $this->Smarty->caching = false;
+
+        $status = array(
+            'create' => "新创建",
+            'receive' => "仓库已接收",
+            'done' => "全部完成"
+        );
+
+        !isset($Query->page) && $Query->page = 0;
+        $limit = (15 * $Query->page) . ",15";
+
+        if ($Query->status == '' || !$Query->status) {
+            $where = '1 = 1';
+        } else {
+            $where = "status = '" . $Query->status . "'";
+        }
+        if (!$this->isCached()) {
+            $data = $this->Dao->select("r.*,p.person_name")
+                ->from(TABLE_RETURNING)
+                ->alias('r')
+                ->leftJoin(TABLE_PERSON)
+                ->alias('p')
+                ->on("r.create_by = p.id")
+                ->where('r.isvalid = 1')
+                ->aw($where)
+                ->orderby('returning_code desc')
+                ->limit($limit)
+                ->exec();
+            foreach ($data as $i => $od) {
+                $data[$i]['statusX'] = $status[$data[$i]['status']];
+            }
+        }
+        $this->assign('returnings', $data);
+        $utitle = $this->Session->get('utitle');
+        if ($utitle == 5) {  //库管可以操作退货单入库确认
+            $this->assign('auth', 1);
+        } else {
+            $this->assign('auth', 0);
+        }
+        $this->show('./views/weixin/returninglisttemp.tpl');
+    }
 
 }

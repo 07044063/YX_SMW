@@ -44,6 +44,7 @@ var order_status_list = {
 var back_status_list = {
     create: "新创建",
     receive: "仓库已接收",
+    send: "发货已完成",
     done: "全部完成"
 };
 

@@ -29,7 +29,7 @@
 
 <div id="orderlist" class="weui-cells"></div>
 
-<button id="test_btn" class="weui-vcode-btn">测试添加数据</button>
+{*<button id="test_btn" class="weui-vcode-btn">测试添加数据</button>*}
 
 <div class="bottomWrap clearfix">
     <div class="weui-form-preview__ft">

@@ -25,7 +25,7 @@ class mQuery extends Model
             ->aw("isvalid = 1")
             ->getOneRow();
         $data['statusX'] = $status[$data['status']];
-        $data['goods'] = $this->Dao->select()
+        $data['goods'] = $this->Dao->select("d.*,g.goods_ccode,g.goods_name")
             ->from(VIEW_ORDER_DETAIL_SUM)
             ->alias('d')
             ->leftJoin(TABLE_GOODS)
@@ -36,6 +36,53 @@ class mQuery extends Model
         $uid = $this->Session->get('uid');
         $data['hasauth'] = $this->Dao->select('f_check_order_byuser(' . $data['id'] . ",$uid)")
             ->getOne();
+        return $data;
+    }
+
+    //根据发货单条形码获取发货单信息，以及用户是否有操作权限
+    public function getBackByCode($code)
+    {
+        $status = array(
+            'create' => '新创建',
+            'receive' => '仓库已接收',
+            'done' => '全部完成'
+        );
+
+        $type = array(
+            '1' => '良品退回',
+            '2' => '不良品退回'
+        );
+
+        $data = $this->Dao->select("b.*,v.vendor_code,v.vendor_name")
+            ->from(TABLE_BACK)
+            ->alias('b')
+            ->leftJoin(TABLE_VENDOR)
+            ->alias('v')
+            ->on("b.vendor_id = v.id")
+            ->where("b.back_code = '$code'")
+            ->aw("b.isvalid = 1")
+            ->getOneRow();
+        $data['statusX'] = $status[$data['status']];
+        $data['back_typeX'] = $type[$data['back_type']];
+        $data['goods'] = $this->Dao->select("d.*,g.goods_ccode,g.goods_name")
+            ->from(TABLE_BACK_DETAIL)
+            ->alias('d')
+            ->leftJoin(TABLE_GOODS)
+            ->alias('g')
+            ->on('d.goods_id = g.id')
+            ->where("d.back_id = " . $data['id'])
+            ->exec();
+        $utitle = $this->Session->get('utitle');
+        $data['hasauth'] = 0;
+        if ($utitle == 4 && $data['status'] == 'send') {  //客服
+            $data['hasauth'] = 1;
+        }
+        if ($utitle == 5 && $data['status'] == 'create') {  //库管
+            $data['hasauth'] = 1;
+        }
+        if ($utitle == 5 && $data['status'] == 'receive') {  //库管
+            $data['hasauth'] = 1;
+        }
         return $data;
     }
 

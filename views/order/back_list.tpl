@@ -45,7 +45,7 @@
                     <a ng-show="back.status == 'create'" class="text-danger" data-id="{{back.id}}"
                        ng-click="deleteBack($event)" href="#">删除</a>
 
-                    <a ng-show="back.status == 'receive'" class="text-primary" data-id="{{back.id}}"
+                    <a ng-show="back.status == 'send'" class="text-primary" data-id="{{back.id}}"
                        ng-click="confirmBack($event)" href="#">客服确认</a>
 
                     <a class="text-muted" href="?/Page/orderprint/backid={{back.id}}"

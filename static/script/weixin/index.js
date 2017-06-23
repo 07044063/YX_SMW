@@ -1,4 +1,3 @@
-
 var signPackage = null;
 var accesstoken = 'AccessToken';
 
@@ -68,4 +67,16 @@ $('#order_scan').click(function () {
 
 $('#delivery_scan').click(function () {
     location.href = '?/Wxpage/send/';
+});
+
+$('#order_list').click(function () {
+    location.href = '?/Wxpage/orderlist/';
+});
+
+$('#returing_create').click(function () {
+    location.href = '?/Wxpage/send/';
+});
+
+$('#returing_list').click(function () {
+    location.href = '?/Wxpage/returninglist/';
 });
