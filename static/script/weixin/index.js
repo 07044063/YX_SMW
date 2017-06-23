@@ -74,7 +74,7 @@ $('#order_list').click(function () {
 });
 
 $('#returing_create').click(function () {
-    location.href = '?/Wxpage/send/';
+    location.href = '?/Wxpage/returningcreate/';
 });
 
 $('#returing_list').click(function () {

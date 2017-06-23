@@ -89,6 +89,12 @@ class Wxpage extends ControllerWx
         $this->show(self::TPL . 'weixin/orderlist.tpl');
     }
 
+    public function returningcreate()
+    {
+        $this->assign('title', '创建退货单');
+        $this->show(self::TPL . 'weixin/returningcreate.tpl');
+    }
+
     public function returninglist()
     {
         $this->assign('title', '退货单清单');
