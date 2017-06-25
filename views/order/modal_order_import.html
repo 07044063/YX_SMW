@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal_order_import">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -10,9 +10,9 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <!--<form method="post" action="" enctype="multipart/form-data" style="margin-left:30px">-->
-                        <lable>请选择需要上传的文件</lable>
+                        <lable class="control-label">请选择需要上传的文件</lable>
                         <!--<input type="file" name="file_stu" id="file_stu" style="margin:10px 0;text-align:center;">-->
-                        <input type="file" nv-file-select="" uploader="uploader" ng-click="clearItems()"/>
+                        <input type="file" id="input_file" class="file" />
                         <!--</form>-->
                     </div>
                 </div>
@@ -21,8 +21,8 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     取消
                 </button>
-                <button type="button" class="btn btn-success" ng-click="uploader.uploadAll()"
-                        ng-disabled="!uploader.getNotUploadedItems().length">导入
+                <button type="button" class="btn btn-success" ng-click="uploadclick()"
+                >导入
                 </button>
             </div>
         </div><!-- /.modal-content -->

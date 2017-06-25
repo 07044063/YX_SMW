@@ -154,7 +154,6 @@ class Page extends ControllerAdmin
         } else {
             $this->loadModel(['mOrder']);
             $data = $this->mOrder->getBackById($backid);
-            slog($data);
             $this->Smarty->assign('back', $data['back']);
             $this->Smarty->assign('gds', $data['goodslist']);
         }

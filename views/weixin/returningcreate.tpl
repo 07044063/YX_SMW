@@ -50,6 +50,9 @@
 <div style="margin: 10px">
     <a href="javascript:saveData();" class="weui-btn weui-btn_primary">创建退货单</a>
 </div>
+<div style="margin: 10px">
+    <a href="javascript:chooseAndSaveData();" class="weui-btn weui-btn_primary">拍照并上传退货单</a>
+</div>
 <script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
 
 {include file="../__footer_wx.tpl"}

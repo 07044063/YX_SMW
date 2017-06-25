@@ -1,37 +1,9 @@
 /* global angular */
 
-var app = angular.module('ngApp', ['Util.services', 'angularFileUpload']);
+var app = angular.module('ngApp', ['Util.services']);
 
-app.controller('orderCreateController', function ($scope, $http, Util, FileUploader) {
+app.controller('orderCreateController', function ($scope, $http, Util) {
 
-        var uploader = $scope.uploader = new FileUploader({
-            url: '?/Common/uploadExcel/',
-            formData: new Array({action: "Order"})
-        });
-
-        uploader.onBeforeUploadItem = function (fileItem) {
-            Util.loading();
-        };
-        uploader.onAfterAddingFile = function (fileItem) {
-        };
-        uploader.onCompleteItem = function (fileItem, response, status, headers) {
-            if (response.ret_code == 0) {
-                Util.alert(response.ret_msg);
-            } else if (response.ret_code == 1) {
-                Util.alert(response.ret_msg, true);
-            }
-        };
-        $scope.clearItems = function () {    //重新选择文件时，清空队列，达到覆盖文件的效果
-            uploader.clearQueue();
-        };
-        uploader.onCompleteAll = function () {
-            uploader.clearQueue();
-            Util.loading(false);
-        };
-
-        $scope.post_head = {
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-        };
 
         $scope.params = {
             page: 0,
@@ -175,5 +147,46 @@ app.controller('orderCreateController', function ($scope, $http, Util, FileUploa
 
         $scope.vendorChange();
         $scope.initOrderNo();
+
+        //初始化文件上传控件
+        $('#input_file').fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '?/Common/uploadFile', //上传的地址，如果自定义上传按钮则不需要在这设置
+            allowedFileExtensions: ['xls'],//接收的文件后缀
+            showRemove: true, //是否显示删除按钮
+            showUpload: false, //是否显示上传按钮
+            showCaption: true, //是否显示标题
+            showPreview: false, //是否显示预览画面
+            browseClass: "btn btn-primary", //按钮样式
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
+        }).on('fileuploaded', function (event, data) {
+            Util.loading();
+            if (data.response.ret_code == 0) {
+                afterUpload(data.response.ret_msg.path);
+            } else {
+                Util.alert(data.response.ret_msg, true);
+            }
+        });
+
+        $scope.uploadclick = function () {
+            var resultFile = $('#input_file')[0].files; //获取文件列表
+            if (resultFile.length == 1) {
+                $('#input_file').fileinput('upload');
+            } else {
+                Util.alert('请先选择文件', true);
+            }
+        };
+
+        function afterUpload(filePath) {
+            $.post('?/Common/importExcel', {filePath: filePath, action: 'Order'}, function (r) {
+                Util.loading(false);
+                if (r.ret_code == 0) {
+                    Util.alert(r.ret_msg);
+                } else {
+                    Util.alert(r.ret_msg, true);
+                }
+            });
+        }
+
     }
 );

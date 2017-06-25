@@ -1,11 +1,16 @@
 {include file='../__header_v2.tpl'}
+
+<link rel="Stylesheet" type="text/css" href="{$docroot}static/script/lib/fileupload/fileinput.min.css"/>
+<script type="text/javascript" src="{$docroot}static/script/lib/fileupload/fileinput.min.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/lib/fileupload/fileinput.zh.js"></script>
+
 {assign var="script_name" value="order_create_controller"}
 <style type="text/css">
     td {
         padding: 0px 6px !important;
     }
 </style>
-<div class="pd15" ng-controller="orderCreateController" ng-app="ngApp" uploader="uploader">
+<div class="pd15" ng-controller="orderCreateController" ng-app="ngApp">
 
     {include file='../order/modal_order_import.html'}
 
@@ -130,7 +135,6 @@
 
 <script src="{$docroot}static/script/lib/select2/select2.full.min.js"></script>
 
-<script type="text/javascript" src="{$docroot}static/script/lib/angular-file-upload.js"></script>
 <script type="text/javascript" src="{$docroot}static/script/order/{$script_name}.js"></script>
 
 <div class="navbar-fixed-bottom bottombar">

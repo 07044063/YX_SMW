@@ -1,6 +1,6 @@
 /* global angular */
 
-var app = angular.module('ngApp', ['Util.services', 'angularFileUpload']);
+var app = angular.module('ngApp', ['Util.services']);
 
 app.controller('orderListController', function ($scope, $http, Util) {
 

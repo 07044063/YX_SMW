@@ -64,7 +64,6 @@
     {/literal}
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/lib/angular-file-upload.js"></script>
 <script type="text/javascript" src="{$docroot}static/script/order/{$script_name}.js"></script>
 
 <div class="navbar-fixed-bottom bottombar">

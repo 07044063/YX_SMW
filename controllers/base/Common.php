@@ -71,22 +71,19 @@ class Common extends ControllerAdmin
         return $this->data;
     }
 
-    //上传文件
-    public function uploadExcel()
+    //导入EXCEL
+    public function importExcel()
     {
-        $tempPath = $_FILES['file']['tmp_name'];
-        $fileName = $_FILES['file']['name'];
         $action = $this->pPost('action');
-        if (!empty ($fileName)) {
-            $file_types = explode(".", $fileName);
+        $filePath = $this->pPost('filePath');
+        if (!empty ($filePath)) {
+            $file_types = explode(".", $filePath);
             $file_type = $file_types [count($file_types) - 1];
             //判别是不是.xls文件，判别是不是excel文件
             if (strtolower($file_type) != "xls") {
                 return $this->echoMsg(1, '请上传xls文件');
             } else {
-                $uploadPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $fileName;
-                move_uploaded_file($tempPath, $uploadPath);
-                $this->analyseExcel($uploadPath);
+                $this->analyseExcel($filePath);
                 $data = $this->data;
                 $this->loadModel(['mImport']);
                 $res = $this->mImport->importExcel($data, $action);
@@ -98,6 +95,26 @@ class Common extends ControllerAdmin
             }
         } else {
             return $this->echoMsg(1, '文件不能为空或者文件错误');
+        }
+    }
+
+    //上传文件
+    public function uploadFile()
+    {
+        global $config;
+        $uid = $this->Session->get('uid') . '';
+        $tempPath = $_FILES['file_data']['tmp_name'];
+        $fileName = urlencode($_FILES['file_data']['name']);
+        $file_types = explode(".", $fileName);
+        $file_type = $file_types [count($file_types) - 1];
+        $fname = time() . rand(100, 999) . $uid . '.' . $file_type;
+        $uploadPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $fname;
+        $uploadUrl = $config->domain . 'uploads' . DIRECTORY_SEPARATOR . $fname;
+        try {
+            move_uploaded_file($tempPath, $uploadPath);
+            return $this->echoMsg(0, ['path' => $uploadPath, 'url' => $uploadUrl]);
+        } catch (Exception $ex) {
+            return $this->echoMsg(1, $ex->getMessage());
         }
     }
 
