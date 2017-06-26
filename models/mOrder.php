@@ -75,7 +75,7 @@ class mOrder extends Model
             ->aw('isvalid = 1')
             ->getOne();
         if ($isExist > 0) {
-            $emsg = $emsg . "[单单号已存在]";
+            $emsg = $emsg . "[单号已存在]";
         }
         if ($emsg == '') {
             //插入主表数据

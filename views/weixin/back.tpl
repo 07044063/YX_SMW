@@ -81,7 +81,7 @@
             if (!r.ret_code == 0) {
                 $.alert('操作失败 ' + r.ret_msg);
             } else {
-                $.toast("操作成功");
+                $.alert("操作成功");
                 location.reload();
             }
         });

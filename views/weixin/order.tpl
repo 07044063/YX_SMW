@@ -96,7 +96,7 @@
             if (!r.ret_code == 0) {
                 $.alert('操作失败 ' + order_error_list[r.ret_code]);
             } else {
-                $.toast("操作成功");
+                $.alert("操作成功");
                 location.reload();
             }
         });

@@ -76,6 +76,14 @@ class Returning extends ControllerAdmin
         if (!$data['returning_code']) {
             return $this->echoMsg(-1, "退货单号不能为空");
         }
+        $isExist = $this->Dao->select('count(1)')
+            ->from(TABLE_RETURNING)
+            ->where("returning_code = '" . $data["returning_code"] . "'")
+            ->aw('isvalid = 1')
+            ->getOne();
+        if ($isExist > 0) {
+            return $this->echoMsg(-1, "单号已存在");
+        }
         //补齐六位数
         $data['returning_code'] = str_pad($data['returning_code'], 6, "0", STR_PAD_LEFT);
 
