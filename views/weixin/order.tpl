@@ -56,7 +56,7 @@
                     {*href="javascript:">操作记录*}
                     {*</button>*}
                     {if {$order.hasauth} > 0}
-                        <button id="do_order" class="weui-btn weui-btn_default"
+                        <button id="do_order" class="weui-btn weui-btn_success"
                                 href="javascript:">
                             {if {$order.status} == 'create'}
                                 仓库接收
