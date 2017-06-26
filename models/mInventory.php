@@ -91,12 +91,10 @@ class mInventory extends Model
         if ($back['status'] == 'create') {
             $back['status'] = 'receive';
             mCommon::updateById(TABLE_BACK, $back);
-        }
-        if ($back['status'] == 'receive') {
+        } else if ($back['status'] == 'receive') {
             $back['status'] = 'send';
             mCommon::updateById(TABLE_BACK, $back);
-        }
-        if ($back['status'] == 'send') {
+        } else if ($back['status'] == 'send') {
             $this->confirmBack($id);
         }
     }

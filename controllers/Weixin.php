@@ -36,6 +36,7 @@ class Weixin extends ControllerWx
             $this->mInventory->updateBackStatus($back_id);
             return $this->echoMsg(0, '');
         } catch (Exception $ex) {
+            Util::log($ex->getMessage());
             return $this->echoMsg(-1, $ex->getMessage());
         }
     }
@@ -94,9 +95,10 @@ class Weixin extends ControllerWx
         $data['status'] = 'receive';
         $this->loadModel(['mCommon']);
         try {
-            $this->mCommon->updateById($data);
+            $this->mCommon->updateById(TABLE_RETURNING, $data);
             return $this->echoMsg(0, '');
         } catch (Exception $ex) {
+            Util::log($ex->getMessage());
             return $this->echoMsg(-1, $ex->getMessage());
         }
     }

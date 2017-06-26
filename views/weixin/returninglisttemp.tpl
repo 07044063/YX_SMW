@@ -21,9 +21,9 @@
                 <img class="weui-media-box__thumb" src="{$returnings[oi].pic_url}" alt="">
             </div>
         </a>
-        <a href="javascript:doReceive({$returnings[oi].id});">
+        <a href="javascript:doReceive({$returnings[oi].id},'{$returnings[oi].status}');">
             <div class="weui-media-box__bd">
-                <p class="text-subtitle">退货单号：{$returnings[oi].returning_code}
+                <p class="text-subtitle">退货单{$returnings[oi].returning_code}
                     &nbsp;{$returnings[oi].statusX}</p>
                 <p class="text-normal">创建人：{$returnings[oi].person_name}</p>
                 <p class="text-normal">备注：{$returnings[oi].remark}</p>

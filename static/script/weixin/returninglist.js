@@ -29,8 +29,10 @@ $('.return-sort').unbind('click').click(function () {
     loadList(currentPage);
 });
 
-function doReceive(id) {
-    if (auth > 0) {
+function doReceive(id, status) {
+    //alert(auth);
+    //alert(status);
+    if (auth > 0 && status == 'create') {
         $.actions({
             title: "选择操作",
             onClose: function () {

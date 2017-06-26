@@ -45,6 +45,7 @@ class mQuery extends Model
         $status = array(
             'create' => '新创建',
             'receive' => '仓库已接收',
+            'send' => '已发货',
             'done' => '全部完成'
         );
 

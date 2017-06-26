@@ -103,6 +103,10 @@ class Wxpage extends ControllerWx
     public function returninglist()
     {
         $this->assign('title', '退货单清单');
+        $utitle = intval($this->Session->get('utitle'));
+        if ($utitle == 5) {  //库管
+            $this->assign('auth', 1);
+        }
         $this->show(self::TPL . 'weixin/returninglist.tpl');
     }
 
