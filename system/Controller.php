@@ -208,7 +208,7 @@ class Controller
                     // 获取Openid
                     $Result = $weObj->getUserId($AccessCode);
                     $UserId = $Result['UserId'];
-                    if (!empty($UserId)) {
+                    if ($UserId) {
                         $this->Session->set('wxuid', $UserId);
                         // 跳转原始回调地址
                         header("location:" . $redirect_uri);
@@ -217,8 +217,12 @@ class Controller
                         $wxuid = false;
                     }
                 } else {
-                    $this->redirect($weObj->getOauthRedirect($redirect_uri));
-                    exit(0);
+                    $state = $this->pGet('state');
+                    if (!$state) {
+                        $this->redirect($weObj->getOauthRedirect($redirect_uri));
+                        exit(0);
+                    }
+                    $wxuid = false;
                 }
             } else {
                 $wxuid = false;

@@ -145,6 +145,9 @@ $('#do_order').click(function () {
         $.post('?/Weixin/orderSend/', {truckid: truckid, odlist: odcommitlist}, function (r) {
             $.hideLoading();
             if (r.ret_code == 0) {
+                odcommitlist = '';
+                $('#orderlist .weui-cell').remove();
+                $('#listcount').html('');
                 $.toast('发货成功');
             } else {
                 $.alert('操作失败 ' + send_error_list[r.ret_code]);

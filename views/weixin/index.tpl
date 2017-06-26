@@ -38,7 +38,7 @@
         <div class="weui-cell__ft"></div>
     </a>
 </div>
-<header class="Thead">入库</header>
+<header class="Thead">退货入库</header>
 <div class="weui-cells" style="margin-top: 0px">
     <a id="returing_create" class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__hd"><img
