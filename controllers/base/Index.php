@@ -55,7 +55,6 @@ class Index extends Controller
                     foreach ($authData as $au) {
                         $authArr[$au['auth']] = 1;
                     }
-//                    slog($authArr);
                     $this->Smarty->assign('adid', $this->pCookie('uid'));
                     $this->Smarty->assign('adname', $this->pCookie('uname'));
                     $this->Smarty->assign('Auth', $authArr);

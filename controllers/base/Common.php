@@ -101,19 +101,43 @@ class Common extends ControllerAdmin
     //上传文件
     public function uploadFile()
     {
-        global $config;
         $uid = $this->Session->get('uid') . '';
         $tempPath = $_FILES['file_data']['tmp_name'];
-        $fileName = urlencode($_FILES['file_data']['name']);
+        $fileName = $_FILES['file_data']['name'];
         $file_types = explode(".", $fileName);
         $file_type = $file_types [count($file_types) - 1];
         $fname = time() . rand(100, 999) . $uid . '.' . $file_type;
         $uploadPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $fname;
-        $uploadUrl = $config->domain . 'uploads' . DIRECTORY_SEPARATOR . $fname;
         try {
             move_uploaded_file($tempPath, $uploadPath);
+            return $this->echoMsg(0, $uploadPath);
+        } catch (Exception $ex) {
+            return $this->echoMsg(1, $ex->getMessage());
+        }
+    }
+
+    //上传文件from Weixin
+    public function downloadPicFromWx()
+    {
+        $weObj = new Wechat($this->config->wxConfigs);
+        $mid = $this->pPost('mid');
+        $rawdata = $weObj->getMedia($mid);
+        global $config;
+        $uid = $this->Session->get('uid') . '';
+        $fname = time() . rand(100, 999) . $uid . '.jpg';
+        $strt = DIRECTORY_SEPARATOR;
+        $uploadPath = dirname(__FILE__) . $strt . '..' . $strt . '..' . $strt . 'uploads' . $strt . 'pic' . $strt . $fname;
+        $uploadUrl = $config->domain . 'uploads' . $strt . 'pic' . $strt . $fname;
+        try {
+            //以读写方式打开一个文件，若没有，则自动创建
+            $resource = fopen($uploadPath, 'w+');
+            //将图片内容写入上述新建的文件
+            fwrite($resource, $rawdata);
+            //关闭资源
+            fclose($resource);
             return $this->echoMsg(0, ['path' => $uploadPath, 'url' => $uploadUrl]);
         } catch (Exception $ex) {
+            Util::log($ex->getMessage());
             return $this->echoMsg(1, $ex->getMessage());
         }
     }

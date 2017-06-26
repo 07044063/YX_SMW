@@ -162,7 +162,7 @@ app.controller('orderCreateController', function ($scope, $http, Util) {
         }).on('fileuploaded', function (event, data) {
             Util.loading();
             if (data.response.ret_code == 0) {
-                afterUpload(data.response.ret_msg.path);
+                afterUpload(data.response.ret_msg);
             } else {
                 Util.alert(data.response.ret_msg, true);
             }

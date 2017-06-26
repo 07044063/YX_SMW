@@ -1710,7 +1710,7 @@ class Wechat
         if (!$agentid) $agentid = $this->agentid;
         if (!$this->access_token && !$this->checkAuth()) return false;
         $result = $this->http_get(self::API_URL_PREFIX . self::USER_GETINFO_URL . 'access_token=' . $this->access_token . '&code=' . $code . '&agentid=' . $agentid);
-        Util::log('getUserId: ' . $result);
+        //Util::log('getUserId: ' . $result);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode']) || $json['errcode'] != 0) {

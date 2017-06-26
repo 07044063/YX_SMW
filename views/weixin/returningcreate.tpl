@@ -6,7 +6,7 @@
     <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">退货单号</label></div>
         <div class="weui-cell__bd">
-            <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入退货单号">
+            <input id="r_id" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入退货单号">
         </div>
     </div>
     <div class="weui-cell">
@@ -14,7 +14,7 @@
             <label class="weui-label">备注说明</label>
         </div>
         <div class="weui-cell__bd">
-            <input class="weui-input" type="text" placeholder="请输入备注信息">
+            <input id="r_remark" class="weui-input" type="text" placeholder="请输入备注信息">
         </div>
     </div>
     <div class="weui-cell">
@@ -39,8 +39,7 @@
                         {*</li>*}
                     </ul>
                     <div class="weui-uploader__input-box">
-                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*"
-                               multiple="">
+                        <button id="uploaderInput" class="weui-uploader__input" type="input" onclick="chooseImg()">
                     </div>
                 </div>
             </div>
@@ -50,9 +49,7 @@
 <div style="margin: 10px">
     <a href="javascript:saveData();" class="weui-btn weui-btn_primary">创建退货单</a>
 </div>
-<div style="margin: 10px">
-    <a href="javascript:chooseAndSaveData();" class="weui-btn weui-btn_primary">拍照并上传退货单</a>
-</div>
+
 <script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
 
 {include file="../__footer_wx.tpl"}

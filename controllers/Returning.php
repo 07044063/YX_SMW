@@ -69,4 +69,26 @@ class Returning extends ControllerAdmin
         }
     }
 
+    public function create()
+    {
+        $data = $this->post();
+        $data['status'] = 'create';
+        if (!$data['returning_code']) {
+            return $this->echoMsg(-1, "退货单号不能为空");
+        }
+        //补齐六位数
+        $data['returning_code'] = str_pad($data['returning_code'], 6, "0", STR_PAD_LEFT);
+
+        if (!$data['pic_url']) {
+            return $this->echoMsg(-1, "图片信息不正确");
+        }
+        $this->loadModel(['mCommon']);
+        $rid = $this->mCommon->create(TABLE_RETURNING, $data);
+        if ($rid > 0) {
+            return $this->echoMsg(0, '');
+        } else {
+            return $this->echoMsg(-1, '保存失败');
+        }
+    }
+
 }
