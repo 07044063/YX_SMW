@@ -186,7 +186,7 @@ class Weixin extends ControllerWx
                 ->on("r.create_by = p.id")
                 ->where('r.isvalid = 1')
                 ->aw($where)
-                ->orderby('returning_code desc')
+                ->orderby('r.id desc')
                 ->limit($limit)
                 ->exec();
             foreach ($data as $i => $od) {

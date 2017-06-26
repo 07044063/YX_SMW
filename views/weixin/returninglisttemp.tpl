@@ -21,7 +21,7 @@
                 <img class="weui-media-box__thumb" src="{$returnings[oi].pic_url}" alt="">
             </div>
         </a>
-        <a {if $returnings[oi].status = 'create'} href="javascript:doReceive({$returnings[oi].id});" {/if}>
+        <a href="javascript:doReceive({$returnings[oi].id});">
             <div class="weui-media-box__bd">
                 <p class="text-subtitle">退货单号：{$returnings[oi].returning_code}
                     &nbsp;{$returnings[oi].statusX}</p>

@@ -91,6 +91,11 @@ class Wxpage extends ControllerWx
 
     public function returningcreate()
     {
+        $utitle = intval($this->Session->get('utitle'));
+        if ($utitle != 8) {  //跟单员
+            $this->show(self::TPL . 'wxnoauth.tpl');
+            return;
+        }
         $this->assign('title', '创建退货单');
         $this->show(self::TPL . 'weixin/returningcreate.tpl');
     }

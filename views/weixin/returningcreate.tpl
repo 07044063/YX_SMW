@@ -22,7 +22,7 @@
             <div class="weui-uploader">
                 <div class="weui-uploader__hd">
                     <p class="weui-uploader__title">图片上传</p>
-                    <div id="uploadFilesNumber" class="weui-uploader__info">0/1</div>
+                    {*<div id="uploadFilesNumber" class="weui-uploader__info">0/1</div>*}
                 </div>
                 <div class="weui-uploader__bd">
                     <ul class="weui-uploader__files" id="uploaderFiles">
