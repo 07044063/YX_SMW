@@ -90,7 +90,7 @@ class Person extends ControllerAdmin
                 return $this->echoMsg(-1, '手机号码不能重复');
             }
         }
-        if (!$id > 0 || $data['flag'] == 1) {
+        if (!$id || $data['flag'] == 1) {
             //如果是创建新用户 或者修改了用户名，则更新初始密码
             $this->loadModel(['mAdmin']);
             $data['person_password'] = $this->mAdmin->encryptPassword(substr($data['person_phone'], -6));

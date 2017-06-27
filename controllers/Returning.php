@@ -54,6 +54,10 @@ class Returning extends ControllerAdmin
 
     public function createDetail()
     {
+        $utitle = $this->Session->get('utitle');
+        if ($utitle != 4) {
+            return $this->echoMsg(-1, "你没有操作权限");
+        }
         $data = $this->post();
         $id = intval($data['id']);
         $detail = $data['data'];
