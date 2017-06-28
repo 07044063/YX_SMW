@@ -188,5 +188,13 @@ app.controller('orderCreateController', function ($scope, $http, Util) {
             });
         }
 
+        $scope.address_change = function () {
+            if ($scope.order.address == '备件库' || $scope.order.address == '延峰') {
+                $('#order_code').attr("disabled", false);
+            } else {
+                $('#order_code').attr("disabled", true);
+            }
+        }
+
     }
 );

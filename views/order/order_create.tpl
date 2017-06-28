@@ -38,6 +38,7 @@
                 <div class="form-group">
                     <lable>发货单号</lable>
                     <input style="display: inline; width: 65%; margin-left: 15px" type="text" placeholder=""
+                           id="order_code"
                            disabled="true" ng-model="order.order_code"
                            class="form-control"/>
                 </div>
@@ -57,7 +58,7 @@
                 <div class="form-group">
                     <lable>收货单位</lable>
                     <select class="form-control" id="address_select"
-                            style="display: inline; width: 65%; margin-left: 15px"
+                            style="display: inline; width: 65%; margin-left: 15px" ng-change="address_change()"
                             ng-model="order.address" ng-options="value for value in addresslist">
                     </select>
                 </div>

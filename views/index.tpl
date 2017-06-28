@@ -28,6 +28,9 @@
             <ul class="nav navbar-nav navbar-right">
                 <!-- @see http://v3.bootcss.com/components/ -->
                 <li class="topRightNavItem">
+                    <a href="http://220.178.49.209:8077/uma-unimax-web/login.action" target="_blank">一厂</a>
+                </li>
+                <li class="topRightNavItem">
                     <a href="//220.178.49.216/acegilogin.jsp" target="_blank">二厂</a>
                 </li>
                 <li class="topRightNavItem">
