@@ -33,7 +33,7 @@
 
 <div class="bottomWrap clearfix">
     <div class="weui-form-preview__ft">
-        <button id="do_order" class="weui-btn weui-btn_default"
+        <button id="do_order" class="weui-btn weui-btn_primary"
                 href="javascript:">发货
         </button>
     </div>

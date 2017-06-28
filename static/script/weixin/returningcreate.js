@@ -174,7 +174,7 @@ function saveData() {
                             }
                         })
                     } else {
-                        alert("图片获取失败！ " + r.ret_msg);
+                        $.alert("图片获取失败！ " + r.ret_msg);
                     }
                 })
             } else {
@@ -183,7 +183,7 @@ function saveData() {
         },
         fail: function (res) {
             $.hideLoading();
-            alert(res.errMsg);
+            $.alert(res.errMsg);
         }
 
     });
