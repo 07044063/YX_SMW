@@ -4,28 +4,6 @@ if (!defined('APP_PATH')) {
     exit(0);
 }
 
-/**
- * @property string $root 根目录
- * @property Dao $Dao Data access Object
- * @property Email $Email
- * @property ImageUploader $ImageUploader
- * @property Db $Db
- * @property DigCrypt $DigCrypt
- * @property Smarty $Smarty Smarty
- * @property Auth $Auth Auth
- * @property Load $Load Load
- * @property SqlCached $SqlCached SqlCached
- * @property Util $Util Util
- * @property Session $Session Session
- * @property mAdmin $mAdmin
- * @property mCommon $mCommon
- * @property mStock $mStock
- * @property mOrder $mOrder
- * @property mInventory $mInventory
- * @property mImport $mImport
- * @property mExport $mExport
- * @property mQuery $mQuery
- */
 class Controller
 {
 

@@ -10,33 +10,28 @@ if (!defined('APP_PATH')) {
 
 /**
  * @property Dao $Dao Data access Object
- * @property User $User User Management
- * @property Product $Product
- * @property Banners $Banners
- * @property mOrder $mOrder
- * @property mCompany $Company
  * @property Email $Email
  * @property ImageUploader $ImageUploader
  * @property Db $Db
  * @property DigCrypt $DigCrypt
- * @property mGmess $mGmess
- * @property mMemcache $Memcache
- * @property config $config Description
  * @property Smarty $Smarty Smarty
- * @property Helper $Helper Helper
- * @property UserCredit $UserCredit UserCredit
- * @property UserLevel $UserLevel UserLevel
  * @property Auth $Auth Auth
- * @property Envs $Envs Envs
  * @property Util $Util Util
  * @property Controller $Controller Controller
  * @property Load $Load Load
  * @property SqlCached $SqlCached SqlCached
- * @property GroupBuying $GroupBuying GroupBuying
  * @property Session $Session
- * @property mProductSpec $mProductSpec
+ * @property mAdmin $mAdmin
+ * @property mCommon $mCommon
+ * @property mStock $mStock
+ * @property mOrder $mOrder
+ * @property mInventory $mInventory
+ * @property mImport $mImport
+ * @property mExport $mExport
+ * @property mQuery $mQuery
  */
-class Model {
+class Model
+{
 
     /**
      * 控制器指针
@@ -45,7 +40,8 @@ class Model {
     protected $Controller;
 
     // 构造方法
-    public function __construct() {
+    public function __construct()
+    {
         // nothing
     }
 
@@ -54,7 +50,8 @@ class Model {
      * @param type $name
      * @return type
      */
-    function __get($name) {
+    function __get($name)
+    {
         $class = $this->Controller;
         if (property_exists($class, $name)) {
             return $this->Controller->$name;
@@ -66,7 +63,8 @@ class Model {
      * @param type $name
      * @param type $arguments
      */
-    function __call($name, $arguments) {
+    function __call($name, $arguments)
+    {
         // 对Controller进行动态反射，跨对象调用
         $class = new ReflectionClass('Controller');
         try {
@@ -82,9 +80,10 @@ class Model {
      * hook
      * 手动挂载model到另外一个model
      */
-    public final function hook($classA = array()) {
+    public final function hook($classA = array())
+    {
         foreach ($classA AS $class) {
-            $className        = get_class($class);
+            $className = get_class($class);
             $this->$className = $class;
             unset($className);
         }
@@ -94,7 +93,8 @@ class Model {
      * 链接控制器句柄
      * @param type $obj
      */
-    public final function linkController(&$obj) {
+    public final function linkController(&$obj)
+    {
         $this->Controller = $obj;
     }
 
