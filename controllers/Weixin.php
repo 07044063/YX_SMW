@@ -134,7 +134,7 @@ class Weixin extends ControllerWx
         $limit = (15 * $Query->page) . ",15";
 
         if ($Query->status == '' || !$Query->status) {
-            $where = '1 = 1';
+            $where = "( status <> 'done')";
         } else {
             if ($Query->status == 'readying') {
                 $where = "( status = 'receive' or status = 'ready' or status = 'check' )";
