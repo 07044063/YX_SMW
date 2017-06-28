@@ -44,9 +44,10 @@ class mInventory extends Model
             ->from(TABLE_RETURNING)
             ->where("id = $rid")
             ->aw("isvalid = 1")
+            ->aw("status = 'receive'")
             ->getOne();
         if ($isReturningExist == 0) {
-            throw  new Exception('退货单不存在');
+            throw  new Exception('退货单信息不正确');
         }
         $this->Db->transtart();
         try {
@@ -106,44 +107,48 @@ class mInventory extends Model
             ->from(TABLE_BACK)
             ->where("id = $id")
             ->aw("isvalid = 1")
+            ->aw("status = 'send'")
             ->getOneRow();
-
-        if ($back['back_type'] == 2) {
-            $filed = 'abnormal';
-        } else {
-            $filed = 'quantity';
-        }
-
-        $this->Db->transtart();
-
-        $gdlist = $this->Dao->select()
-            ->from(TABLE_BACK_DETAIL)
-            ->where("back_id = $id")
-            ->aw("isvalid = 1")
-            ->exec();
-        try {
-            foreach ($gdlist as $gd) {
-                $existCount = 0;
-                $existCount = $this->Dao->select($filed)
-                    ->from(TABLE_INVENTORY)
-                    ->where("goods_id = " . $gd['goods_id'])
-                    ->aw("isvalid = 1")
-                    ->getOne();
-                if ($existCount < $gd['needs']) {
-                    throw  new Exception('退回数量大于库存数量');
-                }
-                $sql = "UPDATE " . TABLE_INVENTORY . " set $filed = $filed - " . $gd['needs'] . " where isvalid = 1 and goods_id = " . $gd['goods_id'];
-                $this->Db->query($sql);
+        if ($back) {
+            if ($back['back_type'] == 2) {
+                $filed = 'abnormal';
+            } else {
+                $filed = 'quantity';
             }
-            $this->Dao->update(TABLE_BACK)
-                ->set(['status' => 'done'])
-                ->where("id = $id")
+
+            $this->Db->transtart();
+
+            $gdlist = $this->Dao->select()
+                ->from(TABLE_BACK_DETAIL)
+                ->where("back_id = $id")
                 ->aw("isvalid = 1")
                 ->exec();
-            $this->Db->transcommit();
-        } catch (Exception $ex) {
-            $this->Db->transrollback();
-            throw  new Exception($ex->getMessage());
+            try {
+                foreach ($gdlist as $gd) {
+                    $existCount = 0;
+                    $existCount = $this->Dao->select($filed)
+                        ->from(TABLE_INVENTORY)
+                        ->where("goods_id = " . $gd['goods_id'])
+                        ->aw("isvalid = 1")
+                        ->getOne();
+                    if ($existCount < $gd['needs']) {
+                        throw  new Exception('退回数量大于库存数量');
+                    }
+                    $sql = "UPDATE " . TABLE_INVENTORY . " set $filed = $filed - " . $gd['needs'] . " where isvalid = 1 and goods_id = " . $gd['goods_id'];
+                    $this->Db->query($sql);
+                }
+                $this->Dao->update(TABLE_BACK)
+                    ->set(['status' => 'done'])
+                    ->where("id = $id")
+                    ->aw("isvalid = 1")
+                    ->exec();
+                $this->Db->transcommit();
+            } catch (Exception $ex) {
+                $this->Db->transrollback();
+                throw  new Exception($ex->getMessage());
+            }
+        } else {
+            throw  new Exception('退回单信息不正确');
         }
     }
 }
