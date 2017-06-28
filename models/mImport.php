@@ -69,8 +69,8 @@ class mImport extends Model
                             ->aw('isvalid = 1')
                             ->getOne();
                         if ($isExist > 0) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "已存在]";
-                            break;
+                            //单子如果已经存在则跳过
+                            continue;
                         }
                         $order["vendor_id"] = $this->Dao->select('id')
                             ->from(TABLE_VENDOR)
@@ -103,7 +103,7 @@ class mImport extends Model
                         }
                     }
                     //订单明细
-                    if ($order["order_code"] == $data[$i]["P"]) {
+                    if ($order["order_code"] == $data[$i]["P"] && $isExist == 0) {
                         if ($order["order_type"] <> $data[$i]["D"]) {
                             $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]";
                             break;
@@ -176,8 +176,8 @@ class mImport extends Model
                             ->aw('isvalid = 1')
                             ->getOne();
                         if ($isExist > 0) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "已存在]";
-                            break;
+                            //单子如果已经存在则跳过
+                            continue;
                         }
                         $order["vendor_id"] = $this->Dao->select('id')
                             ->from(TABLE_VENDOR)
@@ -210,7 +210,7 @@ class mImport extends Model
                         }
                     }
                     //订单明细
-                    if ($order["order_code"] == $data[$i]["N"]) {
+                    if ($order["order_code"] == $data[$i]["N"] && $isExist == 0) {
                         if ($order["order_type"] <> $data[$i]["C"]) {
                             $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]";
                             break;
@@ -283,8 +283,7 @@ class mImport extends Model
                             ->aw('isvalid = 1')
                             ->getOne();
                         if ($isExist > 0) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "已存在]";
-                            break;
+                            continue;
                         }
                         $order["vendor_id"] = $this->Dao->select('id')
                             ->from(TABLE_VENDOR)
@@ -317,7 +316,7 @@ class mImport extends Model
                         }
                     }
                     //订单明细
-                    if ($order["order_code"] == $data[$i]["M"]) {
+                    if ($order["order_code"] == $data[$i]["M"] && $isExist == 0) {
                         if ($order["order_type"] <> $data[$i]["C"]) {
                             $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]";
                             break;
