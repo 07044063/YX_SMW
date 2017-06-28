@@ -85,6 +85,8 @@ class Wxpage extends ControllerWx
 
     public function orderlist()
     {
+        $status = $this->pGet('status');
+        $this->assign('status', $status);
         $this->assign('title', '发货单清单');
         $this->show(self::TPL . 'weixin/orderlist.tpl');
     }

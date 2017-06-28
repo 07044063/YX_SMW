@@ -25,6 +25,7 @@
    data-add="0">获取AccessToken</a>
 <a class="weui-btn weui-btn_warn" style="margin:10px" id="select_pic" data-prom="" data-add="0">选择图片</a>
 <a class="weui-btn weui-btn_default" style="margin:10px" id="scan_qrcode" data-prom="" data-add="0">扫描条码</a>
+<a class="weui-btn weui-btn_primary" style="margin:10px" id="test_button" data-prom="" data-add="0">测试按钮</a>
 <a class="weui-btn weui-btn_disabled weui-btn_primary" style="margin:10px" data-prom="" data-add="0">无效按钮</a>
 
 <script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>

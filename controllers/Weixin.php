@@ -138,6 +138,10 @@ class Weixin extends ControllerWx
         } else {
             if ($Query->status == 'readying') {
                 $where = "( status = 'receive' or status = 'ready' or status = 'check' )";
+            } else if ($Query->status == 'notdone') {
+                $where = "( status <> 'done')";
+            } else if ($Query->status == 'all') {
+                $where = '1 = 1';
             } else {
                 $where = "status = '" . $Query->status . "'";
             }

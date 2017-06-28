@@ -1,4 +1,3 @@
-
 var signPackage = null;
 var accesstoken = 'AccessToken';
 
@@ -33,7 +32,7 @@ function scanQRCode() {
             if (res.resultStr) {
                 var res_str = res.resultStr.split(',');
                 if (res_str[0] == 'CODE_128') {
-                    location.href = '?/Wxpage/order/order_code='+res_str[1];
+                    location.href = '?/Wxpage/order/order_code=' + res_str[1];
                 } else {
                     $.alert('无法识别扫描结果');
                 }
@@ -91,4 +90,7 @@ $('#select_pic').click(function () {
 });
 $('#scan_qrcode').click(function () {
     scanQRCode();
+});
+$('#test_button').click(function () {
+
 });
