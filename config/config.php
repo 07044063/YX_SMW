@@ -26,7 +26,7 @@ $config->db['pass'] = 'root';
 //$config->webroot = '/';
 
 // 系统根域名 /结尾
-$config->domain = 'http://127.0.0.1/YX_SMW/';
+$config->domain = 'http://localhost/wms/';
 
 $config->imagesSuffix50 = '_x50';
 

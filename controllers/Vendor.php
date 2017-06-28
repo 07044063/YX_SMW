@@ -71,17 +71,18 @@ class Vendor extends ControllerAdmin
 
         if (!isset($data['vendor_code']) or $data['vendor_code'] == '') {
             return $this->echoMsg(-1, '供货商代码不能为空');
-        } else {
-            $exsist = $this->Dao->select('count(*)')
-                ->from(TABLE_VENDOR)
-                ->where("vendor_code = '" . $data['vendor_code'] . "'")
-                ->aw("isvalid = 1")
-                ->aw("id <> $id")
-                ->getOne();
-            if ($exsist > 0) {
-                return $this->echoMsg(-1, '供货商代码重复');
-            }
         }
+//        else {
+//            $exsist = $this->Dao->select('count(*)')
+//                ->from(TABLE_VENDOR)
+//                ->where("vendor_code = '" . $data['vendor_code'] . "'")
+//                ->aw("isvalid = 1")
+//                ->aw("id <> $id")
+//                ->getOne();
+//            if ($exsist > 0) {
+//                return $this->echoMsg(-1, '供货商代码重复');
+//            }
+//        }
         if (!isset($data['vendor_name']) or $data['vendor_name'] == '') {
             return $this->echoMsg(-1, '供货商名称不能为空');
         }

@@ -110,7 +110,7 @@ class Index extends Controller
                 // 写入数据到session
                 $this->Session->set('loginKey', $loginKey);
                 $this->setUserSession($admininfo);
-                Util::log("登录成功 " . $admin_acc);
+                //Util::log("登录成功 " . $admin_acc);
                 // 下发管理员权限表
                 $this->sCookieHttpOnly('loginKey', $loginKey, self::COOKIE_EXP);
                 $this->sCookieHttpOnly('uid', $admininfo['id'], self::COOKIE_EXP);

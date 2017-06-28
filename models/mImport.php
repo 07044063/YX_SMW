@@ -72,10 +72,16 @@ class mImport extends Model
                             //单子如果已经存在则跳过
                             continue;
                         }
-                        $order["vendor_id"] = $this->Dao->select('id')
-                            ->from(TABLE_VENDOR)
-                            ->where("vendor_code = '" . $order["vendor_code"] . "'")
-                            ->aw("isvalid = 1")
+                        $order["vendor_id"] = $this->Dao->select('g.vendor_id')
+                            ->from(TABLE_GOODS)
+                            ->alias('g')
+                            ->leftJoin(TABLE_VENDOR)
+                            ->alias('v')
+                            ->on("g.vendor_id = v.id")
+                            ->where("v.vendor_code = '" . $order["vendor_code"] . "'")
+                            ->aw("g.isvalid = 1")
+                            ->aw("v.isvalid = 1")
+                            ->aw("g.goods_ccode = '" . $data[$i]["B"] . "'")
                             ->getOne();
                         if (!$order["vendor_id"]) {
                             $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商信息不正确]";
@@ -179,10 +185,16 @@ class mImport extends Model
                             //单子如果已经存在则跳过
                             continue;
                         }
-                        $order["vendor_id"] = $this->Dao->select('id')
-                            ->from(TABLE_VENDOR)
-                            ->where("vendor_code = '" . $order["vendor_code"] . "'")
-                            ->aw("isvalid = 1")
+                        $order["vendor_id"] = $this->Dao->select('g.vendor_id')
+                            ->from(TABLE_GOODS)
+                            ->alias('g')
+                            ->leftJoin(TABLE_VENDOR)
+                            ->alias('v')
+                            ->on("g.vendor_id = v.id")
+                            ->where("v.vendor_code = '" . $order["vendor_code"] . "'")
+                            ->aw("g.isvalid = 1")
+                            ->aw("v.isvalid = 1")
+                            ->aw("g.goods_ccode = '" . $data[$i]["A"] . "'")
                             ->getOne();
                         if (!$order["vendor_id"] > 0) {
                             $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商信息不正确]";
@@ -264,6 +276,10 @@ class mImport extends Model
                         //收货数量不为空 说明有收货数据 不做处理
                         continue;
                     }
+                    if ($data[$i]["L"] < '17000') {
+                        //排除掉历史的未收货的单据
+                        continue;
+                    }
                     //新订单
                     if ($order["order_code"] <> $data[$i]["M"]) {
                         unset($order);
@@ -285,11 +301,17 @@ class mImport extends Model
                         if ($isExist > 0) {
                             continue;
                         }
-                        $order["vendor_id"] = $this->Dao->select('id')
-                            ->from(TABLE_VENDOR)
-                            ->where("vendor_code = '" . $order["vendor_code"] . "'")
-                            ->aw("isvalid = 1")
-                            ->getOne();
+                        $order["vendor_id"] = $this->Dao->select('g.vendor_id')
+                            ->from(TABLE_GOODS)
+                            ->alias('g')
+                            ->leftJoin(TABLE_VENDOR)
+                            ->alias('v')
+                            ->on("g.vendor_id = v.id")
+                            ->where("v.vendor_code = '" . $order["vendor_code"] . "'")
+                            ->aw("g.isvalid = 1")
+                            ->aw("v.isvalid = 1")
+                            ->aw("g.goods_ccode = '" . $data[$i]["A"] . "'")
+                            ->getOne();;
                         if (!$order["vendor_id"] > 0) {
                             $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商信息不正确]";
                             break;
