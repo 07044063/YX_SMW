@@ -16,6 +16,8 @@ include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sys_tables.php';
 $config->debug = true;
 $config->WxUserId = '18655105517';
 
+$config->socketlog = true;
+
 // 数据库
 $config->db['host'] = '127.0.0.1';
 $config->db['db'] = 'wms';
