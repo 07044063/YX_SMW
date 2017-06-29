@@ -76,10 +76,11 @@ class Goods extends ControllerAdmin
                 ->from(TABLE_GOODS)
                 ->where("goods_ccode = '" . $data['goods_ccode'] . "'")
                 ->aw("isvalid = 1")
+                ->aw("vendor_id = " . $data['vendor_id'])
                 ->aw("id <> $id")
                 ->getOne();
             if ($exsist > 0) {
-                return $this->echoMsg(-1, '客户图号重复');
+                return $this->echoMsg(-1, '同一供应商的已存在相同图号的物料');
             }
         }
         if (!isset($data['goods_name']) or $data['goods_name'] == '') {

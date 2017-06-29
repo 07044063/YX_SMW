@@ -87,11 +87,7 @@ class Common extends ControllerAdmin
                 $data = $this->data;
                 $this->loadModel(['mImport']);
                 $res = $this->mImport->importExcel($data, $action);
-                if ($res['code'] == 0) {
-                    return $this->echoMsg(0, $res['msg']);
-                } else {
-                    return $this->echoMsg(1, $res['msg']);
-                }
+                return $this->echoMsg(0, $res);
             }
         } else {
             return $this->echoMsg(1, '文件不能为空或者文件错误');

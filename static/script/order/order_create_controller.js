@@ -181,7 +181,8 @@ app.controller('orderCreateController', function ($scope, $http, Util) {
             $.post('?/Common/importExcel', {filePath: filePath, action: 'Order'}, function (r) {
                 Util.loading(false);
                 if (r.ret_code == 0) {
-                    Util.alert(r.ret_msg);
+                    $('#success_text').html("成功导入" + r.ret_msg.success + "笔发货单");
+                    $('#msg_text').html(r.ret_msg.msg);
                 } else {
                     Util.alert(r.ret_msg, true);
                 }

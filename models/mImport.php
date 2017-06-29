@@ -10,13 +10,12 @@ class mImport extends Model
     public function importExcel($data, $action)
     {
         if ($action == null) {
-            return ['code' => 1, 'msg' => 'action不正确'];
+            return ['success' => 0, 'msg' => "action不正确"];
         }
+
         //订单导入
         if ($action == 'Order') {
             $rowCount = count($data);
-            //$columnCount = count($data[1]);
-
             //判断是几厂的模版
             $otype = 0;
             if ($data[1]["A"] == '序号') {
@@ -26,12 +25,6 @@ class mImport extends Model
             } else {
                 $otype = 3;
             }
-
-            $saveCount = 0;
-            $order = [];
-            $order_detail = [];
-            $emsg = '';
-
             //检查是否设置了导入的默认客户编码
             $default_customer_id = intval($this->Dao->select('value')
                 ->from(TABLE_SETTINGS)
@@ -39,363 +32,269 @@ class mImport extends Model
                 ->aw("isvalid = 1")
                 ->getOne());
             if (!$default_customer_id > 0) {
-                return ['code' => 1, "无效的客户ID:$default_customer_id"];
+                return ['success' => 0, 'msg' => "未设置默认的收货方信息"];
             }
 
-            $this->Db->transtart();
+            $saveCount = 0;
+            $order = [];
+            $order_detail = [];
+            $emsg = '';
+            $thiscode = '';
+            $thisid = '';
+
             for ($i = 2; $i <= $rowCount; $i++) {
+                $raw = [];
                 if ($otype == 2) {
-                    //2厂模版导入开始
-                    if ($data[$i]["M"] <> null) {
-                        //收货数量不为空 说明有收货数据 不做处理
-                        continue;
-                    }
-                    //新订单
-                    if ($order["order_code"] <> $data[$i]["P"]) {
-                        unset($order);
-                        unset($order_detail);
-                        $order["order_code"] = $data[$i]["P"];
-                        $order["order_type"] = $data[$i]["D"]; //订单类型
-                        $order["vendor_code"] = $data[$i]["E"];  //供应商代码
-                        $order["address"] = '江淮二工厂' . $data[$i]["G"];  //生产线
-                        $order["dock"] = $data[$i]["H"];   //道口
-                        $order["order_serial_no"] = $data[$i]["O"];  //流水号
-                        $order["order_date"] = $data[$i]["I"];  //流水号
-                        $order["status"] = 'create';
-                        $order["customer_id"] = $default_customer_id;  //设置收货方ID
-                        $isExist = $this->Dao->select('count(1)')
-                            ->from(TABLE_ORDER)
-                            ->where("order_code = '" . $order["order_code"] . "'")
-                            ->aw('isvalid = 1')
-                            ->getOne();
-                        if ($isExist > 0) {
-                            //单子如果已经存在则跳过
-                            continue;
-                        }
-                        $order["vendor_id"] = $this->Dao->select('g.vendor_id')
-                            ->from(TABLE_GOODS)
-                            ->alias('g')
-                            ->leftJoin(TABLE_VENDOR)
-                            ->alias('v')
-                            ->on("g.vendor_id = v.id")
-                            ->where("v.vendor_code = '" . $order["vendor_code"] . "'")
-                            ->aw("g.isvalid = 1")
-                            ->aw("v.isvalid = 1")
-                            ->aw("g.goods_ccode = '" . $data[$i]["B"] . "'")
-                            ->getOne();
-                        if (!$order["vendor_id"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商信息不正确]";
-                            break;
-                        }
-                        $order_insert = $order;
-                        unset($order_insert["vendor_code"]);
-                        $order_insert['create_by'] = $this->Session->get('uid');
-                        $order['id'] = $this->Dao->insert(TABLE_ORDER, array_keys($order_insert))
-                            ->values(array_values($order_insert))
-                            ->exec();
-                        //插入订单状态资料
-                        if ($order['id'] > 0) {
-                            $saveCount = $saveCount + 1;
-                            $order_status_id = $this->Dao->insert(TABLE_ORDER_STATUS, ['order_id', 'status', 'create_by'])
-                                ->values([$order['id'], 'create', $order_insert['create_by']])
-                                ->exec();
-                        }
-                        if ($order['id'] > 0 && $order_status_id > 0) {
-                            //保存成功
-                            unset($order_insert);
-                        } else {
-                            $emsg = $emsg . "[发货单保存失败]";
-                            break;
-                        }
-                    }
-                    //订单明细
-                    if ($order["order_code"] == $data[$i]["P"] && $isExist == 0) {
-                        if ($order["order_type"] <> $data[$i]["D"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]";
-                            break;
-                        }
-                        if ($order["vendor_code"] <> $data[$i]["E"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商不一致]";
-                            break;
-                        }
-                        if ($order["dock"] <> $data[$i]["H"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "道口不一致]";
-                            break;
-                        }
-                        unset($order_detail);
-                        $order_detail["order_id"] = $order['id'];  //订单ID
-                        $order_detail["bar_code"] = $data[$i]["L"]; //条形码
-                        $order_detail["needs"] = intval($data[$i]["F"]);   //需求数量
-                        $order_detail["sends"] = $order_detail["needs"];   //需求数量
-                        $order_detail["receives"] = $order_detail["needs"];   //需求数量
-                        if (!$order_detail["needs"] > 0) {
-                            $emsg = $emsg . "[行$i ：需求数量不正确]";
-                            break;
-                        }
-                        $order_detail["goods_ccode"] = $data[$i]["B"];  //物料图号
-                        $goods_info = $this->Dao->select('id,vendor_id')
-                            ->from(TABLE_GOODS)
-                            ->where("goods_ccode = '" . $order_detail["goods_ccode"] . "'")
-                            ->aw("isvalid = 1")
-                            ->getOneRow();
-                        if (!$goods_info["id"] > 0) {
-                            $emsg = $emsg . "[行$i ：物料代码" . $order_detail["goods_ccode"] . "不正确]";
-                            break;
-                        }
-                        if (!$goods_info["vendor_id"] > 0 || $goods_info["vendor_id"] <> $order["vendor_id"]) {
-                            $emsg = $emsg . "[行$i ：供应商代码" . $order["vendor_code"] . "不正确或与系统内不一致]";
-                            break;
-                        }
-                        $order_detail["goods_id"] = $goods_info["id"];
-                        $order_detail["create_by"] = $this->Session->get('uid');
-                        unset($order_detail["goods_ccode"]);
-                        $order_detail['id'] = $this->Dao->insert(TABLE_ORDER_DETAIL, array_keys($order_detail))
-                            ->values(array_values($order_detail))
-                            ->exec();
-                        if (!$order_detail['id'] > 0) {
-                            $emsg = $emsg . "[发货单明细信息保存失败]";
-                            break;
-                        }
-                    }
+                    //2厂模版
+                    $raw["otype"] = 2;
+                    $raw["order_code"] = $data[$i]["P"];
+                    $raw["order_type"] = $data[$i]["D"];
+                    $raw["vendor_code"] = strtoupper($data[$i]["E"]);
+                    $raw["address"] = '江淮二工厂' . $data[$i]["G"];
+                    $raw["dock"] = $data[$i]["H"];
+                    $raw["order_serial_no"] = $data[$i]["O"];
+                    $raw["order_date"] = $data[$i]["I"];
+                    $raw["status"] = 'create';
+                    $raw["customer_id"] = $default_customer_id;
+                    $raw["goods_ccode"] = strtoupper($data[$i]["B"]);
+                    $raw["bar_code"] = $data[$i]["L"];
+                    $raw["needs"] = intval($data[$i]["F"]);
+                    $raw["sends"] = $raw["needs"];
+                    $raw["receives"] = $raw["needs"];
+                    $raw["rnum"] = $data[$i]["M"];  //收货数量
                 } else if ($otype == 1) {
-                    //1厂模版导入开始
-                    if ($data[$i]["L"] <> null) {
-                        //收货数量不为空 说明有收货数据 不做处理
-                        continue;
-                    }
-                    //新订单
-                    if ($order["order_code"] <> $data[$i]["N"]) {
-                        unset($order);
-                        unset($order_detail);
-                        $order["order_code"] = $data[$i]["N"];
-                        $order["order_type"] = $data[$i]["C"]; //订单类型
-                        $order["vendor_code"] = $data[$i]["D"];  //供应商代码
-                        $order["address"] = '江淮一工厂' . $data[$i]["P"];  //生产线
-                        $order["dock"] = $data[$i]["G"];   //道口
-                        $order["order_serial_no"] = $data[$i]["M"];  //流水号
-                        $order["order_date"] = $data[$i]["H"];  //
-                        $order["status"] = 'create';
-                        $order["customer_id"] = $default_customer_id;  //设置收货方ID
-                        $isExist = $this->Dao->select('count(1)')
-                            ->from(TABLE_ORDER)
-                            ->where("order_code = '" . $order["order_code"] . "'")
-                            ->aw('isvalid = 1')
-                            ->getOne();
-                        if ($isExist > 0) {
-                            //单子如果已经存在则跳过
-                            continue;
-                        }
-                        $order["vendor_id"] = $this->Dao->select('g.vendor_id')
-                            ->from(TABLE_GOODS)
-                            ->alias('g')
-                            ->leftJoin(TABLE_VENDOR)
-                            ->alias('v')
-                            ->on("g.vendor_id = v.id")
-                            ->where("v.vendor_code = '" . $order["vendor_code"] . "'")
-                            ->aw("g.isvalid = 1")
-                            ->aw("v.isvalid = 1")
-                            ->aw("g.goods_ccode = '" . $data[$i]["A"] . "'")
-                            ->getOne();
-                        if (!$order["vendor_id"] > 0) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商信息不正确]";
-                            break;
-                        }
-                        $order_insert = $order;
-                        unset($order_insert["vendor_code"]);
-                        $order_insert['create_by'] = $this->Session->get('uid');
-                        $order['id'] = $this->Dao->insert(TABLE_ORDER, array_keys($order_insert))
-                            ->values(array_values($order_insert))
-                            ->exec();
-                        //插入订单状态资料
-                        if ($order['id'] > 0) {
-                            $saveCount = $saveCount + 1;
-                            $order_status_id = $this->Dao->insert(TABLE_ORDER_STATUS, ['order_id', 'status', 'create_by'])
-                                ->values([$order['id'], 'create', $order_insert['create_by']])
-                                ->exec();
-                        }
-                        if ($order['id'] > 0 && $order_status_id > 0) {
-                            //保存成功
-                            unset($order_insert);
-                        } else {
-                            $emsg = $emsg . "[发货单保存失败]";
-                            break;
-                        }
-                    }
-                    //订单明细
-                    if ($order["order_code"] == $data[$i]["N"] && $isExist == 0) {
-                        if ($order["order_type"] <> $data[$i]["C"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]";
-                            break;
-                        }
-                        if ($order["vendor_code"] <> $data[$i]["D"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商不一致]";
-                            break;
-                        }
-                        if ($order["dock"] <> $data[$i]["G"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "道口不一致]";
-                            break;
-                        }
-                        unset($order_detail);
-                        $order_detail["order_id"] = $order['id'];  //订单ID
-                        $order_detail["bar_code"] = $data[$i]["K"]; //条形码
-                        $order_detail["needs"] = intval($data[$i]["E"]);   //需求数量
-                        $order_detail["sends"] = $order_detail["needs"];   //需求数量
-                        $order_detail["receives"] = $order_detail["needs"];   //需求数量
-                        if (!$order_detail["needs"]) {
-                            $emsg = $emsg . "[行$i ：需求数量不正确]";
-                            break;
-                        }
-                        $order_detail["goods_ccode"] = $data[$i]["A"];  //物料图号
-                        $goods_info = $this->Dao->select('id,vendor_id')
-                            ->from(TABLE_GOODS)
-                            ->where("goods_ccode = '" . $order_detail["goods_ccode"] . "'")
-                            ->aw("isvalid = 1")
-                            ->getOneRow();
-                        if (!$goods_info["id"] > 0) {
-                            $emsg = $emsg . "[行$i ：物料代码" . $order_detail["goods_ccode"] . "不正确]";
-                            break;
-                        }
-                        if (!$goods_info["vendor_id"] > 0 || $goods_info["vendor_id"] <> $order["vendor_id"]) {
-                            $emsg = $emsg . "[行$i ：供应商代码" . $order["vendor_code"] . "不正确或与系统内不一致]";
-                            break;
-                        }
-                        $order_detail["goods_id"] = $goods_info["id"];
-                        $order_detail["create_by"] = $this->Session->get('uid');
-                        unset($order_detail["goods_ccode"]);
-                        $order_detail['id'] = $this->Dao->insert(TABLE_ORDER_DETAIL, array_keys($order_detail))
-                            ->values(array_values($order_detail))
-                            ->exec();
-                        if (!$order_detail['id'] > 0) {
-                            $emsg = $emsg . "[发货单明细信息保存失败]";
-                            break;
-                        }
-                    }
+                    //1厂模版
+                    $raw["otype"] = 1;
+                    $raw["order_code"] = $data[$i]["N"];
+                    $raw["order_type"] = $data[$i]["C"];
+                    $raw["vendor_code"] = strtoupper($data[$i]["D"]);
+                    $raw["address"] = '江淮一工厂' . $data[$i]["P"];
+                    $raw["dock"] = $data[$i]["G"];
+                    $raw["order_serial_no"] = $data[$i]["M"];
+                    $raw["order_date"] = $data[$i]["H"];
+                    $raw["status"] = 'create';
+                    $raw["customer_id"] = $default_customer_id;
+                    $raw["goods_ccode"] = strtoupper($data[$i]["A"]);
+                    $raw["bar_code"] = $data[$i]["K"];
+                    $raw["needs"] = intval($data[$i]["E"]);
+                    $raw["sends"] = $raw["needs"];
+                    $raw["receives"] = $raw["needs"];
+                    $raw["rnum"] = $data[$i]["L"];  //收货数量
                 } else {
-                    //3厂模版导入开始
-                    if ($data[$i]["K"] <> null) {
-                        //收货数量不为空 说明有收货数据 不做处理
-                        continue;
+                    $raw["otype"] = 3;
+                    $raw["order_code"] = $data[$i]["M"];
+                    $raw["order_type"] = $data[$i]["C"];
+                    $raw["vendor_code"] = strtoupper($data[$i]["D"]);
+                    $raw["address"] = '江淮二工厂' . $data[$i]["O"];
+                    $raw["dock"] = $data[$i]["F"];
+                    $raw["order_serial_no"] = $data[$i]["L"];
+                    $raw["order_date"] = $data[$i]["G"];
+                    $raw["status"] = 'create';
+                    $raw["customer_id"] = $default_customer_id;
+                    $raw["goods_ccode"] = strtoupper($data[$i]["A"]);
+                    $raw["bar_code"] = $data[$i]["J"];
+                    $raw["needs"] = intval($data[$i]["E"]);
+                    $raw["sends"] = $raw["needs"];
+                    $raw["receives"] = $raw["needs"];
+                    $raw["rnum"] = $data[$i]["K"];  //收货数量
+                }
+                if ($raw["rnum"] <> null) {
+                    //收货数量不为空 说明有收货数据 不做处理
+                    continue;
+                }
+                if ($raw["order_serial_no"] < '17000') {
+                    //排除掉历史的未收货的单据
+                    continue;
+                }
+                //新订单
+                if ($raw["order_code"] <> $thiscode) {
+                    if ($thisid) {
+                        $saveCount = $saveCount + 1;
+                        $this->Db->transcommit();
                     }
-                    if ($data[$i]["L"] < '17000') {
-                        //排除掉历史的未收货的单据
+                    $thiscode = $raw["order_code"];
+                    $thisid = '';
+                    unset($order);
+                    unset($order_detail);
+                    $order["order_code"] = $raw["order_code"];
+                    $order["order_type"] = $raw["order_type"]; //订单类型
+                    $order["vendor_code"] = $raw["vendor_code"];  //供应商代码
+                    $order["address"] = $raw["address"];  //生产线
+                    $order["dock"] = $raw["dock"];   //道口
+                    $order["order_serial_no"] = $raw["order_serial_no"];  //流水号
+                    $order["order_date"] = $raw["order_date"];  //需求时间
+                    $order["status"] = $raw["status"];
+                    $order["customer_id"] = $raw["customer_id"];  //设置收货方ID
+
+                    $isExist = $this->Dao->select('count(1)')
+                        ->from(TABLE_ORDER)
+                        ->where("order_code = '" . $order["order_code"] . "'")
+                        ->aw('isvalid = 1')
+                        ->getOne();
+                    if ($isExist > 0) {
+                        //单子如果已经存在则跳过
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "已经存在]<br>";
                         continue;
-                    }
-                    //新订单
-                    if ($order["order_code"] <> $data[$i]["M"]) {
-                        unset($order);
-                        unset($order_detail);
-                        $order["order_code"] = $data[$i]["M"];
-                        $order["order_type"] = $data[$i]["C"]; //订单类型
-                        $order["vendor_code"] = $data[$i]["D"];  //供应商代码
-                        $order["address"] = '江淮三工厂' . $data[$i]["O"];  //生产线
-                        $order["dock"] = $data[$i]["F"];   //道口
-                        $order["order_serial_no"] = $data[$i]["L"];  //流水号
-                        $order["order_date"] = $data[$i]["G"];  //
-                        $order["status"] = 'create';
-                        $order["customer_id"] = $default_customer_id;  //设置收货方ID
-                        $isExist = $this->Dao->select('count(1)')
-                            ->from(TABLE_ORDER)
-                            ->where("order_code = '" . $order["order_code"] . "'")
-                            ->aw('isvalid = 1')
+                    } else {
+                        //先获取供应商ID
+                        $count_v = $this->Dao->select('count(1)')
+                            ->from(TABLE_VENDOR)
+                            ->where("vendor_code = '" . $order["vendor_code"] . "'")
+                            ->aw("isvalid = 1")
                             ->getOne();
-                        if ($isExist > 0) {
+                        if ($count_v == 0) {
+                            $order["vendor_id"] = '';
+                        } else if ($count_v == 1) {
+                            $order["vendor_id"] = $this->Dao->select('id')
+                                ->from(TABLE_VENDOR)
+                                ->where("vendor_code = '" . $order["vendor_code"] . "'")
+                                ->aw("isvalid = 1")
+                                ->getOne();
+                        } else {
+                            //同一个供应商代码有多个
+                            $newcode = $this->getGoodsCode($raw);
+                            $order["vendor_id"] = $this->Dao->select('g.vendor_id')
+                                ->from(TABLE_GOODS)
+                                ->alias('g')
+                                ->leftJoin(TABLE_VENDOR)
+                                ->alias('v')
+                                ->on("g.vendor_id = v.id")
+                                ->where("v.vendor_code = '" . $order["vendor_code"] . "'")
+                                ->aw("g.isvalid = 1")
+                                ->aw("v.isvalid = 1")
+                                ->aw("g.goods_ccode = '" . $newcode . "'")
+                                ->getOne();
+                        }
+                        //对未找到供应商信息处理
+                        if (!$order["vendor_id"]) {
+                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商代码不正确]<br>";
                             continue;
                         }
-                        $order["vendor_id"] = $this->Dao->select('g.vendor_id')
-                            ->from(TABLE_GOODS)
-                            ->alias('g')
-                            ->leftJoin(TABLE_VENDOR)
-                            ->alias('v')
-                            ->on("g.vendor_id = v.id")
-                            ->where("v.vendor_code = '" . $order["vendor_code"] . "'")
-                            ->aw("g.isvalid = 1")
-                            ->aw("v.isvalid = 1")
-                            ->aw("g.goods_ccode = '" . $data[$i]["A"] . "'")
-                            ->getOne();;
-                        if (!$order["vendor_id"] > 0) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商信息不正确]";
-                            break;
-                        }
+
+                        //开启事务
+                        $this->Db->transtart();
+
+                        //插入订单主数据
                         $order_insert = $order;
                         unset($order_insert["vendor_code"]);
                         $order_insert['create_by'] = $this->Session->get('uid');
-                        $order['id'] = $this->Dao->insert(TABLE_ORDER, array_keys($order_insert))
+                        $thisid = $this->Dao->insert(TABLE_ORDER, array_keys($order_insert))
                             ->values(array_values($order_insert))
                             ->exec();
                         //插入订单状态资料
-                        if ($order['id'] > 0) {
-                            $saveCount = $saveCount + 1;
+                        if ($thisid > 0) {
                             $order_status_id = $this->Dao->insert(TABLE_ORDER_STATUS, ['order_id', 'status', 'create_by'])
-                                ->values([$order['id'], 'create', $order_insert['create_by']])
+                                ->values([$thisid, 'create', $order_insert['create_by']])
                                 ->exec();
                         }
-                        if ($order['id'] > 0 && $order_status_id > 0) {
+                        if ($thisid > 0 && $order_status_id > 0) {
                             //保存成功
                             unset($order_insert);
                         } else {
-                            $emsg = $emsg . "[发货单保存失败]";
-                            break;
+                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "保存失败]<br>";
+                            $thisid = '';
+                            $this->Db->transrollback();
+                            continue;
                         }
                     }
-                    //订单明细
-                    if ($order["order_code"] == $data[$i]["M"] && $isExist == 0) {
-                        if ($order["order_type"] <> $data[$i]["C"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]";
-                            break;
-                        }
-                        if ($order["vendor_code"] <> $data[$i]["D"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商不一致]";
-                            break;
-                        }
-                        if ($order["dock"] <> $data[$i]["F"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "道口不一致]";
-                            break;
-                        }
-                        unset($order_detail);
-                        $order_detail["order_id"] = $order['id'];  //订单ID
-                        $order_detail["bar_code"] = $data[$i]["J"]; //条形码
-                        $order_detail["needs"] = intval($data[$i]["E"]);   //需求数量
-                        $order_detail["sends"] = $order_detail["needs"];   //需求数量
-                        $order_detail["receives"] = $order_detail["needs"];   //需求数量
-                        if (!$order_detail["needs"]) {
-                            $emsg = $emsg . "[行$i ：需求数量不正确]";
-                            break;
-                        }
-                        $order_detail["goods_ccode"] = $data[$i]["A"];  //物料图号
-                        $goods_info = $this->Dao->select('id,vendor_id')
-                            ->from(TABLE_GOODS)
-                            ->where("goods_ccode = '" . $order_detail["goods_ccode"] . "'")
-                            ->aw("isvalid = 1")
-                            ->getOneRow();
-                        if (!$goods_info["id"] > 0) {
-                            $emsg = $emsg . "[行$i ：物料代码" . $order_detail["goods_ccode"] . "不正确]";
-                            break;
-                        }
-                        if (!$goods_info["vendor_id"] > 0 || $goods_info["vendor_id"] <> $order["vendor_id"]) {
-                            $emsg = $emsg . "[行$i ：供应商代码" . $order["vendor_code"] . "不正确或与系统内不一致]";
-                            break;
-                        }
-                        $order_detail["goods_id"] = $goods_info["id"];
-                        $order_detail["create_by"] = $this->Session->get('uid');
-                        unset($order_detail["goods_ccode"]);
-                        $order_detail['id'] = $this->Dao->insert(TABLE_ORDER_DETAIL, array_keys($order_detail))
-                            ->values(array_values($order_detail))
-                            ->exec();
-                        if (!$order_detail['id'] > 0) {
-                            $emsg = $emsg . "[发货单明细信息保存失败]";
-                            break;
-                        }
+                }  //一笔新的订单主数据处理结束
+
+                //开始处理订单明细
+                if ($raw["order_code"] == $thiscode && $thisid > 0) {
+                    if ($raw["order_type"] <> $order["order_type"]) {
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]<br>";
+                        $thisid = 0;
+                    }
+                    if ($raw["vendor_code"] <> $order["vendor_code"]) {
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商不一致]<br>";
+                        $thisid = 0;
+                    }
+                    if ($raw["dock"] <> $order["dock"]) {
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "道口不一致]<br>";
+                        $thisid = 0;
+                    }
+                    if (!$raw["needs"] > 0) {
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "需求数量不正确]<br>";
+                        $thisid = 0;
+                    }
+                    unset($order_detail);
+                    $order_detail["goods_id"] = $this->getGoodsId($raw);
+                    if (!$order_detail["goods_id"]) {
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "物料代码不正确]<br>";
+                        $thisid = 0;
+                    }
+                    if (!$thisid) {
+                        //如果thisid为0 则回滚，跳出
+                        $this->Db->transrollback();
+                        continue;
+                    }
+                    $order_detail["order_id"] = $thisid;  //订单ID
+                    $order_detail["bar_code"] = $raw["bar_code"]; //条形码
+                    $order_detail["needs"] = intval($raw["needs"]);   //需求数量
+                    $order_detail["sends"] = $order_detail["needs"];
+                    $order_detail["receives"] = $order_detail["needs"];
+                    $order_detail["create_by"] = $this->Session->get('uid');
+                    $order_detail['id'] = $this->Dao->insert(TABLE_ORDER_DETAIL, array_keys($order_detail))
+                        ->values(array_values($order_detail))
+                        ->exec();
+                    if (!$order_detail['id']) {
+                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "明细信息保存失败]<br>";
+                        $thisid = 0;
+                        $this->Db->transrollback();
+                        continue;
                     }
                 }
             }
-            if ($emsg == '') {
+            //最后一次的订单数据还没提交，提交一次
+            if ($thisid) {
+                $saveCount = $saveCount + 1;
                 $this->Db->transcommit();
-                return ['code' => 0, 'msg' => "保存成功，导入" . $saveCount . "笔发货单"];
-            } else {
-                $this->Db->transrollback();
-                return ['code' => 1, 'msg' => $emsg];
+            }
+            return ['success' => $saveCount, 'msg' => $emsg];
+        }
+    }
+
+    private function getGoodsId($raw)
+    {
+        $newcode = $this->getGoodsCode($raw);
+        $goods_id = $this->Dao->select()
+            ->from(TABLE_GOODS)
+            ->alias('g')
+            ->leftJoin(TABLE_VENDOR)
+            ->alias('v')
+            ->on("g.vendor_id = v.id")
+            ->where("g.isvalid = 1")
+            ->aw("v.isvalid = 1")
+            ->aw("g.goods_ccode = '" . $newcode . "'")
+            ->aw("v.vendor_code = '" . $raw["vendor_code"] . "'")
+            ->getOne();
+        return $goods_id;
+    }
+
+    private function getGoodsCode($raw)
+    {
+        $res = $raw["goods_ccode"];
+        $mapdata = $this->Dao->select()
+            ->from(TABLE_GOODS_CODE_MAP)
+            ->where("input_code = '" . $raw["goods_ccode"] . "'")
+            ->aw("isvalid = 1")
+            ->getOneRow();
+        if ($mapdata) {
+            if ($mapdata["type"] == 'PLANT') {
+                if ($raw["otype"] == 2) {
+                    $res = $mapdata["value2"];
+                } else if ($raw["otype"] == 3) {
+                    $res = $mapdata["value3"];
+                }
+            } else if ($mapdata["type"] == 'KD') {
+                if (strstr($raw["dock"], 'KD')) {
+                    $res = $mapdata["value2"];
+                } else {
+                    $res = $mapdata["value1"];
+                }
             }
         }
-
+        return $res;
     }
+
 }

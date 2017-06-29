@@ -29,6 +29,7 @@ define('TABLE_STOCK_LOAN', 'stock_loan');
 
 define('TABLE_GOODS', 'goods');
 define('VIEW_GOODS', 'v_goods');
+define('TABLE_GOODS_CODE_MAP', 'goods_code_map');
 
 define('TABLE_RECEIVE', 'receive');
 define('TABLE_ORDER', 'order');
