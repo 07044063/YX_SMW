@@ -33,11 +33,24 @@
 
 <div class="bottomWrap clearfix">
     <div class="weui-form-preview__ft">
-        <button id="do_order" class="weui-btn weui-btn_primary"
+        <button id="scan_finish" class="weui-btn weui-btn_default" style="display: none"
+                href="javascript:">扫描完成
+        </button>
+    </div>
+    <div class="weui-form-preview__ft">
+        <button id="do_order" class="weui-btn weui-btn_primary" style="margin-top: 5px"
                 href="javascript:">发货
         </button>
     </div>
 </div>
+
+<script type="text/javascript">
+    var u = navigator.userAgent;
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (isiOS) {
+        $("#scan_finish").show();
+    }
+</script>
 
 <textarea id='order_temp' style='display:none;'>
 <!-- 模板部分 -->

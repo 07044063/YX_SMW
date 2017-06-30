@@ -124,6 +124,10 @@ $('#test_btn').click(function () {
     getOrderInfo("'XBH590E0A','XBH5RCECF'");
 });
 
+$('#scan_finish').click(function () {
+    getOrderInfo(orderscanlist.join(","));
+});
+
 $('#do_order').click(function () {
     var truckid = $('#truck_select').data('values');
     if (!truckid) {
