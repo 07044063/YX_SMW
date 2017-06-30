@@ -133,6 +133,8 @@ class mImport extends Model
                         ->getOne();
                     if ($isExist > 0) {
                         //单子如果已经存在则跳过
+                        slog($raw["order_code"]);
+                        slog($order["order_code"]);
                         $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "已经存在]<br>";
                         continue;
                     } else {
@@ -257,7 +259,7 @@ class mImport extends Model
     private function getGoodsId($raw)
     {
         $newcode = $this->getGoodsCode($raw);
-        $goods_id = $this->Dao->select()
+        $goods_id = $this->Dao->select('g.id')
             ->from(TABLE_GOODS)
             ->alias('g')
             ->leftJoin(TABLE_VENDOR)
