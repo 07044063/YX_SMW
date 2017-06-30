@@ -49,11 +49,7 @@ function scanQRCode() {
             // 回调
             if (res.resultStr) {
                 var res_str = res.resultStr.split(',');
-                if (res_str[0] == 'CODE_128') {
-                    orderscanlist.push("'" + res_str[1] + "'");
-                } else {
-                    $.alert('无法识别扫描结果');
-                }
+                orderscanlist.push("'" + res_str[1] + "'");
                 setTimeout(scanQRCode, 500);
             }
         },
