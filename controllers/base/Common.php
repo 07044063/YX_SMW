@@ -43,7 +43,7 @@ class Common extends ControllerAdmin
             die('file not exists');
         }
 //        $PHPReader = new PHPExcel_Reader_Excel2003XML();        //建立reader对象
-        $PHPReader = new PHPExcel_Reader_Excel2007();        //建立reader对象
+        $PHPReader = new PHPExcel_Reader_Excel2007();        //建立reader对象f
         if (!$PHPReader->canRead($filePath)) {
             $PHPReader = new PHPExcel_Reader_Excel5();
             if (!$PHPReader->canRead($filePath)) {
@@ -82,8 +82,8 @@ class Common extends ControllerAdmin
             $file_types = explode(".", $filePath);
             $file_type = $file_types [count($file_types) - 1];
             //判别是不是.xls文件，判别是不是excel文件
-            if (strtolower($file_type) != "xls") {
-                return $this->echoMsg(1, '请上传xls文件');
+            if (strtolower($file_type) != "xls" && strtolower($file_type) != "xlsx") {
+                return $this->echoMsg(1, '请上传xls或者xlsx文件');
             } else {
                 $this->analyseExcel($filePath);
                 $data = $this->data;

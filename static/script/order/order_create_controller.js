@@ -152,7 +152,7 @@ app.controller('orderCreateController', function ($scope, $http, Util) {
         $('#input_file').fileinput({
             language: 'zh', //设置语言
             uploadUrl: '?/Common/uploadFile', //上传的地址，如果自定义上传按钮则不需要在这设置
-            allowedFileExtensions: ['xls'],//接收的文件后缀
+            allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
             showRemove: true, //是否显示删除按钮
             showUpload: false, //是否显示上传按钮
             showCaption: true, //是否显示标题
