@@ -42,7 +42,8 @@ class Common extends ControllerAdmin
         if (empty($filePath) or !file_exists($filePath)) {
             die('file not exists');
         }
-        $PHPReader = new PHPExcel_Reader_Excel2003XML();        //建立reader对象
+//        $PHPReader = new PHPExcel_Reader_Excel2003XML();        //建立reader对象
+        $PHPReader = new PHPExcel_Reader_Excel2007();        //建立reader对象
         if (!$PHPReader->canRead($filePath)) {
             $PHPReader = new PHPExcel_Reader_Excel5();
             if (!$PHPReader->canRead($filePath)) {
@@ -66,6 +67,7 @@ class Common extends ControllerAdmin
                     }
                     $this->data[$rowIndex][$colIndex] = $cell;
                 }
+                $this->data[$rowIndex]['INDEX'] = $rowIndex; //把EXCEL的行号也读进去
             }
         }
         return $this->data;

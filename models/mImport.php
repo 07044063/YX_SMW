@@ -6,16 +6,45 @@
  */
 class mImport extends Model
 {
-
     public function importExcel($data, $action)
     {
+
+        //自定义排序  一厂
+        function orderByOrderCode1($a, $b)
+        {
+            if ($a['N'] == $b['N']) {
+                return ($a['H'] < $b['H']) ? -1 : 1;
+            } else {
+                return ($a['N'] < $b['N']) ? -1 : 1;
+            }
+        }
+
+        //自定义排序  二厂
+        function orderByOrderCode2($a, $b)
+        {
+            if ($a['P'] == $b['P']) {
+                return ($a['I'] < $b['I']) ? -1 : 1;
+            } else {
+                return ($a['P'] < $b['P']) ? -1 : 1;
+            }
+        }
+
+        //自定义排序  三厂
+        function orderByOrderCode3($a, $b)
+        {
+            if ($a['M'] == $b['M']) {
+                return ($a['G'] < $b['G']) ? -1 : 1;
+            } else {
+                return ($a['M'] < $b['M']) ? -1 : 1;
+            }
+        }
+
         if ($action == null) {
             return ['success' => 0, 'msg' => "action不正确"];
         }
 
         //订单导入
         if ($action == 'Order') {
-            $rowCount = count($data);
             //判断是几厂的模版
             $otype = 0;
             if ($data[1]["A"] == '序号') {
@@ -35,6 +64,10 @@ class mImport extends Model
                 return ['success' => 0, 'msg' => "未设置默认的收货方信息"];
             }
 
+            unset($data[1]);   //抛弃表头数据
+            usort($data, "orderByOrderCode" . $otype);  //按照单号、需求时间排序
+
+            $rowCount = count($data);
             $saveCount = 0;
             $order = [];
             $order_detail = [];
@@ -42,8 +75,9 @@ class mImport extends Model
             $thiscode = '';
             $thisid = '';
 
-            for ($i = 2; $i <= $rowCount; $i++) {
+            for ($i = 0; $i < $rowCount; $i++) {
                 $raw = [];
+                $j = $data[$i]["INDEX"];
                 if ($otype == 2) {
                     //2厂模版
                     $raw["otype"] = 2;
@@ -133,9 +167,7 @@ class mImport extends Model
                         ->getOne();
                     if ($isExist > 0) {
                         //单子如果已经存在则跳过
-                        slog($raw["order_code"]);
-                        slog($order["order_code"]);
-                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "已经存在]<br>";
+                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "已经存在]<br>";
                         continue;
                     } else {
                         //先获取供应商ID
@@ -169,7 +201,7 @@ class mImport extends Model
                         }
                         //对未找到供应商信息处理
                         if (!$order["vendor_id"]) {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商代码不正确]<br>";
+                            $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "供应商代码不正确]<br>";
                             continue;
                         }
 
@@ -193,7 +225,7 @@ class mImport extends Model
                             //保存成功
                             unset($order_insert);
                         } else {
-                            $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "保存失败]<br>";
+                            $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "保存失败]<br>";
                             $thisid = '';
                             $this->Db->transrollback();
                             continue;
@@ -204,25 +236,25 @@ class mImport extends Model
                 //开始处理订单明细
                 if ($raw["order_code"] == $thiscode && $thisid > 0) {
                     if ($raw["order_type"] <> $order["order_type"]) {
-                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "类型不一致]<br>";
+                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "类型不一致]<br>";
                         $thisid = 0;
                     }
                     if ($raw["vendor_code"] <> $order["vendor_code"]) {
-                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "供应商不一致]<br>";
+                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "供应商不一致]<br>";
                         $thisid = 0;
                     }
                     if ($raw["dock"] <> $order["dock"]) {
-                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "道口不一致]<br>";
+                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "道口不一致]<br>";
                         $thisid = 0;
                     }
                     if (!$raw["needs"] > 0) {
-                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "需求数量不正确]<br>";
+                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "需求数量不正确]<br>";
                         $thisid = 0;
                     }
                     unset($order_detail);
                     $order_detail["goods_id"] = $this->getGoodsId($raw);
                     if (!$order_detail["goods_id"]) {
-                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "物料代码不正确]<br>";
+                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "物料代码不正确]<br>";
                         $thisid = 0;
                     }
                     if (!$thisid) {
@@ -240,7 +272,7 @@ class mImport extends Model
                         ->values(array_values($order_detail))
                         ->exec();
                     if (!$order_detail['id']) {
-                        $emsg = $emsg . "[行$i ：发货单" . $order["order_serial_no"] . "明细信息保存失败]<br>";
+                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "明细信息保存失败]<br>";
                         $thisid = 0;
                         $this->Db->transrollback();
                         continue;
@@ -255,6 +287,7 @@ class mImport extends Model
             return ['success' => $saveCount, 'msg' => $emsg];
         }
     }
+
 
     private function getGoodsId($raw)
     {
