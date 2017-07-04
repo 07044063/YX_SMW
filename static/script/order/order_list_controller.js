@@ -13,7 +13,12 @@ app.controller('orderListController', function ($scope, $http, Util) {
             pagesize: 20
         };
 
+        $scope.address_list = address_list;
+        $scope.address_list.unshift('收货单位');
         $scope.order_status_list = order_status_list;
+        $scope.order_status_list.all="订单状态";
+        $scope.order_type_list = order_type_list;
+        $scope.order_type_list.unshift('订单类型');
 
         //$.datetimepicker.setLocale('zh');
         //
@@ -108,6 +113,15 @@ app.controller('orderListController', function ($scope, $http, Util) {
                     }
                 });
             }
+        };
+
+        $scope.selectChange= function () {
+            //状态-收货方-类型发生变化是时，获取的结果发生改变
+            $scope.params.order_status=$scope.order_status;
+            $scope.params.order_address=$scope.order_address;
+            $scope.params.order_type=$scope.order_type;
+            $scope.params.search_text=$scope.search_text;
+            fnGetList();
         };
 
         /**
