@@ -14,11 +14,11 @@ app.controller('orderListController', function ($scope, $http, Util) {
         };
 
         $scope.address_list = address_list;
-        $scope.address_list.unshift('收货单位');
+        $scope.address_list.unshift('所有收货单位');
         $scope.order_status_list = order_status_list;
-        $scope.order_status_list.all = "订单状态";
+        $scope.order_status_list.all = "所有订单状态";
         $scope.order_type_list = order_type_list;
-        $scope.order_type_list.unshift('订单类型');
+        $scope.order_type_list.unshift('所有订单类型');
 
         //$.datetimepicker.setLocale('zh');
         //

@@ -13,21 +13,21 @@ class Order extends ControllerAdmin
     {
         $pagesize = $this->pGet('pagesize') ? intval($this->pGet('pagesize')) : 20;
         $page = $this->pGet('page');
-        $search_text = '%' . $this->pGet('search_text') . '%';
-        $order_address_list='%' . $this->pGet('order_address') . '%';
+        $search_text = $this->pGet('search_text');
+        $order_address_list=$this->pGet('order_address');
         $order_type_list=$this->pGet('order_type') ;
         $order_status_list=$this->pGet('order_status');
         $where = "1=1";
         if (isset($search_text) and $search_text != '') {
-            $where.= " and (order_code like '$search_text' or order_serial_no like '$search_text')";
+            $where.= " and (order_code like '%".$search_text."%' or order_serial_no like '%".$search_text."%')";
         }
         if (isset($order_address_list) and $order_address_list != ''){
-            if ($order_address_list != "%收货单位%"){
-                $where.= " and address like '$order_address_list'";
+            if ($order_address_list != "所有收货单位"){
+                $where.= " and address like '%$order_address_list%'";
             }
         }
         if (isset($order_type_list) and $order_type_list != ''){
-            if ($order_type_list != "订单类型") {
+            if ($order_type_list != "所有订单类型") {
                 $where .= " and order_type = '$order_type_list'";
             }
         }
