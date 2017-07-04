@@ -12,14 +12,14 @@
                     <input type="text" id="search_text" ng-model="search_text" class="searchbox"
                                                  placeholder="输入单号或流水号按回车"/>
                 </div>
-                <div class="form-group col-xs-2">
+                <div class="form-group col-xs-2" style="margin-top: 13px;">
                     <select class="form-control" id="order_status"
                             ng-model="order_status" ng-change="selectChange()"
                             ng-init="order_status='all'"
                             ng-options="x as y for (x,y) in order_status_list">
                     </select>
                 </div>
-                <div class="form-group col-xs-3">
+                <div class="form-group col-xs-3" style="margin-top: 13px;">
                     <select class="form-control" id="order_address"
 
                             ng-model="order_address" ng-change="selectChange()"
@@ -27,7 +27,7 @@
                             ng-options="value for value in address_list">
                     </select>
                 </div>
-                <div class="form-group col-xs-2">
+                <div class="form-group col-xs-2" style="margin-top: 13px;">
 
                     <select class="form-control" id="order_type"
 

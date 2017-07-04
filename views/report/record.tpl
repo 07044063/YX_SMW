@@ -81,6 +81,7 @@
                 <th>物料名称</th>
                 <th>供应商</th>
                 <th>类型</th>
+                <th>单号</th>
                 <th>状态</th>
                 <th>数量</th>
                 <th>日期</th>
@@ -92,8 +93,9 @@
                 <td>{{record.stock_name}}</td>
                 <td>{{record.goods_ccode}}</td>
                 <td>{{record.goods_name}}</td>
-                <td>{{record.vendor_name}}</td>
+                <td>{{record.vendor_shortname}}</td>
                 <td>{{record.gtype}}</td>
+                <td>{{record.gcode}}</td>
                 <td>{{record.statusX}}</td>
                 <td>{{record.numb}}</td>
                 <td>{{record.gdate}}</td>
