@@ -119,7 +119,7 @@ class mImport extends Model
                     $raw["order_code"] = $data[$i]["M"];
                     $raw["order_type"] = $data[$i]["C"];
                     $raw["vendor_code"] = strtoupper($data[$i]["D"]);
-                    $raw["address"] = '江淮二工厂' . $data[$i]["O"];
+                    $raw["address"] = '江淮三工厂' . $data[$i]["O"];
                     $raw["dock"] = $data[$i]["F"];
                     $raw["order_serial_no"] = $data[$i]["L"];
                     $raw["order_date"] = $data[$i]["G"];

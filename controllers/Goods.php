@@ -72,6 +72,7 @@ class Goods extends ControllerAdmin
         if (!isset($data['goods_ccode']) or $data['goods_ccode'] == '') {
             return $this->echoMsg(-1, '客户图号不能为空');
         } else {
+            $data['goods_ccode'] = strtoupper($data['goods_ccode']); //转为大写
             $exsist = $this->Dao->select('count(*)')
                 ->from(TABLE_GOODS)
                 ->where("goods_ccode = '" . $data['goods_ccode'] . "'")
