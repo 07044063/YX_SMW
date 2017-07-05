@@ -55,6 +55,7 @@
                     {*<button id="do_recorder" class="weui-form-preview__btn weui-form-preview__btn_default"*}
                     {*href="javascript:">操作记录*}
                     {*</button>*}
+                    <!-- ORDER_STATUS_Z -->
                     {if {$order.hasauth} > 0}
                         <button id="do_order" class="weui-btn weui-btn_primary"
                                 href="javascript:">

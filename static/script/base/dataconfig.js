@@ -31,7 +31,7 @@ var truck_type_list = [
     "厢车"
 ];
 
-var order_status_list = {
+var order_status_list = {  //ORDER_STATUS_Z
     create: "新创建",
     receive: "仓库已接收",
     ready: "备货已完成",
@@ -86,8 +86,8 @@ var address_list = [
 
 var order_type_list = [
     '计划看板',
-    '循环看板',
-    '手工单',
     '外部序列',
-    '紧急要货'
+    '循环看板',
+    '紧急要货',
+    '手工单'
 ];

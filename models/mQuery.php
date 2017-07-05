@@ -9,6 +9,7 @@ class mQuery extends Model
     //根据发货单条形码获取发货单信息，以及用户是否有操作权限
     public function getOrderByCode($order_code)
     {
+        //ORDER_STATUS_Z
         $status = array(
             'create' => '新创建',
             'receive' => '仓库已接收',
@@ -75,6 +76,7 @@ class mQuery extends Model
             ->exec();
         $utitle = $this->Session->get('utitle');
         $data['hasauth'] = 0;
+        //ORDER_STATUS_Z
         if ($utitle == 4 && $data['status'] == 'send') {  //客服
             $data['hasauth'] = 1;
         }

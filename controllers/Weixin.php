@@ -47,6 +47,7 @@ class Weixin extends ControllerWx
         $postdata = $this->post();
         $order_id = intval($postdata['order_id']);
         $oldstatus = $postdata['oldstatus'];
+        //ORDER_STATUS_Z
         $status = array(
             'create' => 'receive',
             'receive' => 'ready',

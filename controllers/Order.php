@@ -13,33 +13,42 @@ class Order extends ControllerAdmin
     {
         $pagesize = $this->pGet('pagesize') ? intval($this->pGet('pagesize')) : 20;
         $page = $this->pGet('page');
-        $search_text = '%' . $this->pGet('search_text') . '%';
-        $order_address_list='%' . $this->pGet('order_address') . '%';
-        $order_type_list=$this->pGet('order_type') ;
-        $order_status_list=$this->pGet('order_status');
+
+        $search_text = $this->pGet('search_text');
+        $order_address = $this->pGet('order_address');
+        $order_type = $this->pGet('order_type');
+        $order_status = $this->pGet('order_status');
         $where = "1=1";
+        $orderby = "id desc";
         if (isset($search_text) and $search_text != '') {
-            $where.= " and (order_code like '$search_text' or order_serial_no like '$search_text')";
+            $where .= " and (order_code like '%$search_text%' or order_serial_no like '%$search_text%')";
         }
-        if (isset($order_address_list) and $order_address_list != ''){
-            if ($order_address_list != "%收货单位%"){
-                $where.= " and address like '$order_address_list'";
+        if (isset($order_address) and $order_address != '') {
+            if ($order_address != "所有收货单位") {
+                $where .= " and address like '$order_address%'";
             }
         }
-        if (isset($order_type_list) and $order_type_list != ''){
-            if ($order_type_list != "订单类型") {
-                $where .= " and order_type = '$order_type_list'";
+        if (isset($order_type) and $order_type != '') {
+            if ($order_type != "所有类型") {
+                $where .= " and order_type = '$order_type'";
             }
         }
-        if (isset($order_status_list) and $order_status_list != ''){
-            if ($order_status_list != "all") {
-                $where .= " and status = '$order_status_list'";
+        if (isset($order_status) and $order_status != '') {
+            //ORDER_STATUS_Z
+            if ($order_status == "all") {
+            } elseif ($order_status == "notsend") {
+                $where .= " and status in ('create','receive','ready','check')";
+            } else {
+                $where .= " and status = '$order_status'";
+            }
+            if ((in_array($order_status, ['notsend', 'create', 'receive', 'ready', 'check']))) {
+                $orderby = "order_date asc";
             }
         }
         $list = $this->Dao->select()
             ->from(VIEW_ORDER)
             ->where($where)
-            ->orderby('id desc')
+            ->orderby($orderby)
             ->limit($pagesize * $page, $pagesize)
             ->exec();
         $list_count = $this->Dao->select('count(*)')

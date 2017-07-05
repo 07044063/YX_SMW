@@ -13,12 +13,26 @@ app.controller('orderListController', function ($scope, $http, Util) {
             pagesize: 20
         };
 
+        $scope.order_status_l = order_status_list;
+
         $scope.address_list = address_list;
-        $scope.address_list.unshift('收货单位');
-        $scope.order_status_list = order_status_list;
-        $scope.order_status_list.all = "订单状态";
+        $scope.address_list.pop(); //删除最后一个元素"其他"
+        $scope.address_list.unshift('所有收货单位');
+
+        $scope.order_status_list = [  //ORDER_STATUS_Z
+            {key: 'all', value: '所有状态'},
+            {key: 'notsend', value: '--未发货'},
+            {key: 'create', value: '----新创建'},
+            {key: 'receive', value: '----已接收'},
+            {key: 'ready', value: '----已备货'},
+            {key: 'check', value: '----已对点'},
+            {key: 'send', value: '--已发货'},
+            {key: 'delivery', value: '--已交货'},
+            {key: 'done', value: '--已完成'}
+        ];
+
         $scope.order_type_list = order_type_list;
-        $scope.order_type_list.unshift('订单类型');
+        $scope.order_type_list.unshift('所有类型');
 
         //$.datetimepicker.setLocale('zh');
         //
@@ -52,7 +66,7 @@ app.controller('orderListController', function ($scope, $http, Util) {
                     $scope.order = r.ret_msg.order;
                     $scope.statuslist = r.ret_msg.statuslist;
                     for (var i = 0; i < $scope.statuslist.length; i++) {
-                        $scope.statuslist[i].statusX = $scope.order_status_list[$scope.statuslist[i].status];
+                        $scope.statuslist[i].statusX = $scope.order_status_l[$scope.statuslist[i].status];
                     }
                 });
             }
@@ -67,7 +81,7 @@ app.controller('orderListController', function ($scope, $http, Util) {
                 var json = r.list;
                 $scope.orderlist = json;
                 for (var i = 0; i < $scope.orderlist.length; i++) {
-                    $scope.orderlist[i].statusX = $scope.order_status_list[$scope.orderlist[i].status];
+                    $scope.orderlist[i].statusX = $scope.order_status_l[$scope.orderlist[i].status];
                 }
                 $scope.listcount = r.total;
                 if (!$scope.init) {
@@ -115,7 +129,7 @@ app.controller('orderListController', function ($scope, $http, Util) {
 
         $scope.selectChange = function () {
             //状态-收货方-类型发生变化是时，获取的结果发生改变
-            $scope.params.order_status = $scope.order_status;
+            $scope.params.order_status = $scope.order_status.key;
             $scope.params.order_address = $scope.order_address;
             $scope.params.order_type = $scope.order_type;
             $scope.params.search_text = $scope.search_text;

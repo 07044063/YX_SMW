@@ -10,13 +10,13 @@
             <div class="row">
                 <div class="search-w-box">
                     <input type="text" id="search_text" ng-model="search_text" class="searchbox"
-                                                 placeholder="输入单号或流水号按回车"/>
+                           placeholder="输入单号或流水号按回车"/>
                 </div>
                 <div class="form-group col-xs-2" style="margin-top: 13px;">
                     <select class="form-control" id="order_status"
                             ng-model="order_status" ng-change="selectChange()"
-                            ng-init="order_status='all'"
-                            ng-options="x as y for (x,y) in order_status_list">
+                            ng-init="order_status= order_status_list[0]"
+                            ng-options="order_statu.value for order_statu in order_status_list">
                     </select>
                 </div>
                 <div class="form-group col-xs-3" style="margin-top: 13px;">
@@ -45,6 +45,7 @@
                 <!--<th>客户</th>-->
                 <th>类型</th>
                 <th>供货商</th>
+                <th>收货方</th>
                 <th>收货单号</th>
                 <th>流水号</th>
                 <th>需求时间</th>
@@ -58,7 +59,8 @@
                 <td class="hidden">{{order.id}}</td>
                 <!--<td>{{order.customer_name}}</td>-->
                 <td>{{order.order_type}}</td>
-                <td>{{order.vendor_name}}</td>
+                <td>{{order.vendor_shortname}}</td>
+                <td>{{order.address}}</td>
                 <td>{{order.order_code}}</td>
                 <td>{{order.order_serial_no}}</td>
                 <td>{{order.order_date}}</td>
@@ -79,13 +81,13 @@
                     <a ng-show="order.status == 'delivery'" class="text-primary"
                        href="?/Page/orderconfirm/id={{order.id}}" target="_blank">客服确认</a>
 
-                    <a ng-show="order.order_type == '手工单'" class="text-muted" href="?/Page/orderprint/orderid={{order.id}}"
+                    <a ng-show="order.order_type == '手工单'" class="text-muted"
+                       href="?/Page/orderprint/orderid={{order.id}}"
                        target="_blank">打印</a>
                 </td>
             </tr>
             </tbody>
         </table>
-
     {/literal}
 </div>
 

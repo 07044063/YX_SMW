@@ -36,6 +36,7 @@
 
             </div>
             <div class="modal-footer">
+                <!--ORDER_STATUS_Z-->
                 <button type="button" ng-if="order.status == 'create'" class="btn btn-primary"
                         ng-click="modifyOrderStatus('receive')">接收订单
                 </button>
@@ -46,7 +47,7 @@
                         ng-click="modifyOrderStatus('check')">对点完成
                 </button>
                 <!--<button type="button" ng-if="order.status == 'check'" class="btn btn-primary"-->
-                        <!--ng-click="modifyOrderStatus('send')">发货完成-->
+                <!--ng-click="modifyOrderStatus('send')">发货完成-->
                 <!--</button>-->
                 <button type="button" ng-if="order.status == 'send'" class="btn btn-primary"
                         ng-click="modifyOrderStatus('delivery')">交货完成
