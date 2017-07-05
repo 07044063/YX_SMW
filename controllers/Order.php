@@ -41,7 +41,7 @@ class Order extends ControllerAdmin
             } else {
                 $where .= " and status = '$order_status'";
             }
-            if ($order_status == "all" || $order_status == "notsend") {
+            if ($order_status == "all" || $order_status == "done") {
             } else {
                 $orderby = "order_date asc";
             }
