@@ -86,6 +86,9 @@ class Vendor extends ControllerAdmin
         if (!isset($data['vendor_name']) or $data['vendor_name'] == '') {
             return $this->echoMsg(-1, '供货商名称不能为空');
         }
+        if (!isset($data['vendor_shortname']) or $data['vendor_shortname'] == '') {
+            return $this->echoMsg(-1, '供货商简称不能为空');
+        }
 
         $this->loadModel(['mCommon']);
         try {
