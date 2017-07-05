@@ -4,6 +4,29 @@ if (!defined('APP_PATH')) {
     exit(0);
 }
 
+/**
+ * @property Dao $Dao Data access Object
+ * @property Email $Email
+ * @property ImageUploader $ImageUploader
+ * @property Db $Db
+ * @property DigCrypt $DigCrypt
+ * @property Smarty $Smarty Smarty
+ * @property Auth $Auth Auth
+ * @property Util $Util Util
+ * @property Controller $Controller Controller
+ * @property Load $Load Load
+ * @property SqlCached $SqlCached SqlCached
+ * @property Session $Session
+ * @property mAdmin $mAdmin
+ * @property mCommon $mCommon
+ * @property mStock $mStock
+ * @property mOrder $mOrder
+ * @property mInventory $mInventory
+ * @property mImport $mImport
+ * @property mExport $mExport
+ * @property mQuery $mQuery
+ */
+
 class Controller
 {
 
