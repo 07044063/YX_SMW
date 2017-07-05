@@ -117,9 +117,10 @@ class Order extends ControllerAdmin
 
     public function getVendorSelect()
     {
-        $vendorlist = $this->Dao->select("id,vendor_name as text")
+        $vendorlist = $this->Dao->select("id,concat(vendor_code,' ',vendor_shortname) as text")
             ->from(TABLE_VENDOR)
             ->where("isvalid = 1")
+            ->orderby('vendor_code asc')
             ->exec();
         return $this->echoMsg(0, $vendorlist);
     }
