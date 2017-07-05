@@ -19,7 +19,7 @@ class Order extends ControllerAdmin
         $order_type = $this->pGet('order_type');
         $order_status = $this->pGet('order_status');
         $where = "1=1";
-        $orderby = "order_date asc";
+        $orderby = "id desc";
         if (isset($search_text) and $search_text != '') {
             $where .= " and (order_code like '%$search_text%' or order_serial_no like '%$search_text%')";
         }
@@ -42,7 +42,8 @@ class Order extends ControllerAdmin
                 $where .= " and status = '$order_status'";
             }
             if ($order_status == "all" || $order_status == "notsend") {
-                $orderby = "id desc";
+            } else {
+                $orderby = "order_date asc";
             }
         }
         $list = $this->Dao->select()
