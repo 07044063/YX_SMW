@@ -46,7 +46,7 @@
                 {foreach from=$order.goods item=od name=ods}
                     <div class="weui-form-preview__item">
                         <label class="weui-form-preview__label">{$od.goods_name}</label>
-                        <span class="weui-form-preview__value">{$od.needs_sum}</span>
+                        <span class="weui-form-preview__value">{$od.sends_sum}/{$od.quantity}(数量/库存)</span>
                     </div>
                 {/foreach}
             </div>

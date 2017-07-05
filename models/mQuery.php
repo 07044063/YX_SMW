@@ -27,7 +27,7 @@ class mQuery extends Model
             ->getOneRow();
         $data['statusX'] = $status[$data['status']];
         $data['goods'] = $this->Dao->select("d.*,g.goods_ccode,g.goods_name")
-            ->from(VIEW_ORDER_DETAIL_SUM)
+            ->from(VIEW_ORDER_CHECK)
             ->alias('d')
             ->leftJoin(TABLE_GOODS)
             ->alias('g')

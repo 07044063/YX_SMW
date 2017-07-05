@@ -37,6 +37,7 @@ define('VIEW_ORDER', 'v_order');
 define('TABLE_ORDER_DETAIL', 'order_detail');
 
 define('VIEW_ORDER_DETAIL_SUM', 'v_order_detail_sum');
+define('VIEW_ORDER_CHECK', 'v_order_check');
 define('TABLE_ORDER_STATUS', 'order_status');
 define('TABLE_INVENTORY', 'inventory');
 define('VIEW_INVENTORY', 'v_inventory');
