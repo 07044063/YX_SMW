@@ -7,7 +7,6 @@ if (!defined('APP_PATH')) {
 /**
  * System Super Class Model
  */
-
 /**
  * @property Dao $Dao Data access Object
  * @property Email $Email
@@ -30,6 +29,7 @@ if (!defined('APP_PATH')) {
  * @property mExport $mExport
  * @property mQuery $mQuery
  */
+
 class Model
 {
 

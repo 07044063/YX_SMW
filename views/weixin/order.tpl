@@ -3,7 +3,7 @@
 <div id="container">
     {if !$order.id}
         {*<a class="weui-btn weui-btn_primary" style="margin:10px" id="scan_qrcode" data-prom="" data-add="0">扫描发货单条码</a>*}
-        <p class="text-title">未找到单据资料</p>
+        <p class="text-title">扫描结果：{$code}，未找到单据资料</p>
     {else}
         <input class="hidden" id="order_id" value="{$order.id}"/>
         <input class="hidden" id="order_status" value="{$order.status}"/>

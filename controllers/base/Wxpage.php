@@ -61,11 +61,13 @@ class Wxpage extends ControllerWx
         if (substr($code, 0, 1) == 'R') {
             $data = $this->mQuery->getBackByCode($code);
             $this->assign('back', $data);
+            $this->assign('code', $code);
             $this->assign('title', '退回单详情-' . $data['back_code']);
             $this->show(self::TPL . 'weixin/back.tpl');
         } else {
             $data = $this->mQuery->getOrderByCode($code);
             $this->assign('order', $data);
+            $this->assign('code', $code);
             $this->assign('title', '发货单详情-' . $data['order_serial_no']);
             $this->show(self::TPL . 'weixin/order.tpl');
         }
