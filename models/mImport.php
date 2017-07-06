@@ -201,7 +201,7 @@ class mImport extends Model
                         }
                         //对未找到供应商信息处理
                         if (!$order["vendor_id"]) {
-                            $emsg = $emsg . "[行$j ：" .  $order["vendor_code"] . "供应商代码不正确]<br>";
+                            $emsg = $emsg . "[行$j ：" . $order["vendor_code"] . "供应商代码不正确]<br>";
                             continue;
                         }
 
@@ -327,6 +327,8 @@ class mImport extends Model
                 } else {
                     $res = $mapdata["value1"];
                 }
+            } else if ($mapdata["type"] == 'REPLACE') {
+                $res = $mapdata["value1"];
             }
         }
         return $res;
