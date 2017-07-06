@@ -201,7 +201,7 @@ class mImport extends Model
                         }
                         //对未找到供应商信息处理
                         if (!$order["vendor_id"]) {
-                            $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "供应商代码不正确]<br>";
+                            $emsg = $emsg . "[行$j ：" .  $order["vendor_code"] . "供应商代码不正确]<br>";
                             continue;
                         }
 
@@ -254,7 +254,7 @@ class mImport extends Model
                     unset($order_detail);
                     $order_detail["goods_id"] = $this->getGoodsId($raw);
                     if (!$order_detail["goods_id"]) {
-                        $emsg = $emsg . "[行$j ：发货单" . $order["order_serial_no"] . "物料代码不正确]<br>";
+                        $emsg = $emsg . "[行$j ：" . $raw["goods_ccode"] . "物料代码不正确]<br>";
                         $thisid = 0;
                     }
                     if (!$thisid) {
