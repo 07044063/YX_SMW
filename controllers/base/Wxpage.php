@@ -114,4 +114,10 @@ class Wxpage extends ControllerWx
         $this->show(self::TPL . 'weixin/returninglist.tpl');
     }
 
+    public function inventorycheck()
+    {
+        $this->assign('title', '库存查询');
+        $this->show(self::TPL . 'weixin/inventorycheck.tpl');
+    }
+
 }

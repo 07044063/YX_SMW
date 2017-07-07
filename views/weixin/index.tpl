@@ -59,6 +59,18 @@
         <div class="weui-cell__ft"></div>
     </a>
 </div>
+<header class="Thead">信息查询</header>
+<div class="weui-cells" style="margin-top: 0px">
+    <a id="inventory_check" class="weui-cell weui-cell_access" href="javascript:;">
+        <div class="weui-cell__hd"><img
+                    src="{$docroot}static/images/weixin/list.png" style="width:32px;margin-right:5px;display:block">
+        </div>
+        <div class="weui-cell__bd">
+            <p>库存查询</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+    </a>
+</div>
 
 <script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
 
