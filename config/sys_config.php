@@ -53,7 +53,7 @@ $config->admin_salt = '1akjx99k';
 /**
  * 系统版本号
  */
-$config->system_version = 'v0.1';
+$config->system_version = 'v1.0';
 
 /**
  * 微信消息使用AES密文模式[推荐]

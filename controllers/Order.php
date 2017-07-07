@@ -13,55 +13,18 @@ class Order extends ControllerAdmin
     {
         $pagesize = $this->pGet('pagesize') ? intval($this->pGet('pagesize')) : 20;
         $page = $this->pGet('page');
-
-        $search_text = $this->pGet('search_text');
-        $order_address = $this->pGet('order_address');
-        $order_type = $this->pGet('order_type');
-        $order_status = $this->pGet('order_status');
-        $where = "1=1";
-        $orderby = "id desc";
-        if (isset($search_text) and $search_text != '') {
-            $where .= " and (order_code like '%$search_text%' or order_serial_no like '%$search_text%')";
-        }
-        if (isset($order_address) and $order_address != '') {
-            if ($order_address != "所有收货单位") {
-                $where .= " and address like '$order_address%'";
-            }
-        }
-        if (isset($order_type) and $order_type != '') {
-            if ($order_type != "所有类型") {
-                $where .= " and order_type = '$order_type'";
-            }
-        }
-        if (isset($order_status) and $order_status != '') {
-            //ORDER_STATUS_Z
-            if ($order_status == "all") {
-            } elseif ($order_status == "notsend") {
-                $where .= " and status in ('create','receive','ready','check')";
-            } else {
-                $where .= " and status = '$order_status'";
-            }
-            if ($order_status == "all" || $order_status == "done") {
-            } else {
-                $orderby = "order_date asc";
-            }
-        }
-        $list = $this->Dao->select()
-            ->from(VIEW_ORDER)
-            ->where($where)
-            ->orderby($orderby)
-            ->limit($pagesize * $page, $pagesize)
-            ->exec();
-        $list_count = $this->Dao->select('count(*)')
-            ->from(VIEW_ORDER)
-            ->where($where)
-            ->getOne();
-        $data = $this->toJson([
-            'total' => $list_count,
-            'list' => $list
-        ]);
-
-        return $this->echoJsonRaw($data);
+        $search_data = [];
+        $search_data['search_text'] = $this->pGet('search_text');
+        $search_data['order_address'] = $this->pGet('order_address');
+        $search_data['order_type'] = $this->pGet('order_type');
+        $search_data['order_status'] = $this->pGet('order_status');
+        $search_data['order_vendor'] = intval($this->pGet('order_vendor'));
+        $search_data['pagesize'] = $pagesize;
+        $search_data['page'] = $page;
+        $this->loadModel(['mOrder']);
+        $res = $this->mOrder->getList($search_data);
+        $data = $this->toJson($res);
+        $this->echoJsonRaw($data);
     }
 
     public function getById()
@@ -80,8 +43,8 @@ class Order extends ControllerAdmin
         }
         $this->loadModel(['mOrder']);
         $id = intval($this->pPost('id'));
-        $data = $this->mOrder->deleteById($id);
-        return $this->echoMsg(0, $data);
+        $this->mOrder->deleteById($id);
+        return $this->echoMsg(0, '');
     }
 
     public function getStatusById()

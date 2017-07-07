@@ -11,8 +11,10 @@ if ($('#orderlist').length > 0) {
     $(window).scroll(function () {
         totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop()) + 150;
         if ($(document).height() <= totalheight && !orderLoading) {
-            //加载数据
-            loadOrderList(++currentOrderpage);
+            if ($("#full").css("display") == 'none') {
+                //如果没有显示查询条件的Model，则加载数据
+                loadOrderList(++currentOrderpage);
+            }
         }
     });
 }
@@ -43,7 +45,16 @@ function loadOrderList(page) {
         orderLoading = true;
         $('#list-loading').show();
         // [HttpGet]
-        $.get('?/Weixin/getOrderListByStatus/page=' + page + '&status=' + $('#status').val(), function (HTML) {
+        var param = {
+            page: page,
+            order_status: $('#status').val(),
+            search_text: $("#search_text").val(),
+            order_address: $("#order_address").val(),
+            order_type: $("#order_type").val(),
+            order_vendor: $("#order_vendor").val()
+        };
+
+        $.get('?/Weixin/getOrderListByStatus', param, function (HTML) {
             orderLoading = false;
             if (HTML === '' && page === 0) {
                 // 什么都没有
@@ -62,3 +73,45 @@ function loadOrderList(page) {
         });
     }
 }
+
+var o_status_l = order_status_list;
+var o_address_list = address_list;
+o_address_list.pop(); //删除最后一个元素"其他"
+var o_type_list = order_type_list;
+
+$("#order_address").select({
+    title: "选择收货方",
+    items: o_address_list
+});
+
+$("#order_type").select({
+    title: "选择类型",
+    items: o_type_list
+});
+
+$.get('?/Weixin/getVendorList', {}, function (r) {
+    $("#order_vendor").select({
+        title: "选择供应商",
+        items: r.ret_msg
+    });
+});
+
+$('#query').click(function () {
+    currentOrderpage = -1;
+    orderLoading = false;
+    orderLoadingLock = false;
+    if ($("#search_text").val()) {
+        //如果输入单号查询，则默认显示全部卡片
+        $('#status').val('all');
+        $('.order-sort.hover').removeClass('hover');
+        $('#sort_all').addClass('hover');
+    }
+    loadOrderList(currentOrderpage);
+});
+
+$('#reset').click(function () {
+    $("#search_text").val('');
+    $("#order_address").val('');
+    $("#order_type").val('');
+    $("#order_vendor").val('');
+});

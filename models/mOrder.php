@@ -6,6 +6,66 @@
  */
 class mOrder extends Model
 {
+    public function getList($search_data)
+    {
+
+        $search_text = $search_data['search_text'];
+        $order_address = $search_data['order_address'];
+        $order_vendor = $search_data['order_vendor'];
+        $order_type = $search_data['order_type'];
+        $order_status = $search_data['order_status'];
+        $pagesize = $search_data['pagesize'];
+        $page = $search_data['page'];
+
+        $where = "1=1";
+        $orderby = "id desc";
+        if (isset($search_text) and $search_text != '') {
+            $where .= " and (order_code like '%$search_text%' or order_serial_no like '%$search_text%')";
+        }
+        if (isset($order_address) and $order_address != '') {
+            if ($order_address != "所有收货单位") {
+                $where .= " and address like '$order_address%'";
+            }
+        }
+        if ($order_vendor > 0) {
+            $where .= " and vendor_id = $order_vendor";
+        }
+        if (isset($order_type) and $order_type != '') {
+            if ($order_type != "所有类型") {
+                $where .= " and order_type = '$order_type'";
+            }
+        }
+        if (isset($order_status) and $order_status != '') {
+            //ORDER_STATUS_Z
+            if ($order_status == "all") {
+            } elseif ($order_status == "notsend") {
+                $where .= " and status in ('create','receive','ready','check')";
+            } elseif ($order_status == "notdone") {
+                $where .= " and status <> 'done'";
+            } else {
+                $where .= " and status = '$order_status'";
+            }
+            if ($order_status == "all" || $order_status == "done") {
+            } else {
+                $orderby = "order_date asc";
+            }
+        }
+        $list = $this->Dao->select()
+            ->from(VIEW_ORDER)
+            ->where($where)
+            ->orderby($orderby)
+            ->limit($pagesize * $page, $pagesize)
+            ->exec();
+        $list_count = $this->Dao->select('count(*)')
+            ->from(VIEW_ORDER)
+            ->where($where)
+            ->getOne();
+        $data = [
+            'total' => $list_count,
+            'list' => $list
+        ];
+        return $data;
+    }
 
     public function createOrder($orderdata, $gddata)
     {

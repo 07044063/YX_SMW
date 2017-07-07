@@ -85,7 +85,7 @@ class Controller
         // Smarty CompileDir
         $this->Smarty->setCompileDir($config->Smarty['compile_dir']);
         // css version
-        $this->Smarty->assign('cssversion', date('YmdHi'));
+        $this->Smarty->assign('cssversion', $config->cssversion);
         // root
         $this->Smarty->assign('docroot', $config->webroot);
         $this->Smarty->assign('domain', $config->domain);
