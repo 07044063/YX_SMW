@@ -108,9 +108,9 @@ class Goods extends ControllerAdmin
 
     public function getSelectOption()
     {
-        $vendorlist = $this->Dao->select("id,vendor_name as text")
+        $vendorlist = $this->Dao->select("id,CONCAT(vendor_code,' ',vendor_shortname) as text")
             ->from(TABLE_VENDOR)
-            ->where("isvalid = 1")
+            ->where("isvalid = 1 order by vendor_code")
             ->exec();
         $stocklist = $this->Dao->select("id,stock_name as text")
             ->from(TABLE_STOCK)

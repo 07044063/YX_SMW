@@ -209,4 +209,31 @@ class Weixin extends ControllerWx
         $this->show('./views/weixin/returninglisttemp.tpl');
     }
 
+    //查看发货单清单
+    public function getInventoryList($Query)
+    {
+        $this->Db->cache = false;
+        $this->Smarty->caching = false;
+
+        !isset($Query->page) && $Query->page = 0;
+        $limit = (15 * $Query->page) . ",15";
+
+        if ($Query->goods_code == '' || !$Query->goods_code) {
+            $where = "1 = 1 ";
+        } else {
+            $where = "goods_ccode like '%" . $Query->goods_code . "%'";
+        }
+        if (!$this->isCached()) {
+            $inventorylist = $this->Dao->select()
+                ->from(VIEW_INVENTORY)
+                ->where($where)
+                ->orderby('goods_ccode desc')
+                ->limit($limit)
+                ->exec();
+        }
+        $this->assign('inventorylist', $inventorylist);
+        $this->show('./views/weixin/inventorychecktemp.tpl');
+    }
+
+
 }

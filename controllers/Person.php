@@ -136,9 +136,9 @@ class Person extends ControllerAdmin
     {
         $type = $this->pGet('type');
         if ($type == 1) {
-            $options = $this->Dao->select("id,vendor_name as name")
+            $options = $this->Dao->select("id,CONCAT(vendor_code,' ',vendor_shortname) as name")
                 ->from(TABLE_VENDOR)
-                ->where("isvalid = 1")
+                ->where("isvalid = 1 order by vendor_code")
                 ->exec();
         } elseif ($type == 2) {
             $options = $this->Dao->select("id,customer_name as name")

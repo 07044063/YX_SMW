@@ -116,9 +116,9 @@ class Stockloan extends ControllerAdmin
 
     public function getVendorList()
     {
-        $options = $this->Dao->select("id,vendor_name as name")
+        $options = $this->Dao->select("id,CONCAT(vendor_code,' ',vendor_shortname) as name")
             ->from(TABLE_VENDOR)
-            ->where("isvalid = 1")
+            ->where("isvalid = 1 order by vendor_code")
             ->exec();
         return $this->echoMsg(0, $options);
     }

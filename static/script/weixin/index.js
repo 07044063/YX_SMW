@@ -76,3 +76,7 @@ $('#returing_create').click(function () {
 $('#returing_list').click(function () {
     location.href = '?/Wxpage/returninglist/';
 });
+
+$('#inventory_check').click(function () {
+    location.href = '?/Wxpage/inventorycheck/';
+});
