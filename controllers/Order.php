@@ -75,7 +75,7 @@ class Order extends ControllerAdmin
     public function deleteById()
     {
         $utitle = $this->Session->get('utitle');
-        if ($utitle != 2) {  //计划员可以删除
+        if ($utitle != 2 && $utitle != 4) {  //计划员和客服可以删除
             return $this->echoMsg(1, '没有操作权限');
         }
         $this->loadModel(['mOrder']);
