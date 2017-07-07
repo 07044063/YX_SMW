@@ -73,7 +73,7 @@
     </a>
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js?v={$cssversion}"></script>
 
 {include file="../__footer_wx.tpl"}
 
