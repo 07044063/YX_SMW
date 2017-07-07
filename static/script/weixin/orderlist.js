@@ -51,7 +51,7 @@ function loadOrderList(page) {
             search_text: $("#search_text").val(),
             order_address: $("#order_address").val(),
             order_type: $("#order_type").val(),
-            order_vendor: $("#order_vendor").val()
+            order_vendor: $("#order_vendor").data('values')
         };
 
         $.get('?/Weixin/getOrderListByStatus', param, function (HTML) {
@@ -113,5 +113,5 @@ $('#reset').click(function () {
     $("#search_text").val('');
     $("#order_address").val('');
     $("#order_type").val('');
-    $("#order_vendor").val('');
+    $("#order_vendor").val('').data('values', 0);
 });

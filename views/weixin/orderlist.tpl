@@ -4,7 +4,7 @@
 <input type="hidden" value="{$status}" id="status"/>
 <div id="container">
     <div class='clearfix' id='sort-bar'
-         style="position: fixed;top: 43px; right: 0;left: 0; z-index:99">
+         style="position: fixed;top: 43px; right: 0;left: 0; z-index:98">
         <div class='order-sort {if $status eq ''}hover{/if}' data-status="notdone"><b>未完成</b></div>
         <div class='order-sort {if $status eq 'create'}hover{/if}' data-status="create"><b>未接收</b></div>
         <div class='order-sort {if $status eq 'readying'}hover{/if}' data-status="readying"><b>未发货</b></div>
@@ -14,7 +14,7 @@
         <div id="sort_all" class='order-sort {if $status eq 'all'}hover{/if}' data-status="all"><b>全部</b></div>
     </div>
 
-    <div class="page__bd" style="margin-top: 30px">
+    <div class="page__bd" style="margin-top: 37px">
         <div class="weui-panel weui-panel_access">
             <div id="orderlist"></div>
         </div>
@@ -30,7 +30,7 @@
         </a>
     </div>
 
-    <div id="full" class='weui-popup__container'>
+    <div id="full" class='weui-popup__container' style="z-index:99">
         <div class="weui-popup__overlay"></div>
         <div class="weui-popup__modal">
             <div style="margin-top: 50px">
@@ -45,19 +45,19 @@
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label for="name" class="weui-label">供应商</label></div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" id="order_vendor" type="text" value="" data-values="">
+                            <input class="weui-input" id="order_vendor" type="text" data-values="">
                         </div>
                     </div>
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label for="name" class="weui-label">收货方</label></div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" id="order_address" type="text" value="" data-values="">
+                            <input class="weui-input" id="order_address" type="text">
                         </div>
                     </div>
                     <div class="weui-cell">
                         <div class="weui-cell__hd"><label for="name" class="weui-label">订单类型</label></div>
                         <div class="weui-cell__bd">
-                            <input class="weui-input" id="order_type" type="text" value="" data-values="">
+                            <input class="weui-input" id="order_type" type="text">
                         </div>
                     </div>
                 </div>

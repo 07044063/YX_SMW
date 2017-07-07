@@ -227,7 +227,7 @@ class Weixin extends ControllerWx
             $inventorylist = $this->Dao->select()
                 ->from(VIEW_INVENTORY)
                 ->where($where)
-                ->orderby('goods_ccode desc')
+                ->orderby('goods_ccode asc')
                 ->limit($limit)
                 ->exec();
         }
