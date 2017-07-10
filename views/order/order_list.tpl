@@ -15,26 +15,29 @@
                 <div class="form-group col-xs-2" style="margin-top: 13px;">
                     <select class="form-control" id="order_status"
                             ng-model="order_status" ng-change="selectChange()"
-                            ng-init="order_status= order_status_list[0]"
-                            ng-options="order_statu.value for order_statu in order_status_list">
+                            ng-options="order_statu.key as order_statu.value for order_statu in order_status_list">
                     </select>
                 </div>
-                <div class="form-group col-xs-3" style="margin-top: 13px;">
+                <div class="form-group col-xs-2" style="margin-top: 13px;">
                     <select class="form-control" id="order_address"
-
                             ng-model="order_address" ng-change="selectChange()"
-                            ng-init="order_address=address_list[0]"
                             ng-options="value for value in address_list">
                     </select>
                 </div>
                 <div class="form-group col-xs-2" style="margin-top: 13px;">
-
+                    <select class="form-control" id="order_vendor"
+                            ng-model="order_vendor" ng-change="selectChange()"
+                            ng-options="vendor.id as vendor.text for vendor in vendorlist">
+                    </select>
+                </div>
+                <div class="form-group col-xs-2" style="margin-top: 13px;">
                     <select class="form-control" id="order_type"
-
                             ng-model="order_type" ng-change="selectChange()"
-                            ng-init="order_type=order_type_list[0]"
                             ng-options="value for value in order_type_list">
                     </select>
+                </div>
+                <div class="form-group col-xs-1" style="margin-top: 13px;">
+                    <button class="btn btn-primary" ng-click="resetSelect()">重置</button>
                 </div>
             </div>
         </div>
@@ -91,7 +94,7 @@
     {/literal}
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/order/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/order/{$script_name}.js?v={$cssversion}"></script>
 
 <div class="navbar-fixed-bottom bottombar">
     <div id="pager-bottom">

@@ -63,7 +63,8 @@
 <div class="weui-cells" style="margin-top: 0px">
     <a id="inventory_check" class="weui-cell weui-cell_access" href="javascript:;">
         <div class="weui-cell__hd"><img
-                    src="{$docroot}static/images/weixin/list.png" style="width:32px;margin-right:5px;display:block">
+                    src="{$docroot}static/images/weixin/inventory.png"
+                    style="width:32px;margin-right:5px;display:block">
         </div>
         <div class="weui-cell__bd">
             <p>库存查询</p>
@@ -72,7 +73,7 @@
     </a>
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js?v={$cssversion}"></script>
 
 {include file="../__footer_wx.tpl"}
 

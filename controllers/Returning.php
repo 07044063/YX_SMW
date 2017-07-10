@@ -15,9 +15,12 @@ class Returning extends ControllerAdmin
         $page = $this->pGet('page');
         $search_text = '%' . $this->pGet('search_text') . '%';
         $where = "returning_code like '$search_text'";
-        $list = $this->Dao->select("r.*")
+        $list = $this->Dao->select("r.*,p.person_name")
             ->from(TABLE_RETURNING)
             ->alias('r')
+            ->leftJoin(TABLE_PERSON)
+            ->alias('p')
+            ->on("r.create_by = p.id")
             ->where($where)
             ->aw("r.isvalid = 1")
             ->orderby('r.id desc')

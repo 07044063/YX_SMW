@@ -88,6 +88,17 @@ class Weixin extends ControllerWx
         return $this->echoMsg(0, $data);
     }
 
+    //发货单查询时，获取选择供应商的选项
+    public function getVendorList()
+    {
+        $data = $this->Dao->select("id as `value`,concat(vendor_code,' ',vendor_shortname) as `title`")
+            ->from(TABLE_VENDOR)
+            ->where("isvalid = 1")
+            ->orderby('vendor_code asc')
+            ->exec();
+        return $this->echoMsg(0, $data);
+    }
+
     //确认退货单已收货调用的方法
     public function confirmReturningReceive()
     {
@@ -121,6 +132,7 @@ class Weixin extends ControllerWx
         $this->Db->cache = false;
         $this->Smarty->caching = false;
 
+        //ORDER_STATUS_Z
         $status = array(
             'create' => "新创建",
             'receive' => "仓库已接收",
@@ -131,31 +143,18 @@ class Weixin extends ControllerWx
             'done' => "全部完成"
         );
 
-        !isset($Query->page) && $Query->page = 0;
-        $limit = (15 * $Query->page) . ",15";
-
-        if ($Query->status == '' || !$Query->status) {
-            $where = "( status <> 'done')";
-        } else {
-            if ($Query->status == 'readying') {
-                $where = "( status = 'receive' or status = 'ready' or status = 'check' )";
-            } else if ($Query->status == 'notdone') {
-                $where = "( status <> 'done')";
-            } else if ($Query->status == 'all') {
-                $where = '1 = 1';
-            } else {
-                $where = "status = '" . $Query->status . "'";
-            }
-        }
         if (!$this->isCached()) {
-            $orders = $this->Dao->select()
-                ->from(VIEW_ORDER)
-                ->alias('o')
-                ->where('o.isvalid = 1')
-                ->aw($where)
-                ->orderby('order_date desc')
-                ->limit($limit)
-                ->exec();
+            $search_data = [];
+            $search_data['search_text'] = $this->pGet('search_text');
+            $search_data['order_address'] = $this->pGet('order_address');
+            $search_data['order_type'] = $this->pGet('order_type');
+            $search_data['order_status'] = $this->pGet('order_status');
+            $search_data['order_vendor'] = intval($this->pGet('order_vendor'));
+            $search_data['pagesize'] = 15;
+            $search_data['page'] = $this->pGet('page');
+            $this->loadModel(['mOrder']);
+            $res = $this->mOrder->getList($search_data);
+            $orders = $res['list'];
             foreach ($orders as $i => $od) {
                 $orders[$i]['statusX'] = $status[$orders[$i]['status']];
             }
@@ -228,7 +227,7 @@ class Weixin extends ControllerWx
             $inventorylist = $this->Dao->select()
                 ->from(VIEW_INVENTORY)
                 ->where($where)
-                ->orderby('goods_ccode desc')
+                ->orderby('goods_ccode asc')
                 ->limit($limit)
                 ->exec();
         }

@@ -34,6 +34,25 @@ app.controller('orderListController', function ($scope, $http, Util) {
         $scope.order_type_list = order_type_list;
         $scope.order_type_list.unshift('所有类型');
 
+        $.get('?/Order/getVendorSelect', {}, function (r) {
+            $scope.vendorlist = r.ret_msg;
+            console.info($scope.vendorlist);
+            $scope.vendorlist.unshift({id: 0, text: '全部供应商'});
+            $scope.order_vendor = $scope.vendorlist[0].id;
+        });
+
+        $scope.resetSelect = function () {
+            $scope.order_address = $scope.address_list[0];  //初始值
+            $scope.order_status = $scope.order_status_list[0].key;  //初始值
+            $scope.order_type = $scope.order_type_list[0];
+            $scope.search_text = '';
+            if ($scope.vendorlist) {
+                $scope.order_vendor = $scope.vendorlist[0].id;
+            }
+        };
+
+        $scope.resetSelect();
+
         //$.datetimepicker.setLocale('zh');
         //
         //// 日期选择器
@@ -129,8 +148,9 @@ app.controller('orderListController', function ($scope, $http, Util) {
 
         $scope.selectChange = function () {
             //状态-收货方-类型发生变化是时，获取的结果发生改变
-            $scope.params.order_status = $scope.order_status.key;
+            $scope.params.order_status = $scope.order_status;
             $scope.params.order_address = $scope.order_address;
+            $scope.params.order_vendor = $scope.order_vendor;
             $scope.params.order_type = $scope.order_type;
             $scope.params.search_text = $scope.search_text;
             $scope.init = false;

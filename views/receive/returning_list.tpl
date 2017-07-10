@@ -19,6 +19,7 @@
                 <th class="hidden">ID</th>
                 <th>退货单</th>
                 <th>退货单号</th>
+                <th>创建人</th>
                 <th>创建时间</th>
                 <th>状态</th>
                 <th>备注</th>
@@ -32,6 +33,7 @@
                         <img style="max-height:50px;max-width: 400px;margin: 3px"
                              src="{{returnings.pic_url}}"/></a></td>
                 <td>{{returnings.returning_code}}</td>
+                <td>{{returnings.person_name}}</td>
                 <td>{{returnings.create_at}}</td>
                 <td>{{returnings.statusX}}</td>
                 <td>{{returnings.remark}}</td>
