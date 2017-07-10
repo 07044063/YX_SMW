@@ -58,12 +58,14 @@
                         <input id="input_qty" type="text" placeholder="请输入数量" ng-model="goods.count"
                                class="form-control" />
                     </div>
+
                 </div>
                 <div class="col-xs-4">
                     <div class="form-group">
                         <input id="input_remark" type="text" placeholder="请输入备注" ng-model="goods.remark"
                                class="form-control" />
                     </div>
+
                 </div>
                 <div class="col-xs-1">
                     <div class="form-group">

@@ -25,7 +25,6 @@ app.controller('receiveController', function ($scope, $http, Util) {
                 $('#re_add').click();
             }
         });
-
         $('#input_remark').keyup(function (e) {
             if (e.keyCode === 13) {
                 $('#re_add').click();
