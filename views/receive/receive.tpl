@@ -43,7 +43,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">收货明细</div>
@@ -56,24 +55,23 @@
                 </div>
                 <div class="col-xs-2">
                     <div class="form-group">
-                        <input type="text" placeholder="请输入数量" ng-model="goods.count"
-                               class="form-control"/>
+                        <input id="input_qty" type="text" placeholder="请输入数量" ng-model="goods.count"
+                               class="form-control" />
                     </div>
                 </div>
                 <div class="col-xs-4">
                     <div class="form-group">
-                        <input type="text" placeholder="请输入备注" ng-model="goods.remark"
-                               class="form-control"/>
+                        <input id="input_remark" type="text" placeholder="请输入备注" ng-model="goods.remark"
+                               class="form-control" />
                     </div>
                 </div>
                 <div class="col-xs-1">
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary pull-left" ng-click="addGoods()">添加
+                        <button id="re_add" type="button" class="btn btn-primary pull-left" ng-click="addGoods()">添加
                         </button>
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">物料清单</div>

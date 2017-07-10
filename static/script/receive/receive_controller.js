@@ -20,6 +20,18 @@ app.controller('receiveController', function ($scope, $http, Util) {
             step: 5
         });
 
+       $('#input_qty').keyup(function (e) {
+            if (e.keyCode === 13) {
+                $('#re_add').click();
+            }
+        });
+
+        $('#input_remark').keyup(function (e) {
+            if (e.keyCode === 13) {
+                $('#re_add').click();
+            }
+        });
+
         ///设置默认的收货日期
         var date = new Date();
         var seperator = "-";
