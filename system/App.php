@@ -95,7 +95,6 @@ class App
                     //检查权限
                     $authCheck = Util::checkAuth($RouteParam->controller, $RouteParam->action);
                     $flag = intval($authCheck[0]['res']);
-                    slog("auth check res is $flag");
                     if (!$flag) {
                         if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest") {
                             // ajax 请求的处理方式

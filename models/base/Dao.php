@@ -276,7 +276,7 @@ class Dao
      */
     public function leftJoin($table, $condition = false)
     {
-        $this->sqlStr .= $this->sqlLeftJoin . $table;
+        $this->sqlStr .= $this->sqlLeftJoin . "`$table`";
         if ($condition) {
             $this->on($condition);
         }
