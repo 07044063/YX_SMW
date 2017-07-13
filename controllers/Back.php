@@ -48,10 +48,6 @@ class Back extends ControllerAdmin
 
     public function deleteById()
     {
-        $utitle = $this->Session->get('utitle');
-        if ($utitle != 4) {  //客服可以删除
-            return $this->echoMsg(1, '没有操作权限');
-        }
         $id = intval($this->pPost('id'));
         $this->loadModel(['mCommon']);
         try {
@@ -90,10 +86,6 @@ class Back extends ControllerAdmin
 
     public function confirmBack()
     {
-        $utitle = $this->Session->get('utitle');
-        if ($utitle != 4) {  //客服可以确认
-            return $this->echoMsg(-1, '没有操作权限');
-        }
         $id = intval($this->pPost('id'));
         $this->loadModel(['mInventory']);
         try {

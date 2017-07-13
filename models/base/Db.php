@@ -123,7 +123,6 @@ class Db extends Model
     public function query($statement, $mcache = true, $fetchStyle = PDO::FETCH_ASSOC)
     {
         global $config;
-//        slog($statement, $this->db);
         slog($statement);
         try {
             if (preg_match("/INSERT/is", $statement)) {

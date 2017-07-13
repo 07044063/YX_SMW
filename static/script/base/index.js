@@ -58,7 +58,8 @@ $(function () {
 
         var nP = $('#' + nThis.parent().attr('id').replace('subnav', 'navitem'));
 
-        var page = nThis.data('page');
+        var v_controller = nThis.data('controller');
+        var v_function = nThis.data('function');
 
         var href = nThis.data('href');
 
@@ -80,7 +81,7 @@ $(function () {
             if (href != '' && href != undefined) {
                 currentURI = href;
             } else {
-                currentURI = '?/Page/' + page;
+                currentURI = '?/'+ v_controller +'/' + v_function;
             }
             $('#right_iframe').get(0).contentWindow.location.replace(currentURI);
         }

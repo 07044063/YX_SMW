@@ -103,11 +103,6 @@ class Controller
         $this->modulePreload();
 
         $this->Session->start();
-
-        // 测试模式
-        if ($config->debug) {
-            $this->Session->set('openid', 'oVVN7v2YkP9Ye3XBb6ljramZld0o');
-        }
     }
 
     /**
@@ -253,7 +248,7 @@ class Controller
      * 输出JSON
      * @param mixed $arr
      */
-    final public function echoJson($arr, $options = JSON_UNESCAPED_UNICODE)
+    final public static function echoJson($arr, $options = JSON_UNESCAPED_UNICODE)
     {
         header('Content-Type: application/json; charset=utf-8');
         if (strpos(PHP_VERSION, '5.3') > -1) {

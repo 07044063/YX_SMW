@@ -50,6 +50,6 @@
     <a href="javascript:saveData();" class="weui-btn weui-btn_primary">创建退货单</a>
 </div>
 
-<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js?v={$cssversion}"></script>
 
 {include file="../__footer_wx.tpl"}

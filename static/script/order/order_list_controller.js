@@ -36,7 +36,6 @@ app.controller('orderListController', function ($scope, $http, Util) {
 
         $.get('?/Order/getVendorSelect', {}, function (r) {
             $scope.vendorlist = r.ret_msg;
-            console.info($scope.vendorlist);
             $scope.vendorlist.unshift({id: 0, text: '全部供应商'});
             $scope.order_vendor = $scope.vendorlist[0].id;
         });
@@ -130,11 +129,10 @@ app.controller('orderListController', function ($scope, $http, Util) {
 
         $scope.deleteOrder = function (e) {
             var node = e.currentTarget;
-            var param = $.param({
-                id: $(node).data('id')
-            });
             if (confirm('确定要删除这个收货单吗?')) {
-                $http.post('?/Order/deleteById/', param, $scope.post_head).success(function (r) {
+                $.post('?/Order/deleteById/', {
+                    id: $(node).data('id')
+                }, function (r) {
                     if (r.ret_code === 0) {
                         Util.alert('删除成功');
                         $(node).parents('tr').remove();

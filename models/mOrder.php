@@ -42,7 +42,9 @@ class mOrder extends Model
                 $where .= " and status in ('create','receive','ready','check')";
             } elseif ($order_status == "notdone") {
                 $where .= " and status <> 'done'";
-            } else {
+            } elseif ($order_status == "readying") {
+                $where .= " and status in ('receive','ready')";
+            }else {
                 $where .= " and status = '$order_status'";
             }
             if ($order_status == "all" || $order_status == "done") {

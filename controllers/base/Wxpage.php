@@ -41,6 +41,11 @@ class Wxpage extends ControllerWx
         $this->redirect($this->root . "?/Wxpage/$action/");
     }
 
+    public function noauth()
+    {
+        $this->show(self::TPL . 'wxnoauth.tpl');
+    }
+
     public function test()
     {
         $this->assign('title', '测试页');
@@ -75,12 +80,6 @@ class Wxpage extends ControllerWx
 
     public function send()
     {
-        //权限判断
-        $utitle = intval($this->Session->get('utitle'));
-        if ($utitle != 7) {
-            $this->show(self::TPL . 'wxnoauth.tpl');
-            return;
-        }
         $this->assign('title', '发货装车');
         $this->show(self::TPL . 'weixin/send.tpl');
     }
@@ -95,11 +94,6 @@ class Wxpage extends ControllerWx
 
     public function returningcreate()
     {
-        $utitle = intval($this->Session->get('utitle'));
-        if ($utitle != 8) {  //跟单员
-            $this->show(self::TPL . 'wxnoauth.tpl');
-            return;
-        }
         $this->assign('title', '创建退货单');
         $this->show(self::TPL . 'weixin/returningcreate.tpl');
     }
@@ -107,10 +101,6 @@ class Wxpage extends ControllerWx
     public function returninglist()
     {
         $this->assign('title', '退货单清单');
-        $utitle = intval($this->Session->get('utitle'));
-        if ($utitle == 5) {  //库管
-            $this->assign('auth', 1);
-        }
         $this->show(self::TPL . 'weixin/returninglist.tpl');
     }
 

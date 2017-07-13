@@ -2,7 +2,7 @@
 {assign var="script_name" value="returninglist"}
 
 <input type="hidden" value="{$status}" id="status"/>
-<input type="hidden" value="{$auth}" id="auth"/>
+
 <div id="container">
     <div class='clearfix' id='sort-bar'>
         <div class='return-sort {if $status eq ''}hover{/if}' data-status=""><b>全部</b></div>
@@ -24,6 +24,6 @@
     </div>
 
 </div>
-<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js?v={$cssversion}"></script>
 
 {include file="../__footer_wx.tpl"}

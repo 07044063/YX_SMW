@@ -22,6 +22,7 @@ class ControllerWx extends Controller
             $this->redirect("/?/Index/wxerror");
         } else {
             $this->loadModel('mAdmin');
+
             $admininfo = $this->mAdmin->get($UserId);
             $this->setUserSession($admininfo);
         }

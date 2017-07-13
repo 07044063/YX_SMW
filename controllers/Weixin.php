@@ -200,12 +200,6 @@ class Weixin extends ControllerWx
             }
         }
         $this->assign('returnings', $data);
-        $utitle = $this->Session->get('utitle');
-        if ($utitle == 5) {  //库管可以操作退货单入库确认
-            $this->assign('auth', 1);
-        } else {
-            $this->assign('auth', 0);
-        }
         $this->show('./views/weixin/returninglisttemp.tpl');
     }
 

@@ -266,19 +266,6 @@ class Util extends Model
     }
 
     /**
-     * 检查是否登陆
-     * @return bool
-     */
-    public function isLogin()
-    {
-        if (isset($_COOKIE['uopenid']) && isset($_COOKIE['uid'])) {
-            return $this->User->checkUserExt($_COOKIE['uopenid']);
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * 写入日志数据库
      * @param string $message
      * @param int $type 默认错误级别
@@ -301,28 +288,16 @@ class Util extends Model
         ])->exec();
     }
 
-    public static function checkAuth($controller, $action)
+    public function checkAuth($controller, $action)
     {
         //检查用户权限
-        $uid = $_COOKIE['uid'];
-        $dao = Dao::get_instance();
-        $roles = $dao->select('t.title_roles')
-            ->from(TABLE_PERSON)
-            ->alias('p')
-            ->leftJoin(TABLE_TITLE)
-            ->alias('t')
-            ->on('p.person_title = t.id and t.isvalid = 1')
-            ->where("p.id = '$uid'")
-            ->aw("p.isvalid = 1")
-            ->getOne();
-        return $dao->select('count(1)')
-            ->from(TABLE_ROLE_AUTH)
-            ->alias('r')
-            ->where("r.role_id in ($roles)")
-            ->aw("r.isvalid = 1")
-            ->aw("r.controller = '" . $controller . "'")
-            ->aw("r.function = '" . $action . "'")
-            ->getOne();
+        $uid = $_SESSION['uid'];
+        if (!$uid) {
+            $uid = 0;
+        }
+        $db = Db::get_instance();
+        $res = $db->query("select f_check_user_auth($uid,'$controller','$action') as res;");
+        return $res;
     }
 
     /**

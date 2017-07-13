@@ -24,6 +24,7 @@ app.controller('orderConfirmController', function ($scope, $http, Util) {
                         id: $scope.order_id
                     }
                 }).success(function (r) {
+                    //只有已交货和已完成的单据才显示信息
                     if (r.ret_msg.order.status == 'delivery' || r.ret_msg.order.status == 'done') {
                         $scope.order = r.ret_msg.order;
                         $scope.order.statusX = $scope.order_status_list[$scope.order.status];

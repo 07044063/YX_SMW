@@ -92,14 +92,25 @@ class App
                 if (method_exists($this->Controller, $RouteParam->action)) {
                     // 注册当前URI
                     $this->Controller->uri = $URI = preg_replace('/\/\?\/$/', '', Util::getURI());
-                    if ($RouteParam->controller == 'Page') {
-                        //如果是页面，要检查页面权限
-                        $authCheck = Util::checkAuth($RouteParam->controller, $RouteParam->action);
-                        if (!$authCheck > 0) {
-                            header('Location: ?/Common/noauth');
-                            return;
-                            //throw new Exception("访问错误：{$RouteParam->controller}->{$RouteParam->action}() 没有权限");
-                        }
+                    //检查权限
+                    $authCheck = Util::checkAuth($RouteParam->controller, $RouteParam->action);
+                    $flag = intval($authCheck[0]['res']);
+                    slog("auth check res is $flag");
+                    if (!$flag) {
+                        if (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest") {
+                            // ajax 请求的处理方式
+                            return Controller::echoJson(['ret_code' => -1,
+                                'ret_msg' => '没有操作权限']);
+                        } else {
+                            // 正常请求的处理方式
+                            if (Controller::inWechat()) {
+                                $error_url = 'Location: ?/Wxpage/noauth';
+                            } else {
+                                $error_url = 'Location: ?/Common/noauth';
+                            }
+                            header($error_url);
+                        };
+                        return;
                     }
                     // 回调根目录
                     $this->Controller->root = Util::getROOT();

@@ -34,20 +34,18 @@ app.controller('stockListController', function ($scope, $http, Util) {
 
         $scope.deleteStock = function (e) {
             var node = e.currentTarget;
-            var param = $.param({
-                id: $(node).data('id')
-            });
             if (confirm('你确定要删除这个库区吗?')) {
-                $http.post('?/Stock/deleteById/', param, $scope.post_head).
-                    success(function (r) {
-                        if (r.ret_code === 0) {
-                            Util.alert('删除成功');
-                            $(node).parents('tr').remove();
-                        } else {
-                            //alert(r.ret_msg);
-                            Util.alert('操作失败 ' + r.ret_msg, true);
-                        }
-                    });
+                $.post('?/Stock/deleteById/', {
+                    id: $(node).data('id')
+                }, function (r) {
+                    if (r.ret_code === 0) {
+                        Util.alert('删除成功');
+                        $(node).parents('tr').remove();
+                    } else {
+                        //alert(r.ret_msg);
+                        Util.alert('操作失败 ' + r.ret_msg, true);
+                    }
+                });
             }
         }
         ;

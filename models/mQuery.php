@@ -74,18 +74,9 @@ class mQuery extends Model
             ->on('d.goods_id = g.id')
             ->where("d.back_id = " . $data['id'])
             ->exec();
-        $utitle = $this->Session->get('utitle');
-        $data['hasauth'] = 0;
-        //ORDER_STATUS_Z
-        if ($utitle == 4 && $data['status'] == 'send') {  //客服
-            $data['hasauth'] = 1;
-        }
-        if ($utitle == 5 && $data['status'] == 'create') {  //库管
-            $data['hasauth'] = 1;
-        }
-        if ($utitle == 5 && $data['status'] == 'receive') {  //库管
-            $data['hasauth'] = 1;
-        }
+        $uid = $this->Session->get('uid');
+        $hasauth = $this->Db->query("select f_check_user_auth($uid,'BackStatus','" . $data['status'] . "')");
+        $data['hasauth'] = $hasauth[0]['res'];
         return $data;
     }
 

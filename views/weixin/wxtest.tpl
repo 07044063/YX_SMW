@@ -28,7 +28,7 @@
 <a class="weui-btn weui-btn_primary" style="margin:10px" id="test_button" data-prom="" data-add="0">测试按钮</a>
 <a class="weui-btn weui-btn_disabled weui-btn_primary" style="margin:10px" data-prom="" data-add="0">无效按钮</a>
 
-<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/weixin/{$script_name}.js?v={$cssversion}"></script>
 
 {include file="../__footer_wx.tpl"}
 

@@ -3,8 +3,6 @@ var dLoading = false;
 var dLoadingLock = false;
 var totalheight;
 
-var auth = $('#auth').val();
-
 // 列表页面
 if ($('#returninglist').length > 0) {
     // init list
@@ -30,9 +28,7 @@ $('.return-sort').unbind('click').click(function () {
 });
 
 function doReceive(id, status) {
-    //alert(auth);
-    //alert(status);
-    if (auth > 0 && status == 'create') {
+    if (status == 'create') {
         $.actions({
             title: "选择操作",
             onClose: function () {

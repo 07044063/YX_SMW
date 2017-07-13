@@ -5,6 +5,7 @@
 <div id="container">
     <div class='clearfix' id='sort-bar'
          style="position: fixed;top: 43px; right: 0;left: 0; z-index:98">
+         <!-- ORDER_STATUS_Z -->
         <div class='order-sort {if $status eq ''}hover{/if}' data-status="notdone"><b>未完成</b></div>
         <div class='order-sort {if $status eq 'create'}hover{/if}' data-status="create"><b>未接收</b></div>
         <div class='order-sort {if $status eq 'readying'}hover{/if}' data-status="readying"><b>未发货</b></div>

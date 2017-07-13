@@ -92,6 +92,6 @@
 
 <script src="{$docroot}static/script/lib/select2/select2.full.min.js"></script>
 
-<script type="text/javascript" src="{$docroot}static/script/order/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/order/{$script_name}.js?v={$cssversion}"></script>
 
 {include file='../__footer_v2.tpl'}

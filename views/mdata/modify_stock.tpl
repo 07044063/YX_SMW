@@ -93,7 +93,7 @@
 {/literal}
 
 <script src="{$docroot}static/script/lib/select2/select2.full.min.js"></script>
-<script type="text/javascript" src="{$docroot}static/script/mdata/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/mdata/{$script_name}.js?v={$cssversion}"></script>
 
 <div class="navbar-fixed-bottom bottombar">
     <div id="pager-bottom">

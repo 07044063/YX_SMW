@@ -52,6 +52,6 @@
 </div>
 <!-- 分页 -->
 
-<script type="text/javascript" src="{$docroot}static/script/{$script_name}.js"></script>
+<script type="text/javascript" src="{$docroot}static/script/{$script_name}.js?v={$cssversion}"></script>
 
 {include file='../__footer_v2.tpl'}

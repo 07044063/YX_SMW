@@ -36,7 +36,7 @@ app.controller('modifyStockController', function ($scope, $http, Util) {
 
         $scope.goBack = function () {
             history.back();
-        }
+        };
 
         function fnInit() {
             Util.loading();
@@ -67,4 +67,4 @@ app.controller('modifyStockController', function ($scope, $http, Util) {
 
         fnInit();
     }
-)
+);

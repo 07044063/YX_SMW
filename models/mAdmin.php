@@ -67,17 +67,13 @@ class mAdmin extends Model
      */
     public function get($admin_acc)
     {
-        return $this->Dao->select('p.*,t.title_roles as roles')
+        return $this->Dao->select('p.*')
             ->from(TABLE_PERSON)
             ->alias('p')
-            ->leftJoin(TABLE_TITLE)
-            ->alias('t')
-            ->on('p.person_title = t.id and t.isvalid = 1')
-            ->where("person_phone = '$admin_acc'")
+            ->where("p.person_phone = '$admin_acc'")
             ->aw("p.isvalid = 1")
             ->getOneRow();
     }
-
 
     /**
      * 修改密码
@@ -103,5 +99,4 @@ class mAdmin extends Model
             throw new exception('原密码不正确');
         }
     }
-
 }

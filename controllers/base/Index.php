@@ -9,7 +9,6 @@ if (!defined('APP_PATH')) {
  */
 class Index extends Controller
 {
-
     const COOKIE_EXP = 28800;
     const LIST_LIMIT = 100;
     const loginKeyK = '4s5mpxa';
@@ -38,30 +37,17 @@ class Index extends Controller
         if (!$this->Auth->checkAuth()) {
             return $this->redirect('?/Index/logOut');
         }
-
         if ($this->pCookie('loginKey')) {
-            if (is_numeric($this->pCookie('lev'))) {
-                $authStr = urldecode($this->pCookie('auth'));
-                $this->cacheId = $authStr;
-                $this->Smarty->cache_lifetime = 7200;
-                if (!$this->isCached()) {
-                    $authData = $this->Dao->select("distinct `function` as auth")
-                        ->from(TABLE_ROLE_AUTH)
-                        ->where("role_id in ($authStr)")
-                        ->aw("(controller = 'Page' or controller = 'Menu')")
-                        ->aw('isvalid = 1')
-                        ->exec();
-                    $authArr = array();
-                    foreach ($authData as $au) {
-                        $authArr[$au['auth']] = 1;
-                    }
-                    $this->Smarty->assign('adid', $this->pCookie('uid'));
-                    $this->Smarty->assign('adname', $this->pCookie('uname'));
-                    $this->Smarty->assign('Auth', $authArr);
-                    $this->Smarty->assign('today', date("n月j号 星期") . $this->Util->getTodayStr());
-                }
-                $this->show('./views/index.tpl');
+            $this->Smarty->cache_lifetime = 7200;
+            if (!$this->isCached()) {
+                $uid = $this->Session->get('uid');
+                $menuData = $this->Db->query("call p_get_user_menu(" . $uid . ");");
+                $this->Smarty->assign('adid', $uid);
+                $this->Smarty->assign('adname', $this->Session->get('uname'));
+                $this->Smarty->assign('menu', $menuData);
+                $this->Smarty->assign('today', date("n月j日 星期") . $this->Util->getTodayStr());
             }
+            $this->show('./views/index.tpl');
         } else {
             header('Location:' . $this->root . '?/Index/login');
             exit(0);
@@ -74,7 +60,7 @@ class Index extends Controller
     public function logOut()
     {
         foreach ($_COOKIE as $k => $v) {
-            setcookie($k, NULL);
+            setcookie($k, null);
         }
         $this->Session->clear();
         header('Location:?/Index/login/');
@@ -87,7 +73,6 @@ class Index extends Controller
     {
         $this->Session->start();
         $ip = $this->getIp();
-
         $this->loadModel('mAdmin');
         $admin_acc = addslashes(trim($this->post('admin_acc')));
         $admin_pwd = addslashes(trim($this->post('admin_pwd')));
@@ -95,7 +80,6 @@ class Index extends Controller
         $this->sCookie('admin_acc', $admin_acc, self::COOKIE_EXP);
         // admin login
         $admininfo = $this->mAdmin->get($admin_acc);
-
         // 写入登陆记录
         @$this->Dao->insert(TABLE_LGOIN_RECORDS, 'account,ip,ldate')
             ->values(array($admin_acc, $ip, 'NOW()'))
@@ -110,13 +94,7 @@ class Index extends Controller
                 // 写入数据到session
                 $this->Session->set('loginKey', $loginKey);
                 $this->setUserSession($admininfo);
-                //Util::log("登录成功 " . $admin_acc);
-                // 下发管理员权限表
                 $this->sCookieHttpOnly('loginKey', $loginKey, self::COOKIE_EXP);
-                $this->sCookieHttpOnly('uid', $admininfo['id'], self::COOKIE_EXP);
-                $this->sCookieHttpOnly('uname', $admininfo['person_name'], self::COOKIE_EXP);
-                $this->sCookieHttpOnly('auth', $admininfo['roles'], self::COOKIE_EXP);
-                $this->sCookieHttpOnly('lev', 0, self::COOKIE_EXP);
                 // 删除cookie
                 $this->sCookie('admin_acc', '', 1);
                 // 成功
@@ -153,5 +131,4 @@ class Index extends Controller
     {
         $this->show('./views/wxerror.tpl');
     }
-
 }
