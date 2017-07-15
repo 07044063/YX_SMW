@@ -16,7 +16,7 @@ class mQuery extends Model
             'ready' => '备货已完成',
             'check' => '对点已完成',
             'send' => '发车已完成',
-            'arrive' => "货已到达",
+            'arrive' => "货物已送达",
             'delivery' => '交货已完成',
             'done' => '全部完成'
         );
