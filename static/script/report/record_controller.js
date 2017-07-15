@@ -36,8 +36,8 @@ app.controller('recordController', function ($scope, $http, Util) {
             '-不良品退货',
             '出库',
             '-发货',
-            '-退回良品',
-            '-退回不良品'
+            '-良品退回',
+            '-不良品退回'
         ];
 
         $http.get('?/Receive/getVendorSelect/', {
