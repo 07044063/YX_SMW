@@ -26,6 +26,31 @@ class Weixin extends ControllerWx
         return $this->echoMsg(0, $signPackage);
     }
 
+    public function sendMessage($data)
+    {
+        //发送微信企业号消息通用接口
+        //Post参数说明
+        //{type:'text',content:'要发送的文本消息内容',touser:'userA|userB',totag}
+        //文本支持\n换行，和<a>标签 "消息\n点击查看<a href='http://www.baidu.com'>点我</a>哈哈"
+        if (!$data['agentid']) {
+            $data['agentid'] = 0; //默认发送消息的ID
+        }
+        $sendData = [
+            "touser" => $data['touser'],
+            "toparty" => "",
+            "totag" => "",
+            "msgtype" => $data['type'],
+            "agentid" => $data['agentid'],
+            "text" => ["content" => $data['content']],
+            "safe" => 0
+        ];
+        $weObj = new Wechat($this->config->wxConfigs);
+        try {
+            $res = $weObj->sendMessage($sendData);
+        } catch (Exception $e) {
+        }
+    }
+
     //变更退回单状态调用的方法
     public function changeBackStatus()
     {
@@ -124,7 +149,54 @@ class Weixin extends ControllerWx
         $odlist = $postdata['odlist'];
         $uid = $this->Session->get('uid');
         $data = $this->Db->query("call p_send_order('$odlist',$truckid,$uid);");
+        if ((int)$data[0]['res'] == 0) {
+            $this->orderSendMsg($uid, $truckid, $odlist);
+        }
         return $this->echoMsg((int)$data[0]['res'], '');
+    }
+
+    //发送发货的微信消息
+    public function orderSendMsg($uid, $truckid, $odlist)
+    {
+        $userPhone = $this->Dao->select("person_phone")
+            ->from(TABLE_PERSON)
+            ->where("id = $uid")
+            ->aw("isvalid = 1")
+            ->getOne();
+        $truckCode = $this->Dao->select("truck_code")
+            ->from(TABLE_TRUCK)
+            ->where("id = $truckid")
+            ->aw("isvalid = 1")
+            ->getOne();
+        $goodsList = $this->Dao->select("o.order_type,o.order_date,g.goods_name")
+            ->from(VIEW_ORDER_CHECK)
+            ->alias("v")
+            ->leftJoin(TABLE_GOODS)
+            ->alias('g')
+            ->on("v.goods_id = g.id")
+            ->leftJoin(TABLE_ORDER)
+            ->alias('o')
+            ->on("v.order_id = o.id")
+            ->where("order_id in ($odlist)")
+            ->exec();
+        $msg = date('d月j日') . "\n亿翔物流\n";
+        $msg = $msg . "\n";
+        $msg = $msg . "车牌号码：$truckCode" . "\n";
+        $msg = $msg . "发车时间：" . date('H:i') . "\n";
+        $msg = $msg . "配送物料：\n";
+        foreach ($goodsList as $go) {
+            if ($go['order_type'] == '外部序列') {
+                $timeStr = date('H:i', $go['order_date']);
+            } else {
+                $timeStr = '';
+            }
+            $msg = $msg . $go['goods_name'] . " " . $timeStr . "\n";
+        }
+        $this->sendMessage([
+            'type' => 'text',
+            'content' => $msg,
+            'touser' => $userPhone
+        ]);
     }
 
     //查看发货单清单
