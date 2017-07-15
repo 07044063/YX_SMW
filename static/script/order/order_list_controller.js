@@ -22,12 +22,13 @@ app.controller('orderListController', function ($scope, $http, Util) {
         $scope.order_status_list = [  //ORDER_STATUS_Z
             {key: 'all', value: '所有状态'},
             {key: 'notsend', value: '--未发货'},
-            {key: 'create', value: '----新创建'},
-            {key: 'receive', value: '----已接收'},
-            {key: 'ready', value: '----已备货'},
-            {key: 'check', value: '----已对点'},
-            {key: 'send', value: '--已发货'},
-            {key: 'delivery', value: '--已交货'},
+            {key: 'create', value: '----未接收'},
+            {key: 'receive', value: '----未备货'},
+            {key: 'ready', value: '----未对点'},
+            {key: 'check', value: '----未发车'},
+            {key: 'send', value: '--未送达'},
+            {key: 'arrive', value: '--未交货'},
+            {key: 'delivery', value: '--未确认'},
             {key: 'done', value: '--已完成'}
         ];
 

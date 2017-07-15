@@ -102,4 +102,15 @@ class Returning extends ControllerAdmin
         }
     }
 
+    public function getUrlById()
+    {
+        $id = intval($this->pGet('id'));
+        $data = $this->Dao->select('pic_url')
+            ->from(TABLE_RETURNING)
+            ->where("isvalid = 1")
+            ->aw("id = $id")
+            ->getOneRow();
+        return $this->echoMsg(0, $data);
+
+    }
 }

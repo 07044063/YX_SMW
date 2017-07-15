@@ -210,4 +210,13 @@ class Page extends ControllerAdmin
     {
         $this->show(self::TPL . 'setting/password.tpl');
     }
+
+    public function returnpic($Query)
+    {
+        $id = $Query->id;
+        //$this->assign('title', '发货单-发货确认');
+        //$this->Smarty->assign('returnpic_url', 'http://wms.yixiangscm.cn/uploads/pic/149924116664722.jpg');
+        $this->Smarty->assign('returnpic_id', $id);
+        $this->show('./views/receive/return_pic.tpl');
+    }
 }

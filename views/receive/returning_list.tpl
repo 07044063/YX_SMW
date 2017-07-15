@@ -29,7 +29,7 @@
             <tbody>
             <tr ng-repeat="returnings in returninglist">
                 <td class="hidden">{{returnings.id}}</td>
-                <td><a href="{{returnings.pic_url}}" target="_blank">
+                <td><a href="?/Page/returnpic/id={{returnings.id}}" target="_blank">
                         <img style="max-height:50px;max-width: 400px;margin: 3px"
                              src="{{returnings.pic_url}}"/></a></td>
                 <td>{{returnings.returning_code}}</td>

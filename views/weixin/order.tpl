@@ -72,6 +72,9 @@
                             {*发货完成*}
                             {*{/if}*}
                             {if {$order.status} == 'send'}
+                                货已到达
+                            {/if}
+                            {if {$order.status} == 'arrive'}
                                 交货完成
                             {/if}
                             {if {$order.status} == 'delivery'}

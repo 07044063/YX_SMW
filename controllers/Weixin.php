@@ -53,7 +53,8 @@ class Weixin extends ControllerWx
             'receive' => 'ready',
             'ready' => 'check',
             'check' => 'send',
-            'send' => 'delivery',
+            'send' => 'arrive',
+            'arrive' => 'delivery',
             'delivery' => 'done'
         );
         $newstatus = $status[$oldstatus];
@@ -138,7 +139,8 @@ class Weixin extends ControllerWx
             'receive' => "仓库已接收",
             'ready' => "备货已完成",
             'check' => "对点已完成",
-            'send' => "发货已完成",
+            'send' => "发车已完成",
+            'arrive' => "货已到达",
             'delivery' => "交货已完成",
             'done' => "全部完成"
         );

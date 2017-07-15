@@ -9,9 +9,10 @@
         <div class='order-sort {if $status eq ''}hover{/if}' data-status="notdone"><b>未完成</b></div>
         <div class='order-sort {if $status eq 'create'}hover{/if}' data-status="create"><b>未接收</b></div>
         <div class='order-sort {if $status eq 'readying'}hover{/if}' data-status="readying"><b>未发货</b></div>
-        <div class='order-sort {if $status eq 'send'}hover{/if}' data-status="send"><b>已发货</b></div>
-        <div class='order-sort {if $status eq 'delivery'}hover{/if}' data-status="delivery"><b>已交货</b></div>
-        <div class='order-sort {if $status eq 'done'}hover{/if}' data-status="done"><b>已完成</b></div>
+        <div class='order-sort {if $status eq 'send'}hover{/if}' data-status="send"><b>未到达</b></div>
+        <div class='order-sort {if $status eq 'arrive'}hover{/if}' data-status="arrive"><b>未交货</b></div>
+        <div class='order-sort {if $status eq 'delivery'}hover{/if}' data-status="delivery"><b>未确认</b></div>
+        <!--<div class='order-sort {if $status eq 'done'}hover{/if}' data-status="done"><b>已完成</b></div>-->
         <div id="sort_all" class='order-sort {if $status eq 'all'}hover{/if}' data-status="all"><b>全部</b></div>
     </div>
 

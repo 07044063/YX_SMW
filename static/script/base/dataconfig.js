@@ -36,7 +36,8 @@ var order_status_list = {  //ORDER_STATUS_Z
     receive: "仓库已接收",
     ready: "备货已完成",
     check: "对点已完成",
-    send: "发货已完成",
+    send: "发车已完成",
+    arrive: "货已到达",
     delivery: "交货已完成",
     done: "全部完成"
 };
@@ -44,7 +45,7 @@ var order_status_list = {  //ORDER_STATUS_Z
 var back_status_list = {
     create: "新创建",
     receive: "仓库已接收",
-    send: "发货已完成",
+    send: "发车已完成",
     done: "全部完成"
 };
 
