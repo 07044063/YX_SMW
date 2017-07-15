@@ -9,6 +9,11 @@ app.controller('returningListController', function ($scope, $http, Util) {
             pagesize: 12
         };
 
+        var queryCode = $('#returning_code').val();
+        if (queryCode) {
+            $scope.params.search_text = queryCode;
+        }
+
         $scope.goodslist = [];
         $scope.goods = {};
 

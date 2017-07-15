@@ -8,6 +8,7 @@
 <div class="pd15" ng-controller="backListController" ng-app="ngApp">
 
     {include file='../order/modal_back_detail.html'}
+    <input class="hidden" id="back_code" value="{$code}">
 
     {literal}
         <div class="pheader clearfix">

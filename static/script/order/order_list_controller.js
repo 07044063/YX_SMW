@@ -13,6 +13,11 @@ app.controller('orderListController', function ($scope, $http, Util) {
             pagesize: 20
         };
 
+        var queryCode = $('#order_code').val();
+        if (queryCode) {
+            $scope.params.search_text = queryCode;
+        }
+
         $scope.order_status_l = order_status_list;
 
         $scope.address_list = address_list;

@@ -6,25 +6,16 @@
     <input class="text hidden" id="returnpic_id" value="{$returnpic_id}"/>
 
     {literal}
-        <div class="row">
-
-        </div>
-       <div id="return_div" class="row"  style="width:700px;height: 700px" >
-           <img style="width:700px;height: 700px"
-                src="{{returnpic_url}}" alt="退库图片"/>
-       </div>
-        <div class="row">
-        <p ></p>
-        </div>
-        <div class="row">
-            <button type="button" class="btn btn-primary" ng-click="imgRotate()"
-                    style="width:100px;height:50px;">  旋     转  </button>
+        <div class="row"><h4>点击图片可旋转</h4></div>
+        <div id="return_div" style="margin-top: 10px">
+            <a href="javascript:; " ng-click="imgRotate()">
+                <img id="return_pic"
+                     style="margin-top: 10px;max-width: 1100px;max-height: 1100px"
+                     src="{{returnpic_url}}" alt="退库图片"/>
+            </a>
         </div>
     {/literal}
 </div>
-
-
-<script src="{$docroot}static/script/lib/select2/select2.full.min.js"></script>
 
 <script type="text/javascript" src="{$docroot}static/script/receive/{$script_name}.js?v={$cssversion}"></script>
 

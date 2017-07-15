@@ -25,7 +25,7 @@
             <div class="panel-heading">输入条件查询</div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-xs-3">
+                    <div class="col-xs-2">
                         <div class="form-group">
                             <lable>供货商</lable>
                             <select class="form-control" ng-model="vendor_id"
@@ -55,14 +55,20 @@
                     </div>
                     <div class="col-xs-2">
                         <div class="form-group">
+                            <lable>类型</lable>
+                            <select class="form-control" ng-model="rtype"
+                                    ng-options="value for value in gtypelist">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div style="width: 40%; position: absolute; top:0">
                             <lable>收货日期开始</lable>
                             <input type="text" id="from_date"
                                    placeholder="" ng-model="from_date"
                                    class="form-control"/>
                         </div>
-                    </div>
-                    <div class="col-xs-2">
-                        <div class="form-group">
+                        <div style="width: 45%; float:right;">
                             <lable>收货日期结束</lable>
                             <input type="text" id="to_date"
                                    placeholder="" ng-model="to_date"
@@ -95,7 +101,8 @@
                 <td>{{record.goods_name}}</td>
                 <td>{{record.vendor_shortname}}</td>
                 <td>{{record.gtype}}</td>
-                <td>{{record.gcode}}</td>
+                <td><a data-gtype="{{record.gtype}}" data-gcode="{{record.gcode}}"
+                       ng-click="goUrl($event)" href="#"> {{record.gcode}}</a></td>
                 <td>{{record.statusX}}</td>
                 <td>{{record.numb}}</td>
                 <td>{{record.gdate}}</td>

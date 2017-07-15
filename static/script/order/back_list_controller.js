@@ -9,6 +9,11 @@ app.controller('backListController', function ($scope, $http, Util) {
             pagesize: 12
         };
 
+        var queryCode = $('#back_code').val();
+        if (queryCode) {
+            $scope.params.search_text = queryCode;
+        }
+
         $scope.back_status_list = back_status_list;
         $scope.backtypelist = backtypelist;
         $scope.back = {};

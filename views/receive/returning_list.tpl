@@ -8,6 +8,8 @@
 <div class="pd15" ng-controller="returningListController" ng-app="ngApp">
 
     {include file='../receive/modal_returning_detail.html'}
+    <input class="hidden" id="returning_code" value="{$code}">
+
     {literal}
         <div class="pheader clearfix">
             <div class="search-w-box"><input type="text" id="search_text" ng-model="search_text" class="searchbox"

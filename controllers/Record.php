@@ -16,6 +16,7 @@ class Record extends ControllerAdmin
         $goods_id = $this->pGet('goods_id');
         $from_date = $this->pGet('from_date');
         $to_date = $this->pGet('to_date');
+        $rtype = $this->pGet('rtype');
         $where = '1=1';
         if (isset($vendor_id) and $vendor_id > 0) {
             $where .= " and vendor_id = '$vendor_id'";
@@ -28,6 +29,9 @@ class Record extends ControllerAdmin
         }
         if ((isset($from_date) and $to_date != '') and (isset($from_date) and $to_date != '')) {
             $where .= " and gdate between date_format('$from_date','%Y-%m-%d') and date_format('$to_date','%Y-%m-%d') ";
+        }
+        if (isset($rtype) and $rtype != '') {
+            $where .= " and gtype like '%$rtype%'";
         }
 
         $list = $this->Dao->select()
@@ -55,6 +59,7 @@ class Record extends ControllerAdmin
         $goods_id = $this->pGet('goods_id');
         $from_date = $this->pGet('from_date');
         $to_date = $this->pGet('to_date');
+        $rtype = $this->pGet('rtype');
         $where = '1=1';
         if (isset($vendor_id) and $vendor_id > 0) {
             $where .= " and vendor_id = '$vendor_id'";
@@ -67,6 +72,9 @@ class Record extends ControllerAdmin
         }
         if ((isset($from_date) and $to_date != '') and (isset($from_date) and $to_date != '')) {
             $where .= " and gdate between date_format('$from_date','%Y-%m-%d') and date_format('$to_date','%Y-%m-%d') ";
+        }
+        if (isset($rtype) and $rtype != '') {
+            $where .= " and gtype like '%$rtype%'";
         }
 
         $list = $this->Dao->select()

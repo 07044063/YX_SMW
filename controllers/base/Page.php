@@ -122,8 +122,10 @@ class Page extends ControllerAdmin
         $this->show(self::TPL . 'receive/receive_list.tpl');
     }
 
-    public function order()
+    public function order($Query)
     {
+        $code = $Query->code;
+        $this->Smarty->assign('code', $code);
         $this->show(self::TPL . 'order/order_list.tpl');
     }
 
@@ -137,8 +139,10 @@ class Page extends ControllerAdmin
         $this->show(self::TPL . 'order/back_create.tpl');
     }
 
-    public function back()
+    public function back($Query)
     {
+        $code = $Query->code;
+        $this->Smarty->assign('code', $code);
         $this->show(self::TPL . 'order/back_list.tpl');
     }
 
@@ -184,8 +188,10 @@ class Page extends ControllerAdmin
         $this->show('./views/order/order_confirm.tpl');
     }
 
-    public function returning()
+    public function returning($Query)
     {
+        $code = $Query->code;
+        $this->Smarty->assign('code', $code);
         $this->show(self::TPL . 'receive/returning_list.tpl');
     }
 

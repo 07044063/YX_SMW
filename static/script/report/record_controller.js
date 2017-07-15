@@ -18,14 +18,27 @@ app.controller('recordController', function ($scope, $http, Util) {
 
         // 日期选择器
         $('#from_date').datetimepicker({
+            timepicker: false,
             format: 'Y-m-d'
         });
         $('#to_date').datetimepicker({
+            timepicker: false,
             format: 'Y-m-d'
         });
 
         $scope.vendorlist = [];
         $scope.stocklist = [];
+
+        $scope.gtypelist = [
+            '入库',
+            '-收货',
+            '-良品退货',
+            '-不良品退货',
+            '出库',
+            '-发货',
+            '-退回良品',
+            '-退回不良品'
+        ];
 
         $http.get('?/Receive/getVendorSelect/', {
             params: {}
@@ -103,11 +116,26 @@ app.controller('recordController', function ($scope, $http, Util) {
             $scope.stock_id = 0;
             $scope.vendor_id = 0;
             $scope.goods_id = 0;
+            $scope.rtype = '';
             $scope.from_date = '';
             $scope.to_date = '';
             q_goods_id = 0;
             $("#goods_select").html("");
             $scope.vendorChange();
+        };
+
+        $scope.goUrl = function (e) {
+            var node = e.currentTarget;
+            var gtype = $(node).data('gtype');
+            var gcode = $(node).data('gcode');
+            if (gtype == '入库-良品退货' || gtype == '入库-不良品退货') {
+                var gUrl = "returning";
+            } else if (gtype == '出库-发货') {
+                var gUrl = "order";
+            } else if (gtype == '出库-良品退回' || gtype == '出库-不良品退回') {
+                var gUrl = "back";
+            }
+            window.open("?/Page/" + gUrl + "/code=" + gcode);
         };
 
         function initparams() {
@@ -121,6 +149,7 @@ app.controller('recordController', function ($scope, $http, Util) {
             }
             $scope.params.from_date = $scope.from_date;
             $scope.params.to_date = $scope.to_date;
+            $scope.params.rtype = $scope.rtype;
         }
 
         function fnGetList() {

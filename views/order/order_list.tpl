@@ -4,6 +4,7 @@
 <div class="pd15" ng-controller="orderListController" ng-app="ngApp">
 
     {include file='../order/modal_order_status.html'}
+    <input class="hidden" id="order_code" value="{$code}">
 
     {literal}
         <div class="pheader clearfix">

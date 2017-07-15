@@ -7,12 +7,12 @@ app.controller('returnpicController', function ($scope, $http, Util) {
 
         $scope.returnpic_id = $('#returnpic_id').val();
         $scope.returnpic_url = "";
-        var r=0;
+        var r = 0;
         $scope.imgRotate = function () {
 
             //document.getElementById("ddd").innerHTML= $scope.returnpic_url;
 
-            var element = document.getElementById("return_div");
+            var element = document.getElementById("return_pic");
 
             function rotate() {
                 r += 90;
@@ -35,6 +35,7 @@ app.controller('returnpicController', function ($scope, $http, Util) {
                 $scope.returnpic_url = r.ret_msg.pic_url;
             });
         }
+
         getUrlById();
     }
 );
