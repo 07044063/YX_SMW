@@ -72,22 +72,32 @@
                 <td>{{order.statusX}}</td>
                 <td>
                     <a class="text-success" href="?/Page/orderdetail/id={{order.id}}" target="_blank">查看</a>
-
-                    <a ng-show="order.status == 'create'" class="text-warning"
-                       href="?/Page/orderedit/id={{order.id}}" target="_blank">修改</a>
-
-                    <a ng-show="order.status == 'create'" class="text-danger" data-id="{{order.id}}"
-                       ng-click="deleteOrder($event)" href="#">删除</a>
-
-                    <a class="text-info" data-id="{{order.id}}" data-toggle="modal" data-target="#modal_order_status"
-                       href="#">状态</a>
-
-                    <a ng-show="order.status == 'delivery'" class="text-primary"
-                       href="?/Page/orderconfirm/id={{order.id}}" target="_blank">客服确认</a>
-
-                    <a ng-show="order.order_type == '手工单'" class="text-muted"
-                       href="?/Page/orderprint/orderid={{order.id}}"
-                       target="_blank">打印</a>
+                    &nbsp;
+                    <a class="text-primary" href="?/Page/orderconfirm/id={{order.id}}" target="_blank">客服确认</a>
+                    &nbsp;
+                    <div class="btn-group" style="vertical-align: baseline">
+                        <a class="text-muted" data-toggle="dropdown" href="#">
+                            其他<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                            <li ng-show="order.status == 'create'">
+                                <a data-id="{{order.id}}"
+                                   ng-click="deleteOrder($event)" href="#">删除发货单</a>
+                            </li>
+                            <li ng-show="order.status == 'create'">
+                                <a href="?/Page/orderedit/id={{order.id}}"
+                                   target="_blank">修改发货数量</a>
+                            </li>
+                            <li ng-show="order.order_type == '手工单'">
+                                <a href="?/Page/orderprint/orderid={{order.id}}"
+                                   target="_blank">打印发货单</a>
+                            </li>
+                            <li>
+                                <a data-id="{{order.id}}" data-toggle="modal" data-target="#modal_order_status"
+                                   href="#">状态记录</a>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
             </tbody>

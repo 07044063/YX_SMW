@@ -76,7 +76,7 @@ class mQuery extends Model
             ->where("d.back_id = " . $data['id'])
             ->exec();
         $uid = $this->Session->get('uid');
-        $hasauth = $this->Db->query("select f_check_user_auth($uid,'BackStatus','" . $data['status'] . "')");
+        $hasauth = $this->Db->query("select f_check_user_auth($uid,'BackStatus','" . $data['status'] . "') as res");
         $data['hasauth'] = $hasauth[0]['res'];
         return $data;
     }

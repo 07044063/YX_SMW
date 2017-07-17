@@ -179,7 +179,7 @@ class Weixin extends ControllerWx
             ->on("v.order_id = o.id")
             ->where("order_id in ($odlist)")
             ->exec();
-        $msg = date('d月j日') . "\n亿翔物流\n";
+        $msg = date('n月j日') . "\n亿翔物流\n";
         $msg = $msg . "\n";
         $msg = $msg . "车牌号码：$truckCode" . "\n";
         $msg = $msg . "发车时间：" . date('H:i') . "\n";

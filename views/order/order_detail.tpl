@@ -44,6 +44,7 @@
                     <th>用倍量</th>
                     <th>需求数量</th>
                     <th>发货数量</th>
+                    <th ng-if="order.status == 'done'">实收数量</th>
                     <th>备注</th>
                 </tr>
                 </thead>
@@ -59,6 +60,7 @@
                     <td><span>{{goods.using_count}}</span></td>
                     <td><span>{{goods.needs}}</span></td>
                     <td><span>{{goods.sends}}</span></td>
+                    <td ng-if="order.status == 'done'"><span>{{goods.receives}}</span></td>
                     <td><span>{{goods.remark}}</span></td>
                 </tr>
                 </tbody>
