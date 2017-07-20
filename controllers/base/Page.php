@@ -200,6 +200,11 @@ class Page extends ControllerAdmin
         $this->show(self::TPL . 'report/inventory.tpl');
     }
 
+    public function inventoryModify()
+    {
+        $this->show(self::TPL . 'report/inventoryModify.tpl');
+    }
+
     public function record($Query)
     {
         $goods_id = $Query->goods_id;

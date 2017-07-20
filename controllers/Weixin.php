@@ -186,7 +186,7 @@ class Weixin extends ControllerWx
         $msg = $msg . "配送物料：\n";
         foreach ($goodsList as $go) {
             if ($go['order_type'] == '外部序列') {
-                $timeStr = date('H:i', $go['order_date']);
+                $timeStr = substr($go['order_date'], 11, 5);
             } else {
                 $timeStr = '';
             }

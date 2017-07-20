@@ -151,4 +151,37 @@ class mInventory extends Model
             throw  new Exception('退回单信息不正确');
         }
     }
+
+    //调整库存功能
+    public function modify($data)
+    {
+        $hasInv = $this->Dao->select('count(1)')
+            ->from(TABLE_INVENTORY)
+            ->where("goods_id = " . $data['goods_id'])
+            ->aw("isvalid = 1")
+            ->getOne();
+        if ($hasInv) {
+            if ($data['mtype'] == 2) {
+                $filed = 'abnormal';
+            } else {
+                $filed = 'quantity';
+            }
+            $this->Db->transtart();
+            try {
+                $insert = mCommon::create(TABLE_INVENTORY_MODIFY, $data);
+                if ($insert) {
+                    $sql = "UPDATE " . TABLE_INVENTORY . " set $filed = $filed + " . $data['mnum'] . " where isvalid = 1 and goods_id = " . $data['goods_id'];
+                    $this->Db->query($sql);
+                } else {
+                    throw  new Exception('写入库存调整记录失败');
+                }
+                $this->Db->transcommit();
+            } catch (Exception $ex) {
+                $this->Db->transrollback();
+                throw  new Exception($ex->getMessage());
+            }
+        } else {
+            throw  new Exception('没有库存数据');
+        }
+    }
 }

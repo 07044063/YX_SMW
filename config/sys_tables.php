@@ -40,8 +40,10 @@ define('VIEW_ORDER_DETAIL_SUM', 'v_order_detail_sum');
 define('VIEW_ORDER_CHECK', 'v_order_check');
 define('TABLE_ORDER_STATUS', 'order_status');
 define('TABLE_INVENTORY', 'inventory');
+define('TABLE_INVENTORY_MODIFY', 'inventory_modify');
 define('VIEW_INVENTORY', 'v_inventory');
 define('VIEW_INVENTORY_EXPORT', 'v_inventory_export');
+define('VIEW_INVENTORY_MODIFY', 'v_inventory_modify');
 define('VIEW_RECORD', 'v_record');
 define('VIEW_RECORD_EXPORT', 'v_record_export');
 

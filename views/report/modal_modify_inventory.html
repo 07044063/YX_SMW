@@ -1,0 +1,70 @@
+<div class="modal fade" id="modal_modify_inventory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {literal}
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{inv.goods_ccode}} - {{inv.goods_name}} - 库存数据调整</h4>
+            </div>
+
+            <input ng-model="goods_id" class="hidden"/>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>调整类型</label>
+                            <select class="form-control" ng-model="inv_mod.mtype"
+                                    ng-options="mtype.key as mtype.value for mtype in mtypelist">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label ng-if="inv_mod.mtype > 0">调整前库存：</label>
+                            <input ng-if="inv_mod.mtype == 1" type="text" ng-model="inv.quantity"
+                                   class="form-control" disabled/>
+                            <input ng-if="inv_mod.mtype == 2" type="text" ng-model="inv.abnormal"
+                                   class="form-control" disabled/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>调整数量</label>
+                            <input type="number" step="1" placeholder="请输入正整数或者负整数，如 2 或者 -5" ng-model="inv_mod.mnum"
+                                   ng-change="mnumChange()"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label ng-if="inv_mod.mtype > 0">调整后库存：</label>
+                            <input ng-if="inv_mod.mtype > 0" type="text" ng-model="inv_mod.after"
+                                   class="form-control" disabled/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-group">
+                            <label>调整说明</label>
+                            <textarea class="form-control" rows="3" ng-model="inv_mod.remark"
+                                      placeholder="请输入详细的调整说明，如有相关的操作单号也需要填写清楚"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="modify($event)">保存</button>
+            </div>
+            {/literal}
+        </div>
+    </div>
+</div>
